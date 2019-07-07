@@ -1,0 +1,24 @@
+<div class="row" style="margin-top: 50px; margin-bottom: 50px;">
+  <button class="btn btn-primary" (click)="getItems()">Refresh</button>
+</div>
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Ref</th>
+        <th scope="col">Title</th>
+        <th scope="col">Url</th>
+        <!-- <th scope="col">First view date</th> -->
+        <!-- <th scope="col">Last view date</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.id }}</td>
+        <td>{{ item.title }}</td>
+        <td><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
