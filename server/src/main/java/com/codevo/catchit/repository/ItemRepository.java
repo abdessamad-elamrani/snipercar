@@ -13,5 +13,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
 
 	List<Item> findByFilter(Filter filter);
 
+	Item findByRef(String ref);
+
 
 }

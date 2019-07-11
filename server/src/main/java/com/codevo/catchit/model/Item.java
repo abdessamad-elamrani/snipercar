@@ -13,9 +13,10 @@ import javax.persistence.Table;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "item")
+@Table(name = "item", uniqueConstraints={@UniqueConstraint(columnNames = {"filter_id" , "ref"})})
 public class Item {
 
 	@Id
@@ -26,6 +27,9 @@ public class Item {
 	@JoinColumn(name = "filter_id")
 	private Filter filter;
 
+	@Column(name = "ref", nullable = false)
+	private String ref;
+	
 	@Column(name = "title", nullable = false)
 	private String title;
 
@@ -33,8 +37,8 @@ public class Item {
 	private String url;
 
 	@Lob
-	@Column(name = "html", nullable = false)
-	private String html;
+	@Column(name = "body", nullable = false)
+	private String body;
 
 	@Column(name = "first_view_date")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -49,20 +53,22 @@ public class Item {
 		this.lastViewDate = new Date();
 	}
 
-	public Item(Filter filter, String title, String url, String html) {
+	public Item(Filter filter, String ref, String title, String url, String body) {
 		this.filter = filter;
+		this.ref = ref;
 		this.title = title;
 		this.url = url;
-		this.html = html;
+		this.body = body;
 		this.firstViewDate = new Date();
 		this.lastViewDate = new Date();
 	}
 
-	public Item(Filter filter, String title, String url, String html, Date firstViewDate, Date lastViewDate) {
+	public Item(Filter filter, String ref, String title, String url, String body, Date firstViewDate, Date lastViewDate) {
 		this.filter = filter;
+		this.ref = ref;
 		this.title = title;
 		this.url = url;
-		this.html = html;
+		this.body = body;
 	}
 
 	public long getId() {
@@ -81,6 +87,14 @@ public class Item {
 		this.filter = filter;
 	}
 
+	public String getRef() {
+		return ref;
+	}
+
+	public void setRef(String ref) {
+		this.ref = ref;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -97,12 +111,12 @@ public class Item {
 		this.url = url;
 	}
 
-	public String getHtml() {
-		return html;
+	public String getBody() {
+		return body;
 	}
 
-	public void setHtml(String html) {
-		this.html = html;
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	public Date getFirstViewDate() {
@@ -128,7 +142,7 @@ public class Item {
 			+ ", filter=" + filter 
 			+ ", title=" + title 
 			+ ", url=" + url 
-			+ ", html=" + html 
+			+ ", body=" + body 
 			+ ", firstViewDate=" + firstViewDate 
 			+ ", lastViewDate=" + lastViewDate 
 		+ "]";
