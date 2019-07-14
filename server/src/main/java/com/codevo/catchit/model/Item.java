@@ -40,17 +40,17 @@ public class Item {
 	@Column(name = "body", nullable = false)
 	private String body;
 
-	@Column(name = "first_view_date")
+	@Column(name = "created_at")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date firstViewDate;
+	private Date createdAt;
 
-	@Column(name = "last_view_date")
+	@Column(name = "updated_at")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastViewDate;
+	private Date updatedAt;
 
 	public Item() {
-		this.firstViewDate = new Date();
-		this.lastViewDate = new Date();
+		this.createdAt = new Date();
+		this.updatedAt = new Date();
 	}
 
 	public Item(Filter filter, String ref, String title, String url, String body) {
@@ -59,11 +59,11 @@ public class Item {
 		this.title = title;
 		this.url = url;
 		this.body = body;
-		this.firstViewDate = new Date();
-		this.lastViewDate = new Date();
+		this.createdAt = new Date();
+		this.updatedAt = new Date();
 	}
 
-	public Item(Filter filter, String ref, String title, String url, String body, Date firstViewDate, Date lastViewDate) {
+	public Item(Filter filter, String ref, String title, String url, String body, Date createdAt, Date updatedAt) {
 		this.filter = filter;
 		this.ref = ref;
 		this.title = title;
@@ -119,20 +119,20 @@ public class Item {
 		this.body = body;
 	}
 
-	public Date getFirstViewDate() {
-		return firstViewDate;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setFirstViewDate(Date firstViewDate) {
-		this.firstViewDate = firstViewDate;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Date getLastViewDate() {
-		return lastViewDate;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setLastViewDate(Date lastViewDate) {
-		this.lastViewDate = lastViewDate;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	@Override
@@ -143,8 +143,8 @@ public class Item {
 			+ ", title=" + title 
 			+ ", url=" + url 
 			+ ", body=" + body 
-			+ ", firstViewDate=" + firstViewDate 
-			+ ", lastViewDate=" + lastViewDate 
+			+ ", createdAt=" + createdAt 
+			+ ", updatedAt=" + updatedAt 
 		+ "]";
 	}
 

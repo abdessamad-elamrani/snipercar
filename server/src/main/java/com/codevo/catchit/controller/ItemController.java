@@ -39,15 +39,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codevo.catchit.model.Website;
-import com.codevo.catchit.model.Filter;
-import com.codevo.catchit.model.Field;
-import com.codevo.catchit.model.Item;
-
-import com.codevo.catchit.repository.WebsiteRepository;
-import com.codevo.catchit.repository.FilterRepository;
-import com.codevo.catchit.repository.FieldRepository;
-import com.codevo.catchit.repository.ItemRepository;
+import com.codevo.catchit.model.*;
+import com.codevo.catchit.repository.*;
+import com.codevo.catchit.component.*;
+import com.codevo.catchit.service.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,15 +61,11 @@ import java.net.URL;
 public class ItemController {
 	
 	@Autowired
-	private WebsiteRepository websiteRepository;
+	private Parser parser;
 	@Autowired
 	private FilterRepository filterRepository;
 	@Autowired
-	private FieldRepository fieldRepository;
-	@Autowired
 	private ItemRepository itemRepository;
-	@PersistenceContext
-    EntityManager em;
 	
 	@GetMapping("/items/{id}")
 	@Transactional
@@ -84,57 +75,8 @@ public class ItemController {
 		Filter filter = filterRepository.findById(filterId)
         .orElseThrow(() -> new NotFoundException("Filter not found for this id :: " + filterId));
 		
-		
-		
-		String ref, url, title, body;
-		if(filter.getWebsite().getName().toLowerCase().contains("marktplaats")) {
-			
-			String data = Jsoup.connect(filter.getUrl()).ignoreContentType(true).execute().body();
-			JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
-			
-            JsonArray elts = jsonObject.getAsJsonArray("listings");
-            for (int i = 0; i < elts.size(); i++) {
-                JsonObject elt = elts.get(i).getAsJsonObject();
-				body = elt.toString();
-				ref = elt.get("itemId").getAsString();
-				url = "https://www.marktplaats.nl" + elt.get("vipUrl").getAsString();
-				title = elt.get("title").getAsString();
-            	System.out.println("body=" + body);
-				if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-					Item item = itemRepository.findByRef(ref);
-					if (item != null) {
-						item.setLastViewDate(new Date());
-					} else {
-						item = new Item(filter, ref, title, url, body);
-					}
-					em.persist(item); 
-				}
-            }
-	        
-		} else if(filter.getWebsite().getName().toLowerCase().contains("autoscout24")) {
-			
-			Document doc = Jsoup.connect(filter.getUrl()).get();
-			
-			Elements elements = doc.select("div.cl-list-element.cl-list-element-gap");
-			for (Element element : elements) {
-				body = element.html();
-				url = element.selectFirst("a[href]").absUrl("href");
-				title = element.selectFirst("h2.cldt-summary-makemodel").text();
-				title += " " + element.selectFirst("h2.cldt-summary-version").text();
-				ref = element.selectFirst("div.cldt-summary-full-item-main[data-articleid]").attr("data-articleid");
-				if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-					Item item = itemRepository.findByRef(ref);
-					if (item != null) {
-						item.setLastViewDate(new Date());
-					} else {
-						item = new Item(filter, ref, title, url, body);
-					}
-					em.persist(item); 
-				}
-			}
-		} else if(filter.getWebsite().getName().toLowerCase().contains("facebook")) {
-
-		}
+//		int counter = parser.parse(filter);
+//		System.out.println("website=" + filter.getWebsite().getName() + "counter = " + counter);
 		
 		return itemRepository.findByFilter(filter);
     }

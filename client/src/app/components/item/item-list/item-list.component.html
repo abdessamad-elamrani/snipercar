@@ -9,8 +9,8 @@
         <th scope="col">Ref</th>
         <th scope="col">Title</th>
         <th scope="col">Url</th>
-        <!-- <th scope="col">First view date</th> -->
-        <!-- <th scope="col">Last view date</th> -->
+        <th scope="col">Created At</th>
+        <th scope="col">Updated At</th>
       </tr>
     </thead>
     <tbody>
@@ -18,6 +18,8 @@
         <td>{{ item.ref }}</td>
         <td>{{ item.title }}</td>
         <td><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+        <td>{{ item.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+        <td>{{ item.updatedAt | date:'dd/MM/yyyy HH:mm:ss' }}</td>
       </tr>
     </tbody>
   </table>
