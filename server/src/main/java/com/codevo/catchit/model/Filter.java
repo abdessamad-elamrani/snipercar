@@ -25,19 +25,14 @@ public class Filter {
 	@JoinColumn(name="website_id")
     private Website website;
 	
-	@OneToMany(mappedBy = "filter")
-    private List<Field> fields;
-	
 	@Column(name = "url", nullable = false)
     private String url;
     
     public Filter() {
-    	  this.fields = new ArrayList<>();
     }
  
     public Filter(Website website, String url) {
          this.website = website;
-         this.fields = new ArrayList<>();
          this.url = url;
     }
  
@@ -55,21 +50,6 @@ public class Filter {
         this.website = website;
     }
  
-    public List<Field> getFields() {
-        return fields;
-    }
-    public void setFields(List<Field> fields) {
-        this.fields = fields;
-    }
-    public void addField(Field field) {
-        fields.add(field);
-        field.setFilter(this);
-    }
-    public void removeComment(Field field) {
-        fields.remove(field);
-        field.setFilter(null);
-    }
- 
     public String getUrl() {
         return url;
     }
@@ -82,7 +62,6 @@ public class Filter {
         return "Filter [" 
 		    + "id=" + id 
 		    + ", website=" + website 
-		    + ", fields=" + fields 
 		    + ", url=" + url 
 	    + "]";
     }

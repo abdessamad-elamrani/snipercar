@@ -58,8 +58,18 @@ public class Parser {
 			counter = this.parseAutoScout24(filter);
 		} else if(filter.getWebsite().getName().toLowerCase().contains("facebook")) {
 			counter = this.parseFacebook(filter);
+		} else if(filter.getWebsite().getName().toLowerCase().contains("anwb")) {
+			counter = this.parseAnwb(filter);
+		} else if(filter.getWebsite().getName().toLowerCase().contains("gaspedaal")) {
+			counter = this.parseGaspedaal(filter);
+		} else if(filter.getWebsite().getName().toLowerCase().contains("autoweek")) {
+			counter = this.parseAutoweek(filter);
+		} else if(filter.getWebsite().getName().toLowerCase().contains("autotrader")) {
+			counter = this.parseAutotrader(filter);
+		} else if(filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
+			counter = this.parseViabovag(filter);
 		}
-
+		
 		return counter;
 	}
 
@@ -131,4 +141,75 @@ public class Parser {
         
         return counter;
 	}
+
+	private int parseAnwb(Filter filter)  throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+		// reactJS
+		// website	= www.anwb.nl
+		// filter	= https://www.anwb.nl/auto/kopen/zoeken/merk=bmw
+		// filter1	= https://api.anwb.nl/occasion-hexon-search?vehicle.brand.keyword=bmw&limit=24&viewwrapper=grid
+		// body 	= results[i]
+		// title 	= results[i].advertisement.title
+		// ref 		= results[i].id
+		// url 		= https://www.anwb.nl/auto/kopen/detail/merk=bmw/model=z4/overzicht/530893222?/merk=bmw
+        
+        return counter;
+	}
+
+	private int parseGaspedaal(Filter filter)  throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+		
+		Document doc = Jsoup.connect(filter.getUrl()).get();
+		
+		Elements elements = doc.select("li.occasion.popup_click_event.aec_popup_click");
+		for (Element element : elements) {
+			body = element.html();
+			url = element.selectFirst("a[href]").absUrl("href");
+			title = element.selectFirst("div.occ_cartitle.popup_title").text();
+			ref = element.selectFirst("a[href]").attr("data-id");
+			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRef(ref);
+				if (item != null) {
+					item.setUpdatedAt(new Date());
+				} else {
+					item = new Item(filter, ref, title, url, body); 
+					counter++;
+				}
+				em.persist(item);
+			}
+		}
+        
+        return counter;
+	}
+	
+	private int parseAutoweek(Filter filter)  throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+//		www.autoweek.nl/occasions/
+        
+        return counter;
+	}
+
+	private int parseAutotrader(Filter filter)  throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+//		www.autotrader.nl/
+        
+        return counter;
+	}
+	
+	private int parseViabovag(Filter filter)  throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+//		www.viabovag.nl
+        
+        return counter;
+	}
+
 }
