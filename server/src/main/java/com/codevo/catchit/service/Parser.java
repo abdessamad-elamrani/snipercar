@@ -9,6 +9,9 @@ import java.util.logging.Logger;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -49,49 +52,51 @@ public class Parser {
 	@Autowired
 	private ItemRepository itemRepository;
 	@PersistenceContext
-    EntityManager em;
-	
+	EntityManager em;
+
 	public int parse(Filter filter) throws NotFoundException, IOException {
 		int counter = 0;
-		
-		if(filter.getWebsite().getName().toLowerCase().contains("marktplaats")) {
+
+		if (filter.getWebsite().getName().toLowerCase().contains("marktplaats")) {
 			counter = this.parseMarktplaats(filter);
-		} else if(filter.getWebsite().getName().toLowerCase().contains("autoscout24")) {
+		} else if (filter.getWebsite().getName().toLowerCase().contains("autoscout24")) {
 			counter = this.parseAutoScout24(filter);
-		} else if(filter.getWebsite().getName().toLowerCase().contains("facebook")) {
+		} else if (filter.getWebsite().getName().toLowerCase().contains("facebook")) {
 			counter = this.parseFacebook(filter);
-		} else if(filter.getWebsite().getName().toLowerCase().contains("anwb")) {
+		} else if (filter.getWebsite().getName().toLowerCase().contains("anwb")) {
 			counter = this.parseAnwb(filter);
-		} else if(filter.getWebsite().getName().toLowerCase().contains("gaspedaal")) {
+		} else if (filter.getWebsite().getName().toLowerCase().contains("gaspedaal")) {
 			counter = this.parseGaspedaal(filter);
-		} else if(filter.getWebsite().getName().toLowerCase().contains("autoweek")) {
+		} else if (filter.getWebsite().getName().toLowerCase().contains("autoweek")) {
 			counter = this.parseAutoweek(filter);
-		} else if(filter.getWebsite().getName().toLowerCase().contains("autotrader")) {
+		} else if (filter.getWebsite().getName().toLowerCase().contains("autotrader")) {
 			counter = this.parseAutotrader(filter);
-		} else if(filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
+		} else if (filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
 			counter = this.parseViabovag(filter);
 		}
-		
+
 		return counter;
 	}
 
 	public int parseMarktplaats(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
-		
+
+		// https://www.marktplaats.nl/l/auto-s/bmw/#searchInTitleAndDescription:false
+		// https://www.marktplaats.nl/lrp/api/search?l1CategoryId=91&l2CategoryId=96&limit=30&offset=0&viewOptions=list-view
+
 		String data = Jsoup.connect(filter.getUrl()).ignoreContentType(true).execute().body();
 		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
-		
-        JsonArray elts = jsonObject.getAsJsonArray("listings");
-        for (int i = 0; i < elts.size(); i++) {
-            JsonObject elt = elts.get(i).getAsJsonObject();
+
+		JsonArray elts = jsonObject.getAsJsonArray("listings");
+		for (int i = 0; i < elts.size(); i++) {
+			JsonObject elt = elts.get(i).getAsJsonObject();
 			body = elt.toString();
 			ref = elt.get("itemId").getAsString();
 			url = "https://www.marktplaats.nl" + elt.get("vipUrl").getAsString();
 			title = elt.get("title").getAsString();
-//        	System.out.println("body=" + body);
-			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRef(ref);
+			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRefAndFilter(ref, filter);
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
@@ -101,20 +106,20 @@ public class Parser {
 					item = new Item(filter, ref, title, url, body);
 					counter++;
 				}
-				em.persist(item); 
+				em.persist(item);
 			}
-        }
-        
-        return counter;
-		
+		}
+
+		return counter;
+
 	}
 
 	public int parseAutoScout24(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
-		
+
 		Document doc = Jsoup.connect(filter.getUrl()).get();
-		
+
 		Elements elements = doc.select("div.cl-list-element.cl-list-element-gap");
 		for (Element element : elements) {
 			body = element.html();
@@ -122,113 +127,8 @@ public class Parser {
 			title = element.selectFirst("h2.cldt-summary-makemodel").text();
 			title += " " + element.selectFirst("h2.cldt-summary-version").text();
 			ref = element.selectFirst("div.cldt-summary-full-item-main[data-articleid]").attr("data-articleid");
-			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRef(ref);
-				if (item != null) {
-					item.setBody(body);
-					item.setTitle(title);
-					item.setUrl(url);
-					item.setUpdatedAt(new Date());
-				} else {
-					item = new Item(filter, ref, title, url, body); 
-					counter++;
-				}
-				em.persist(item);
-			}
-		}
-		
-        
-        return counter;
-	}
-	
-	public int parseFacebook(Filter filter) throws NotFoundException, IOException {
-		String ref, url, title, body;
-		int counter = 0;
-		
-		//do nothing
-        
-        return counter;
-	}
-
-	private int parseAnwb(Filter filter)  throws NotFoundException, IOException {
-		String ref, url, title, body;
-		int counter = 0;
-
-		// reactJS
-		// website	= www.anwb.nl
-		// filter	= https://www.anwb.nl/auto/kopen/zoeken/merk=bmw
-		// filter1	= https://api.anwb.nl/occasion-hexon-search?vehicle.brand.keyword=bmw&limit=24&viewwrapper=grid
-		// body 	= results[i]
-		// title 	= results[i].advertisement.title
-		// ref 		= results[i].id
-		// url 		= https://www.anwb.nl/auto/kopen/detail/merk=bmw/model=z4/overzicht/530893222?/merk=bmw
-        
-        return counter;
-	}
-
-	private int parseGaspedaal(Filter filter)  throws NotFoundException, IOException {
-		String ref, url, title, body;
-		int counter = 0;
-		
-		Document doc = Jsoup.connect(filter.getUrl()).get();
-		
-		Elements elements = doc.select("li.occasion.popup_click_event.aec_popup_click");
-		for (Element element : elements) {
-			body = element.html();
-			url = element.selectFirst("a[href]").absUrl("href");
-			title = element.selectFirst("div.occ_cartitle.popup_title").text();
-			ref = element.selectFirst("a[href]").attr("data-id");
-			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRef(ref);
-				if (item != null) {
-					item.setBody(body);
-					item.setTitle(title);
-					item.setUrl(url);
-					item.setUpdatedAt(new Date());
-				} else {
-					item = new Item(filter, ref, title, url, body); 
-					counter++;
-				}
-				em.persist(item);
-			}
-		}
-        
-        return counter;
-	}
-	
-	private int parseAutoweek(Filter filter)  throws NotFoundException, IOException {
-		String ref, url, title, body;
-		int counter = 0;
-
-		// www.autoweek.nl/occasions/bmw
-		// https://public-api.autoweek.nl/v1/occasions/?filters_new=true&sort=insertion_age&page=1&make_models_new=bmw&format=json&cachebuster=1563308015&ascending=1
-		// body		= occasions[i]
-		// title	= occasions[i].name
-		// ref		= get if from /occasions/bmw/2-serie-tourer/380823786/gran-tourer-216i-7persoons-executive/
-		// url		= "www.autoweek.nl" + occasions[i].url
-		
-		String data = Jsoup.connect(filter.getUrl()).ignoreContentType(true).execute().body();
-		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
-		
-        JsonArray elts = jsonObject.getAsJsonArray("occasions");
-        for (int i = 0; i < elts.size(); i++) {
-            JsonObject elt = elts.get(i).getAsJsonObject();
-            if(!elt.has("mileage")) {
-            	continue;
-            }
-			body = elt.toString();
-			ref = elt.get("url").getAsString();
-		    Pattern pattern = Pattern.compile("/(\\d+)/");
-		    Matcher matcher = pattern.matcher(ref);
-		    if (matcher.find())
-		    {
-		        ref = matcher.group(1);
-		    }
-			url = "https://www.autoweek.nl" + elt.get("url").getAsString();
-			title = elt.get("name").getAsString();
-			System.out.println("title" + title);
-			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRef(ref);
+			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRefAndFilter(ref, filter);
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
@@ -238,29 +138,175 @@ public class Parser {
 					item = new Item(filter, ref, title, url, body);
 					counter++;
 				}
-				em.persist(item); 
+				em.persist(item);
 			}
-        }
-        
-        return counter;
+		}
+
+		return counter;
 	}
 
-	private int parseAutotrader(Filter filter)  throws NotFoundException, IOException {
+	public int parseFacebook(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
 
-//		www.autotrader.nl/
-        
-        return counter;
+		// do nothing
+
+		return counter;
 	}
-	
-	private int parseViabovag(Filter filter)  throws NotFoundException, IOException {
+
+	private int parseAnwb(Filter filter) throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+		// reactJS
+		// website = www.anwb.nl
+		// filter = https://www.anwb.nl/auto/kopen/zoeken/merk=bmw
+		// filter1 =
+		// https://api.anwb.nl/occasion-hexon-search?vehicle.brand.keyword=bmw&limit=24&viewwrapper=grid
+		// body = results[i]
+		// title = results[i].advertisement.title
+		// ref = results[i].id
+		// url =
+		// https://www.anwb.nl/auto/kopen/detail/merk=bmw/model=z4/overzicht/530893222?/merk=bmw
+
+		return counter;
+	}
+
+	private int parseGaspedaal(Filter filter) throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+		Document doc = Jsoup.connect(filter.getUrl()).get();
+
+		Elements elements = doc.select("li.occasion.popup_click_event.aec_popup_click");
+		for (Element element : elements) {
+			body = element.html();
+			url = element.selectFirst("a[href]").absUrl("href");
+			title = element.selectFirst("div.occ_cartitle.popup_title").text();
+			ref = element.selectFirst("a[href]").attr("data-id");
+			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
+					item.setUpdatedAt(new Date());
+				} else {
+					item = new Item(filter, ref, title, url, body);
+					counter++;
+				}
+				em.persist(item);
+			}
+		}
+
+		return counter;
+	}
+
+	private int parseAutoweek(Filter filter) throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+		// www.autoweek.nl/occasions/bmw
+		// https://public-api.autoweek.nl/v1/occasions/?filters_new=true&sort=insertion_age&page=1&make_models_new=bmw&format=json&cachebuster=1563308015&ascending=1
+
+		String data = Jsoup.connect(filter.getUrl()).ignoreContentType(true).execute().body();
+		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
+
+		JsonArray elts = jsonObject.getAsJsonArray("occasions");
+		for (int i = 0; i < elts.size(); i++) {
+			JsonObject elt = elts.get(i).getAsJsonObject();
+			if (!elt.has("mileage")) {
+				continue;
+			}
+			body = elt.toString();
+			ref = elt.get("url").getAsString();
+			Pattern pattern = Pattern.compile("/(\\d+)/");
+			Matcher matcher = pattern.matcher(ref);
+			if (matcher.find()) {
+				ref = matcher.group(1);
+			}
+			url = "https://www.autoweek.nl" + elt.get("url").getAsString();
+			title = elt.get("name").getAsString();
+			System.out.println("title" + title);
+			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
+					item.setUpdatedAt(new Date());
+				} else {
+					item = new Item(filter, ref, title, url, body);
+					counter++;
+				}
+				em.persist(item);
+			}
+		}
+
+		return counter;
+	}
+
+	public String slugify(String input) {
+		Pattern NONLATIN = Pattern.compile("[^\\w-]");
+		Pattern WHITESPACE = Pattern.compile("[\\s]");
+
+		String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
+		String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+		String slug = NONLATIN.matcher(normalized).replaceAll("");
+		return slug.toLowerCase(Locale.ENGLISH);
+	}
+
+	private int parseAutotrader(Filter filter) throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+
+		// https://www.autotrader.nl/auto/bmw/
+		// https://www.autotrader.nl/api/v2/search-listings?atype=C&sort=standard&desc=0&fregfrom=1994&safemake=bmw
+		// body = listings[i]
+		// title = listings[i].title
+		// ref = listings[i].articleId
+		// url = listings[i].
+		// "/auto/voertuig/" + slugify(listings[i].title + " " + listings[i].fuel) + "/"
+		// + listings[i].id
+
+		String data = Jsoup.connect(filter.getUrl()).ignoreContentType(true).execute().body();
+		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
+
+		JsonArray elts = jsonObject.getAsJsonArray("listings");
+		for (int i = 0; i < elts.size(); i++) {
+			JsonObject elt = elts.get(i).getAsJsonObject();
+			body = elt.toString();
+			ref = elt.get("articleId").getAsString();
+			url = "https://www.autotrader.nl/auto/voertuig/"
+					+ this.slugify(elt.get("title").getAsString() + " " + elt.get("fuel").getAsString()) + "/"
+					+ elt.get("id").getAsString();
+			title = elt.get("title").getAsString();
+			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
+					item.setUpdatedAt(new Date());
+				} else {
+					item = new Item(filter, ref, title, url, body);
+					counter++;
+				}
+				em.persist(item);
+			}
+		}
+
+		System.out.println("counter="+counter);
+		return counter;
+	}
+
+	private int parseViabovag(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
 
 //		www.viabovag.nl
-        
-        return counter;
+
+		return counter;
 	}
 
 }
