@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -91,6 +93,9 @@ public class Parser {
 			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
 				Item item = itemRepository.findByRef(ref);
 				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
 					item.setUpdatedAt(new Date());
 				} else {
 					item = new Item(filter, ref, title, url, body);
@@ -120,6 +125,9 @@ public class Parser {
 			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
 				Item item = itemRepository.findByRef(ref);
 				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
 					item.setUpdatedAt(new Date());
 				} else {
 					item = new Item(filter, ref, title, url, body); 
@@ -173,6 +181,9 @@ public class Parser {
 			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
 				Item item = itemRepository.findByRef(ref);
 				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
 					item.setUpdatedAt(new Date());
 				} else {
 					item = new Item(filter, ref, title, url, body); 
@@ -189,7 +200,47 @@ public class Parser {
 		String ref, url, title, body;
 		int counter = 0;
 
-//		www.autoweek.nl/occasions/
+		// www.autoweek.nl/occasions/bmw
+		// https://public-api.autoweek.nl/v1/occasions/?filters_new=true&sort=insertion_age&page=1&make_models_new=bmw&format=json&cachebuster=1563308015&ascending=1
+		// body		= occasions[i]
+		// title	= occasions[i].name
+		// ref		= get if from /occasions/bmw/2-serie-tourer/380823786/gran-tourer-216i-7persoons-executive/
+		// url		= "www.autoweek.nl" + occasions[i].url
+		
+		String data = Jsoup.connect(filter.getUrl()).ignoreContentType(true).execute().body();
+		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
+		
+        JsonArray elts = jsonObject.getAsJsonArray("occasions");
+        for (int i = 0; i < elts.size(); i++) {
+            JsonObject elt = elts.get(i).getAsJsonObject();
+            if(!elt.has("mileage")) {
+            	continue;
+            }
+			body = elt.toString();
+			ref = elt.get("url").getAsString();
+		    Pattern pattern = Pattern.compile("/(\\d+)/");
+		    Matcher matcher = pattern.matcher(ref);
+		    if (matcher.find())
+		    {
+		        ref = matcher.group(1);
+		    }
+			url = "https://www.autoweek.nl" + elt.get("url").getAsString();
+			title = elt.get("name").getAsString();
+			System.out.println("title" + title);
+			if(!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRef(ref);
+				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
+					item.setUpdatedAt(new Date());
+				} else {
+					item = new Item(filter, ref, title, url, body);
+					counter++;
+				}
+				em.persist(item); 
+			}
+        }
         
         return counter;
 	}
