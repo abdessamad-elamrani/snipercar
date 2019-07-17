@@ -158,16 +158,38 @@ public class Parser {
 		String ref, url, title, body;
 		int counter = 0;
 
-		// reactJS
-		// website = www.anwb.nl
-		// filter = https://www.anwb.nl/auto/kopen/zoeken/merk=bmw
-		// filter1 =
+		// https://www.anwb.nl/auto/kopen/zoeken/merk=bmw
 		// https://api.anwb.nl/occasion-hexon-search?vehicle.brand.keyword=bmw&limit=24&viewwrapper=grid
-		// body = results[i]
-		// title = results[i].advertisement.title
-		// ref = results[i].id
-		// url =
-		// https://www.anwb.nl/auto/kopen/detail/merk=bmw/model=z4/overzicht/530893222?/merk=bmw
+
+		// Headers : x-anwb-client-id = innzlrw2VjJNTsfWGaTK0C887VOO5mIJ
+		String data = Jsoup.connect(filter.getUrl()).header("x-anwb-client-id", "innzlrw2VjJNTsfWGaTK0C887VOO5mIJ").ignoreContentType(true).execute().body();
+		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
+
+		JsonArray elts = jsonObject.getAsJsonArray("results");
+		JsonObject vehicle;
+		for (int i = 0; i < elts.size(); i++) {
+			JsonObject elt = elts.get(i).getAsJsonObject();
+			body = elt.toString();
+			ref = elt.get("id").getAsString();
+			vehicle = elt.get("vehicle").getAsJsonObject();
+			url = "https://www.anwb.nl/auto/kopen/detail/merk=" + this.slugify(vehicle.get("brand").getAsString())
+					+ "/model=" + this.slugify(vehicle.get("model").getAsString()) 
+					+ "/overzicht/" + elt.get("id").getAsString();
+			title = elt.get("advertisement").getAsJsonObject().get("title").getAsString();
+			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
+					item.setUpdatedAt(new Date());
+				} else {
+					item = new Item(filter, ref, title, url, body);
+					counter++;
+				}
+				em.persist(item);
+			}
+		}
 
 		return counter;
 	}
@@ -290,7 +312,7 @@ public class Parser {
 			}
 		}
 
-		System.out.println("counter="+counter);
+		System.out.println("counter=" + counter);
 		return counter;
 	}
 
@@ -325,7 +347,6 @@ public class Parser {
 				em.persist(item);
 			}
 		}
-
 
 		return counter;
 	}
