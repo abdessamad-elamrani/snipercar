@@ -262,12 +262,6 @@ public class Parser {
 
 		// https://www.autotrader.nl/auto/bmw/
 		// https://www.autotrader.nl/api/v2/search-listings?atype=C&sort=standard&desc=0&fregfrom=1994&safemake=bmw
-		// body = listings[i]
-		// title = listings[i].title
-		// ref = listings[i].articleId
-		// url = listings[i].
-		// "/auto/voertuig/" + slugify(listings[i].title + " " + listings[i].fuel) + "/"
-		// + listings[i].id
 
 		String data = Jsoup.connect(filter.getUrl()).ignoreContentType(true).execute().body();
 		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
@@ -304,7 +298,34 @@ public class Parser {
 		String ref, url, title, body;
 		int counter = 0;
 
-//		www.viabovag.nl
+		Document doc = Jsoup.connect(filter.getUrl()).get();
+
+		Elements elements = doc.select("div.search-result");
+		for (Element element : elements) {
+			body = element.html();
+			url = element.selectFirst("a.search-result__car-section[href]").absUrl("href");
+			title = element.selectFirst(".search-result__car-title[title]").attr("title");
+			ref = element.selectFirst("a.search-result__car-section[href]").absUrl("href");
+			Pattern pattern = Pattern.compile("/auto/([^/]+)");
+			Matcher matcher = pattern.matcher(ref);
+			if (matcher.find()) {
+				ref = matcher.group(1);
+			}
+			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
+				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				if (item != null) {
+					item.setBody(body);
+					item.setTitle(title);
+					item.setUrl(url);
+					item.setUpdatedAt(new Date());
+				} else {
+					item = new Item(filter, ref, title, url, body);
+					counter++;
+				}
+				em.persist(item);
+			}
+		}
+
 
 		return counter;
 	}
