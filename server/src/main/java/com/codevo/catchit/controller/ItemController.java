@@ -76,7 +76,7 @@ public class ItemController {
         .orElseThrow(() -> new NotFoundException("Filter not found for this id :: " + filterId));
 		
 		int counter = parser.parse(filter);
-		System.out.println("website=" + filter.getWebsite().getName() + "counter = " + counter);
+		System.out.println("website=" + filter.getWebsite().getName() + ", counter = " + counter);
 		
 		return itemRepository.findByFilter(filter);
     }
