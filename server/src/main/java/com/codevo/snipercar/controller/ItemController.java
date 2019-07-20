@@ -1,4 +1,4 @@
-package com.codevo.catchit.controller;
+package com.codevo.snipercar.controller;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -39,10 +39,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codevo.catchit.model.*;
-import com.codevo.catchit.repository.*;
-import com.codevo.catchit.component.*;
-import com.codevo.catchit.service.*;
+import com.codevo.snipercar.model.*;
+import com.codevo.snipercar.repository.*;
+import com.codevo.snipercar.component.*;
+import com.codevo.snipercar.service.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,9 +51,9 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-//import com.codevo.catchit.exception.ResourceNotFoundException;
-//import com.codevo.catchit.model.Employee;
-//import com.codevo.catchit.repository.EmployeeRepository;
+//import com.codevo.snipercar.exception.ResourceNotFoundException;
+//import com.codevo.snipercar.model.Employee;
+//import com.codevo.snipercar.repository.EmployeeRepository;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController 

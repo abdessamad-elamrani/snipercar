@@ -1,4 +1,4 @@
-package com.codevo.catchit.component;
+package com.codevo.snipercar.component;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.codevo.catchit.service.*;
+import com.codevo.snipercar.service.*;
 
 import javassist.NotFoundException;
 
-import com.codevo.catchit.model.*;
-import com.codevo.catchit.repository.*;
+import com.codevo.snipercar.model.*;
+import com.codevo.snipercar.repository.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

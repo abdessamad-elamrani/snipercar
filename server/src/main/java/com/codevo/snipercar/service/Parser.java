@@ -1,4 +1,4 @@
-package com.codevo.catchit.service;
+package com.codevo.snipercar.service;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -34,8 +34,8 @@ import com.google.gson.JsonParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.codevo.catchit.model.*;
-import com.codevo.catchit.repository.*;
+import com.codevo.snipercar.model.*;
+import com.codevo.snipercar.repository.*;
 
 import java.io.IOException;
 import java.io.InputStream;

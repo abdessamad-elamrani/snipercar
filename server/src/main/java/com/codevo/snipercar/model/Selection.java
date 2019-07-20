@@ -1,4 +1,4 @@
-package com.codevo.catchit.model;
+package com.codevo.snipercar.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;

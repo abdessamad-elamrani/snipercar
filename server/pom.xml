@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.codevo</groupId>
-	<artifactId>catchit</artifactId>
+	<artifactId>snipercar</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>catchit</name>
+	<name>snipercar</name>
 	<description>Catch It Web Application</description>
 
 	<properties>
