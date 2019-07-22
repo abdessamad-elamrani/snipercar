@@ -17,7 +17,8 @@ import lombok.*;
 @Table(name = "website")
 @Getter
 @Setter
-@ToString  // (exclude = { "filters" })
+@ToString  
+// (exclude = { "filters" })
 @EqualsAndHashCode
 public class Website {
 

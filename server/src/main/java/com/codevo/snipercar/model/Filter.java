@@ -9,17 +9,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import lombok.*;
+
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-import lombok.*;
 
 @Entity
 @Table(name = "filter")
 @Getter
 @Setter
-@ToString // (exclude = { "items" })
+@ToString 
+// (exclude = { "items" })
 @EqualsAndHashCode
 public class Filter {
 
