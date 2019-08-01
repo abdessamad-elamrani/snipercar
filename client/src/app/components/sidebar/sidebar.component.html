@@ -1,0 +1,97 @@
+<div class="col-md-3 left_col menu_fixed" malihu-scrollbar [scrollbarOptions]="scrollbarOptions">
+  <div class="left_col scroll-view">
+    <div class="navbar nav_title logo-fixed">
+      <a href="index.html" class="site_title">
+        <img src="assets/images/logo1.png" alt="">
+      </a>
+    </div>
+
+    <div class="clearfix"></div>
+    <!-- sidebar menu -->
+    <div id="sidebar-menu" class="left_col_lg main_menu_side hidden-print main_menu">
+      <div class="menuTitle_area">
+        <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
+        <span class="menuTitle_mobile">
+          Menu
+        </span>
+      </div>
+      <div class="menu_section ">
+        <ul class="nav side-menu">
+          <li [routerLinkActive]="['active']">
+            <a routerLink="/admin">
+              <img src="assets/images/icons/admin.svg" alt="" srcset=""> Admin
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a routerLink="/filter">
+              <img src="assets/images/icons/filter.svg" alt="" srcset=""> Filtre
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a routerLink="/sla">
+              <img src="assets/images/icons/users.svg" alt="" srcset=""> Sla
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a routerLink="/company">
+              <img src="assets/images/icons/company.svg" alt="" srcset=""> Company
+            </a>
+          </li>
+
+          <li id="form-menu" (click)="mouseEnter($event)" (mouseenter)="mouseEnter($event)"
+            [routerLinkActive]="['active']" (mouseleave)="mouseLeave($event)">
+            <a class="form-menu has-child" routerLink="/agent">
+              <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
+            </a>
+            <ul class="nav child_menu">
+              <div class="menuTitle_area">
+                <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
+                <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
+                <span class="menuTitle_mobile">
+                  Agent
+                </span>
+              </div>
+              <li class="child_menu_title">
+                <div class="title">
+                  Agent
+                </div>
+                <div class="dropdown-divider"></div>
+              </li>
+              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAl"
+                        aria-expanded="true" aria-controls="collapseAl">
+                        Dashborad
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      <div class="item">
+                        <a routerLink="/agent/dashboard">Dashborad</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- /sidebar menu -->
+
+    <!-- /menu footer buttons -->
+    <div class="sidebar-footer hidden-small">
+      <a data-toggle="tooltip" data-placement="top" title="Plain écran" (click)='fullScreen()' id='btnFullScreen'>
+        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+      </a>
+      <a class="pull-right" data-toggle="tooltip" data-placement="top" title="Déconnection" routerLink="/logout">
+        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+      </a>
+    </div>
+    <!-- /menu footer buttons -->
+  </div>
+</div>

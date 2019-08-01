@@ -1,0 +1,56 @@
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Add Company
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <form class="w-100">
+        <div class="form-group">
+          <label for="compnay.name"> Nom</label>
+          <input [(ngModel)]="compnay.name" name="compnay.name" type="text" class="form-control" maxlength="20"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="compnay.phone"> Mobile</label>
+          <input [(ngModel)]="compnay.phone" name="compnay.phone" type="text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="compnay.email"> Mail</label>
+          <input [(ngModel)]="compnay.email" name="compnay.email" type="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="compnay.address"> Adresse</label>
+          <input [(ngModel)]="compnay.address" name="compnay.address" type="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Expiration</label>
+          <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" placeholder="Date Time"
+            readonly='readonly'>
+          <owl-date-time #dt1></owl-date-time>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Sla</label>
+          <select2 [data]="slaData" [cssImport]=true></select2>
+        </div>
+        <div class="form-check">
+          <label class="el-switch" style="font-size:100%">
+            <input type="checkbox" [(ngModel)]="compnay.active" id="active" name="compnay.active">
+            <span class="el-switch-style"></span>
+          </label>
+          <label class="ml-1" for="active">Actif</label>
+        </div>
+
+        <button type="submit" class="btn-slide" data-hover="Enregistrer" disabled="true">
+          <div>Enregistrer</div>
+        </button>
+        <button type="button" [routerLink]="['/company/list']" class="btn-slide btn-slide-default" data-hover="Annuler">
+          <div>Annuler</div>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

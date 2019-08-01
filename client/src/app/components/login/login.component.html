@@ -1,0 +1,65 @@
+<div class="col-xs-12">
+  <div class="login">
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <form>
+            <h1>Connection</h1>
+            <div class="form-group">
+              <label for="username">Login</label>
+              <input name="username" type="text" class="form-control" placeholder="Login" required />
+            </div>
+            <div class="form-group">
+              <label for="password">Mot de passe</label>
+              <input name="password" type="password" class="form-control" placeholder="Mot de passe" required />
+            </div>
+            <div class="alert alert-danger">
+              Authentification échouée !
+            </div>
+            <div class="password_forgot text-right">
+              <a data-toggle="modal" data-target="#passwordForgotModal">Mot de passe oublié?</a>
+            </div>
+            <button type="submit" class="btn-slide btn-block" data-hover="Login">
+              <div>Login</div>
+            </button>
+            <div class="clearfix"></div>
+
+            <div class="separator text-center">
+              <div class="clearfix"></div>
+              <br />
+              <div>
+                <h1>
+                  <img src="assets/images/logo1.png" height='50'>
+                </h1>
+                <p>©2019 tous droits réservés. Créé par
+                  <a href="http://www.codevo-consulting.com" target="blank">CODEVO CONSULTING</a>
+                </p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="passwordForgotModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Mot de passe oublié?</h4>
+        </div>
+        <div class="modal-body">
+          Veuillez contacter votre administrateur.
+        </div>
+        <div class="modal-footer">
+          <button class="btn-slide btn-slide-default" data-dismiss="modal" data-hover="Fermer">
+            <div>Fermer</div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

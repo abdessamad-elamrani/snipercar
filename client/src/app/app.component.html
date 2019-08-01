@@ -1,38 +1,20 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">{{title}}</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<div class="container body">
+  <div class="main_container">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a routerLink="items/1" class="nav-link" routerLinkActive="active">Markplaats</a></li>
-      <li class="nav-item">
-        <a routerLink="items/2" class="nav-link" routerLinkActive="active">AutoScout24</a></li>
-      <li class="nav-item">
-        <a routerLink="items/3" class="nav-link" routerLinkActive="active">Facebook Marketplace</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="items/4" class="nav-link" routerLinkActive="active">ANWB</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="items/5" class="nav-link" routerLinkActive="active">Gaspedaal</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="items/6" class="nav-link" routerLinkActive="active">Autoweek</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="items/7" class="nav-link" routerLinkActive="active">Autotrader</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="items/8" class="nav-link" routerLinkActive="active">Viabovag</a>
-      </li>
-    </ul>
+    <app-sidebar *ngIf="isLoggedIn"></app-sidebar>
+
+    <app-header *ngIf="isLoggedIn"></app-header>
+
+    <!-- page content -->
+    <div [ngClass]="{'right_col':isLoggedIn, 'h-100': !isLoggedIn}" role="main" malihu-scrollbar
+      [scrollbarOptions]="scrollbarOptions">
+      <div [ngClass]="{'admin-content': isLoggedIn}">
+        <div class="row">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+    <!-- /page content -->
+
   </div>
-</nav>
-
-<main role="main" class="container">
-  <router-outlet></router-outlet>
-</main>
+</div>

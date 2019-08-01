@@ -1,0 +1,62 @@
+<!-- top navigation -->
+<nav class="nav-mobile">
+  <div class="nav toggle">
+    <a id="menu_toggle" (window:resize)="onResize($event)">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a href="index.html" class="logo-mobile">
+      <img src="assets/images/logo1.png" alt="">
+    </a>
+  </div>
+</nav>
+<div class="top_nav navbar-fixed-top">
+  <div class="nav_menu">
+    <nav>
+      <ul class="nav navbar-nav navbar-right fixed_mobile">
+        <li>
+          <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <img src="assets/images/user.png" alt="">
+            <span class="user-profile-name">
+              Test Name
+              <span class=" fa fa-angle-down"></span>
+            </span>
+          </a>
+          <ul class="dropdown-menu dropdown-usermenu pull-right">
+            <div class="menuTitle_area">
+              <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
+              <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
+              <span class="menuTitle_mobile">
+                Mon Profile
+              </span>
+            </div>
+            <li>
+              <div class="title">Mon Profile</div>
+              <div class="dropdown-divider"></div>
+            </li>
+            <li>
+              <a>
+                <img src="" alt="" srcset="" height="20"> Compte
+              </a>
+            </li>
+            <li>
+              <a data-toggle="modal" data-target="#clientsModal">
+                <i class="fa fa-repeat"></i> Mode Super Client
+              </a>
+            </li>
+            <li>
+              <a>
+                <i class="fa fa-undo"></i> Mode Admin
+              </a>
+            </li>
+            <li>
+              <a routerLink="/logout">
+                <i class="fa fa-power-off"></i> Déconnection
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<!-- /top navigation -->
