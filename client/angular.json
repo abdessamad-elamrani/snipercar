@@ -31,6 +31,9 @@
               "node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css",
               "node_modules/datatables.net-responsive-bs/css/responsive.bootstrap.min.css",
               "node_modules/select2/dist/css/select2.min.css",
+              "node_modules/ng-pick-datetime/assets/style/picker.min.css",
+              "node_modules/ion-rangeslider/css/ion.rangeSlider.css",
+              "node_modules/ion-rangeslider/css/ion.rangeSlider.skinFlat.css",
               "src/assets/css/home.css",
               "src/styles.css"
             ],
@@ -42,6 +45,7 @@
               "node_modules/datatables.net-responsive-bs/js/responsive.bootstrap.min.js",
               "node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js",
               "node_modules/select2/dist/js/select2.min.js",
+              "node_modules/ion-rangeslider/js/ion.rangeSlider.min.js",
               "src/assets/js/app.js"
             ]
           },

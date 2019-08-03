@@ -1,0 +1,215 @@
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Extra
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <form class="w-100">
+        <div class="form-group">
+          <label>Input</label>
+          <input type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class='input-required'>Input</label>
+          <input type="text" class="form-control" required>
+        </div>
+
+        <div class="form-group has-error has-feedback">
+          <label class="control-label" for="inputError">Input Error</label>
+          <input type="text" class="form-control" id="inputError">
+          <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+          <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one
+            line.</span>
+        </div>
+        <div class="form-group has-success has-feedback">
+          <label class="control-label" for="inputSuccess2">Input with success</label>
+          <input type="text" class="form-control" id="inputSuccess2">
+          <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+          <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one
+            line.</span>
+        </div>
+        <div class="form-group">
+          <label>Input Disabled</label>
+          <input type="text" class="form-control" disabled='true'>
+        </div>
+        <div class="form-group">
+          <label>Textarea</label>
+          <textarea class="form-control " id="" cols="30" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Input group</label>
+          <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input type="text" class="form-control">
+            <span class="input-group-addon">.00</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Date</label>
+          <div class="input-group">
+            <input [owlDateTime]="dt2" class="form-control" placeholder="Date Time">
+            <span [owlDateTimeTrigger]="dt2" class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <owl-date-time #dt2></owl-date-time>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Date</label>
+          <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" placeholder="Date Time">
+          <owl-date-time #dt1></owl-date-time>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Input select</label>
+          <select class="form-control">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="control-label">select2 Multiple</label>
+          <select2 [data]="exampleData" [cssImport]=true [options]="exampleOption"></select2>
+        </div>
+        <div class="form-group">
+          <label class="control-label">select2</label>
+          <select2 [data]="exampleData" [cssImport]=true></select2>
+        </div>
+
+        <div class="form-group">
+          <label class="sr-only" for="">File</label>
+          <input type="file" name="file-7[]" id="file-7" class="inputfile required"
+            data-multiple-caption="{count} fichiers sélectionnés">
+          <label for="file-7">
+            <span class="archive-name"></span><span class="btn-inputfile">Choisir un
+              fichier</span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label>Time range </label>
+          <div class="timeInterval">
+            <ion-range-slider name="timeInterval" type="double" [min]="ionMin" [max]="ionMax" [from]="formatX('11')"
+              [to]="formatX('15')" [prettify]="hourFormat"></ion-range-slider>
+          </div>
+        </div>
+
+        <div class="form-check">
+          <label class="el-switch" style="font-size:100%">
+            <input type="checkbox">
+            <span class="el-switch-style"></span>
+          </label>
+          <label class="ml-1">CheckBox</label>
+        </div>
+        <br>
+        <div class="form-check">
+          <label class="el-switch" style="font-size:100%">
+            <input type="radio" name="r1" checked='true'>
+            <span class="el-switch-style"></span>
+          </label>
+          <label class="ml-1">Radio</label>
+        </div>
+        <div class="form-check">
+          <label class="el-switch" style="font-size:100%">
+            <input type="radio" name="r1">
+            <span class="el-switch-style"></span>
+          </label>
+          <label class="ml-1">Radio</label>
+        </div>
+
+        <div class="row">
+          <div class='col-sm-12'>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                  data-toggle="tab">Home</a>
+              </li>
+              <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                  data-toggle="tab">Profile</a>
+              </li>
+              <li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
+                  data-toggle="tab">Messages</a></li>
+              <li role="presentation"><a href="#settings" aria-controls="settings" role="tab"
+                  data-toggle="tab">Settings</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="home">Lorem ipsum dolor sit amet consectetur
+                adipisicing
+                elit. Magni architecto laborum ipsam quia atque voluptatem iste in incidunt vero et corporis molestiae,
+                debitis quas quae aliquid amet officiis a quis!</div>
+              <div role="tabpanel" class="tab-pane fade" id="profile"> Lorem ipsum dolor sit amet consectetur
+                adipisicing
+                elit. Magni architecto laborum ipsam quia atque voluptatem iste in
+                incidunt vero et corporis molestiae, debitis quas quae aliquid amet officiis a quis! </div>
+              <div role="tabpanel" class="tab-pane fade" id="messages"> Lorem ipsum dolor sit amet consectetur
+                adipisicing
+                elit. Magni architecto laborum ipsam quia atque voluptatem iste in
+                incidunt vero et corporis molestiae, debitis quas quae aliquid amet officiis a quis!</div>
+              <div role="tabpanel" class="tab-pane fade" id="settings"> Lorem ipsum dolor sit amet consectetur
+                adipisicing
+                elit. Magni architecto laborum ipsam quia atque voluptatem iste in
+                incidunt vero et corporis molestiae, debitis quas quae aliquid amet officiis a quis!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn-slide btn-slide-primary" data-toggle="modal" data-target="#myModal"
+              data-hover="Launch demo modal">
+              <div>Launch demo modal</div>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                  </div>
+                  <div class="modal-body">
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn-slide" data-hover="Enregistrer">
+                      <div>Enregistrer</div>
+                    </button>
+                    <button type="button" class="btn-slide btn-slide-default" data-dismiss="modal" data-hover="Annuler">
+                      <div>Annuler</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <button type="button" class="btn-slide" (click)='onCorfim()' data-hover="Confirmation">
+              <div>Confirmation</div>
+            </button>
+          </div>
+          <div class="col-xs-12">
+            <button type="button" class="btn-slide" (click)='onError()' data-hover="Alert">
+              <div>Alert</div>
+            </button>
+          </div>
+        </div>
+
+
+        <button type="submit" class="btn-slide" data-hover="Enregistrer" disabled="true">
+          <div>Enregistrer</div>
+        </button>
+        <button type="button" class="btn-slide btn-slide-default" data-hover="Annuler">
+          <div>Annuler</div>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Select2OptionData } from 'ng2-select2';
+import { Selection } from './../../../models/selection';
+import { PNotifyService } from './../../../services/pnotify.service';
 @Component({
   selector: 'app-agent-dashboard',
   templateUrl: './agent-dashboard.component.html',
@@ -13,7 +15,15 @@ export class AgentDashboardComponent implements OnInit {
   public filterData = [];
   public filterAddData = [];
   public filterEditData = [];
-  constructor() { }
+  public exampleData: Array<Select2OptionData>;
+  public exampleOption: any;
+  public userData: Array<Select2OptionData>;
+  public selection: Selection;
+  pnotify = undefined;
+  constructor(pnotifyService: PNotifyService) {
+    this.selection = new Selection();
+    this.pnotify = pnotifyService.getPNotify();
+  }
 
   ngOnInit() {
     this.filterData = [
@@ -30,6 +40,38 @@ export class AgentDashboardComponent implements OnInit {
     this.filterEditData = [
       { id: 1, name: 'Filter 1' },
     ];
+
+    this.exampleData = [
+      {
+        id: '1',
+        text: 'Filter 1'
+      },
+      {
+        id: '2',
+        text: 'Filter 2'
+      },
+      {
+        id: '3',
+        text: 'Filter 3'
+      }
+    ];
+    this.userData = [
+      {
+        id: '1',
+        text: 'User 1'
+      },
+      {
+        id: '2',
+        text: 'User 2'
+      },
+      {
+        id: '3',
+        text: 'User 3'
+      }
+    ];
+    this.exampleOption = {
+      multiple: 'true'
+    };
   }
 
   smsToggle() {
@@ -81,5 +123,81 @@ export class AgentDashboardComponent implements OnInit {
   }
   removeEditFilter(index) {
     this.filterEditData.splice(index, 1);
+  }
+
+
+  onDeleteAll() {
+    this.pnotify.notice({
+      title: 'Confirmation',
+      text: 'Voulez-vous supprimer tout les éléments ?',
+      stack: {
+        dir1: 'down',
+        firstpos1: 25,
+        modal: true,
+        overlay_close: true
+      },
+      hide: false,
+      modules: {
+        Confirm: {
+          confirm: true,
+          focus: false,
+          buttons: [
+            {
+              text: 'Ok',
+              addClass: 'btn btn-chico',
+              click: notice => {
+                alert('OK');
+                notice.close();
+              }
+            },
+            {
+              text: 'Annuler',
+              addClass: 'btn btn-default',
+              click: (notice) => {
+                notice.close();
+                notice.fire('pnotify.cancel', { notice });
+              }
+            }
+          ]
+        }
+      }
+    });
+  }
+  onDelete() {
+    this.pnotify.notice({
+      title: 'Confirmation',
+      text: 'Voulez-vous supprimer cet element ?',
+      stack: {
+        dir1: 'down',
+        firstpos1: 25,
+        modal: true,
+        overlay_close: true
+      },
+      hide: false,
+      modules: {
+        Confirm: {
+          confirm: true,
+          focus: false,
+          buttons: [
+            {
+              text: 'Ok',
+              addClass: 'btn btn-chico',
+              click: notice => {
+                alert('OK');
+                notice.close();
+              }
+            },
+            {
+              text: 'Annuler',
+              addClass: 'btn btn-default',
+              click: (notice) => {
+                notice.close();
+                notice.fire('pnotify.cancel', { notice });
+              }
+            }
+          ]
+        }
+      }
+    });
   }
 }

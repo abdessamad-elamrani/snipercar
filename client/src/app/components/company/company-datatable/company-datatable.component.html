@@ -8,7 +8,7 @@
     </div>
     <div class="x_content ">
       <div class="btn-group" style="float: right;">
-        <button class="btn btnTopFix btn-tool" *ngIf="selectedMulti">
+        <button class="btn btnTopFix btn-tool" *ngIf="selectedMulti" (click)="onDeleteAll()">
           Supprimer
         </button>
         <button routerLink="/company/add" class="btn btnTopFix btn-tool">
@@ -31,7 +31,7 @@
             <th>Actif</th>
             <th>expiration</th>
             <th>Sla</th>
-            <th width="35%">Actions</th>
+            <th width="20%">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -51,13 +51,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -77,13 +77,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -103,13 +103,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -129,13 +129,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -155,13 +155,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -181,13 +181,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -207,13 +207,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -233,13 +233,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -259,13 +259,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -285,13 +285,13 @@
             <td>Test</td>
             <td>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>Détail
+                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
               </a>
               <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>Modifier
+                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
               </a>
-              <button class="btn btnAction btnDelete">
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>Supprimer
+              <button class="btn btnAction btnDelete" (click)='onDelete()'>
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
               </button>
             </td>
           </tr>

@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, NgZone } from '@angular/core';
+import { PNotifyService } from './../../../services/pnotify.service';
 
 @Component({
   selector: 'app-admin-datatable',
@@ -10,8 +11,10 @@ export class AdminDatatableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   selectedAll = false;
   selectedMulti = false;
-
-  constructor() { }
+  pnotify = undefined;
+  constructor(pnotifyService: PNotifyService) {
+    this.pnotify = pnotifyService.getPNotify();
+  }
 
   ngOnInit() {
 
@@ -67,6 +70,84 @@ export class AdminDatatableComponent implements OnInit {
     }
   }
 
+  onDeleteAll() {
+    this.pnotify.notice({
+      title: 'Confirmation',
+      text: 'Voulez-vous supprimer tout les éléments ?',
+      stack: {
+        dir1: 'down',
+        firstpos1: 25,
+        modal: true,
+        overlay_close: true
+      },
+      hide: false,
+      modules: {
+        Confirm: {
+          confirm: true,
+          focus: false,
+          buttons: [
+            {
+              text: 'Ok',
+              addClass: 'btn btn-chico',
+              click: notice => {
+                alert('OK');
+                notice.close();
+              }
+            },
+            {
+              text: 'Annuler',
+              addClass: 'btn btn-default',
+              click: (notice) => {
+                notice.close();
+                notice.fire('pnotify.cancel', { notice });
+              }
+            }
+          ]
+        }
+      }
+    });
+  }
+  onDelete() {
+    this.pnotify.notice({
+      title: 'Confirmation',
+      text: 'Voulez-vous supprimer cet element ?',
+      stack: {
+        dir1: 'down',
+        firstpos1: 25,
+        modal: true,
+        overlay_close: true
+      },
+      hide: false,
+      modules: {
+        Confirm: {
+          confirm: true,
+          focus: false,
+          buttons: [
+            {
+              text: 'Ok',
+              addClass: 'btn btn-chico',
+              click: notice => {
+                alert('OK');
+                notice.close();
+              }
+            },
+            {
+              text: 'Annuler',
+              addClass: 'btn btn-default',
+              click: (notice) => {
+                notice.close();
+                notice.fire('pnotify.cancel', { notice });
+              }
+            }
+          ]
+        }
+      }
+    });
+  }
+
+  onExport() {
+
+  }
 
 
 }

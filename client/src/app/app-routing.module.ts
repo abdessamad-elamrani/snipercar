@@ -1,3 +1,4 @@
+import { ExtraComponent } from './components/extra/extra.component';
 import { ErrorComponent } from './components/error/error.component';
 import { LoginComponent } from './components/login/login.component';
 import { AgentDashboardComponent } from './components/agent/agent-dashboard/agent-dashboard.component';
@@ -80,6 +81,7 @@ const routes: Routes = [
     ]
   },
   { path: 'home', component: HomeComponent },
+  { path: 'extra', component: ExtraComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: ErrorComponent }
   // { path: '', redirectTo: 'items/1', pathMatch: 'full' },

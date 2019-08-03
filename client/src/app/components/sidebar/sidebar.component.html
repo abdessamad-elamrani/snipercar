@@ -24,12 +24,12 @@
           </li>
           <li [routerLinkActive]="['active']">
             <a routerLink="/filter">
-              <img src="assets/images/icons/filter.svg" alt="" srcset=""> Filtre
+              <img src="assets/images/icons/search.svg" alt="" srcset=""> Filtre
             </a>
           </li>
           <li [routerLinkActive]="['active']">
             <a routerLink="/sla">
-              <img src="assets/images/icons/users.svg" alt="" srcset=""> Sla
+              <img src="assets/images/icons/clock.svg" alt="" srcset=""> Sla
             </a>
           </li>
           <li [routerLinkActive]="['active']">
@@ -70,13 +70,18 @@
                   <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
                       <div class="item">
-                        <a routerLink="/agent/dashboard">Dashborad</a>
+                        <a [routerLinkActive]="['active']" routerLink="/agent/dashboard">Dashborad</a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </ul>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a routerLink="/extra">
+              Extra
+            </a>
           </li>
         </ul>
       </div>

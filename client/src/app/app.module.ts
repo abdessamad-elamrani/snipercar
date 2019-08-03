@@ -1,15 +1,18 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { PNotifyService } from './services/pnotify.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MalihuScrollbarModule } from 'ngx-malihu-scrollbar';
 import { DataTablesModule } from 'angular-datatables';
 import { Select2Module } from 'ng2-select2';
+import { IonRangeSliderModule } from 'ng2-ion-range-slider';
 
 import { ItemListComponent } from './components/item/item-list/item-list.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -40,6 +43,8 @@ import { AgentViewComponent } from './components/agent/agent-view/agent-view.com
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OwlDateTimeIntl } from 'ng-pick-datetime';
 import { AgentDashboardComponent } from './components/agent/agent-dashboard/agent-dashboard.component';
+import { ExtraComponent } from './components/extra/extra.component';
+
 
 
 export class DefaultIntl extends OwlDateTimeIntl {
@@ -94,7 +99,8 @@ export class DefaultIntl extends OwlDateTimeIntl {
     AgentEditComponent,
     AgentAddComponent,
     AgentViewComponent,
-    AgentDashboardComponent
+    AgentDashboardComponent,
+    ExtraComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,9 +113,13 @@ export class DefaultIntl extends OwlDateTimeIntl {
     Select2Module,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    IonRangeSliderModule,
   ],
   providers: [
     { provide: OwlDateTimeIntl, useClass: DefaultIntl },
+    PNotifyService
   ],
   bootstrap: [AppComponent]
 })

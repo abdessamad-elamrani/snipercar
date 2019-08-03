@@ -45,25 +45,22 @@ $(document).ready(function () {
     $(this).children('i').toggleClass('fa-chevron-up fa-chevron-down')
   });
 
-
-  $('.inputfile').each(function () {
+  $("body").delegate(".inputfile", "change", function (e) {
     var $input = $(this),
       $label = $input.next('label'),
       labelVal = $label.html();
 
-    $input.on('change', function (e) {
-      var fileName = '';
+    var fileName = '';
+    if (this.files && this.files.length > 1)
+      fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+    else if (e.target.value)
+      fileName = e.target.value.split('\\').pop();
 
-      if (this.files && this.files.length > 1)
-        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
-      else if (e.target.value)
-        fileName = e.target.value.split('\\').pop();
+    if (fileName)
+      $label.find('.archive-name').html(fileName);
+    else
+      $label.html(labelVal);
 
-      if (fileName)
-        $label.find('.archive-name').html(fileName);
-      else
-        $label.html(labelVal);
-    });
     $input
       .on('focus', function () {
         $input.addClass('has-focus');
@@ -72,5 +69,6 @@ $(document).ready(function () {
         $input.removeClass('has-focus');
       });
   });
+
 
 });
