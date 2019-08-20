@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.*;
 
 @Entity
@@ -75,6 +77,19 @@ public class User {
 
 	public User() {
 		this.selections = new ArrayList<>();
+		this.username = "xxx";
+		this.email = "xxx";
+		this.salt = "xxx";
+		this.password = "xxx";
+		this.firstname = "xxx";
+		this.lastname = "xxx";
+		this.role = "xxx";
+		this.company = null;
+		this.phone = "xxx";
+		this.smsNotif = true;
+		this.emailNotif = true;
+		this.currentSelection = null;
+		this.active = true;
 	}
 
 }
