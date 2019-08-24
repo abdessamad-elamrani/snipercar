@@ -10,6 +10,7 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -29,6 +30,8 @@ import com.google.gson.JsonParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +40,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codevo.snipercar.model.*;
@@ -57,7 +61,7 @@ import java.net.URL;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController 
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class ItemController {
 	
 	@Autowired
@@ -80,6 +84,15 @@ public class ItemController {
 		
 		return itemRepository.findByFilter(filter);
     }
+	
+	@RequestMapping(value = "/authorities", method = RequestMethod.GET)
+	public ResponseEntity<?> refreshToken(Authentication authentication) throws Exception {
+		
+		JsonObject content = new JsonObject();
+		content.addProperty("roles", authentication.getAuthorities().toString());
+
+		return ResponseEntity.ok(content);
+	}
 
 }
 

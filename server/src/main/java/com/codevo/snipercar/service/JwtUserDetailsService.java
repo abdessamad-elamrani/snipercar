@@ -1,12 +1,15 @@
 package com.codevo.snipercar.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,15 +38,22 @@ public class JwtUserDetailsService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
+		
+		Set roles = new HashSet<String>();
+		roles.add("ROLE_" + user.getRole());
+		if (roles.contains("ROLE_SUPER_ADMIN")) {
+			roles.add("ROLE_ADMIN");
+		} else if (roles.contains("ROLE_SUPER_AGENT")) {
+			roles.add("ROLE_AGENT");
+		}
+		roles.add("ROLE_USER");
+		Set authorities = new HashSet<>();
+		roles.forEach(role -> {
+			authorities.add(new SimpleGrantedAuthority(role.toString()));
+		});
+		
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				new ArrayList<>());
-
-//		if ("javainuse".equals(username)) {
-//			return new org.springframework.security.core.userdetails.User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
-//					new ArrayList<>());
-//		} else {
-//			throw new UsernameNotFoundException("User not found with username: " + username);
-//		}
+				authorities);
 	}
 
 	public User save(User user) {
