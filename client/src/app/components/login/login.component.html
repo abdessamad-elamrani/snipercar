@@ -3,23 +3,38 @@
     <div class="login_wrapper">
       <div class="animate form login_form">
         <section class="login_content">
-          <form>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <h1>Connection</h1>
             <div class="form-group">
               <label for="username">Login</label>
-              <input name="username" type="text" class="form-control" placeholder="Login" required />
+              <input type="text" 
+                     formControlName="username" 
+                     class="form-control" 
+                     [ngClass]="{ 'is-invalid': submitted && f.username.errors }" 
+                     placeholder="Login" />
+              <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                <div *ngIf="f.username.errors.required">Login is required</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="password">Mot de passe</label>
-              <input name="password" type="password" class="form-control" placeholder="Mot de passe" required />
+              <input type="password" 
+                     formControlName="password" 
+                     class="form-control" 
+                     [ngClass]="{ 'is-invalid': submitted && f.password.errors }" 
+                     placeholder="Password" />
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required">Password is required</div>
+              </div>
             </div>
-            <div class="alert alert-danger">
-              Authentification échouée !
+            <div *ngIf="error" class="alert alert-danger">
+              Authentication failed !<br/>
+              {{error}}
             </div>
-            <div class="password_forgot text-right">
+            <div *ngIf="false" class="password_forgot text-right">
               <a data-toggle="modal" data-target="#passwordForgotModal">Mot de passe oublié?</a>
             </div>
-            <button type="submit" class="btn-slide btn-block" data-hover="Login">
+            <button [disabled]="loading" type="submit" class="btn-slide btn-block" data-hover="Login">
               <div>Login</div>
             </button>
             <div class="clearfix"></div>

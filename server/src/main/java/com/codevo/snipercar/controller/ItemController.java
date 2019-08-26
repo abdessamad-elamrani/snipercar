@@ -30,6 +30,7 @@ import com.google.gson.JsonParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -85,6 +86,8 @@ public class ItemController {
 		return itemRepository.findByFilter(filter);
     }
 	
+	@PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@RequestMapping(value = "/authorities", method = RequestMethod.GET)
 	public ResponseEntity<?> refreshToken(Authentication authentication) throws Exception {
 		

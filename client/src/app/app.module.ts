@@ -1,6 +1,7 @@
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,7 +14,10 @@ import { MalihuScrollbarModule } from 'ngx-malihu-scrollbar';
 import { DataTablesModule } from 'angular-datatables';
 import { Select2Module } from 'ng2-select2';
 import { IonRangeSliderModule } from 'ng2-ion-range-slider';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OwlDateTimeIntl } from 'ng-pick-datetime';
 
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { ItemListComponent } from './components/item/item-list/item-list.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -40,12 +44,10 @@ import { AgentDatatableComponent } from './components/agent/agent-datatable/agen
 import { AgentEditComponent } from './components/agent/agent-edit/agent-edit.component';
 import { AgentAddComponent } from './components/agent/agent-add/agent-add.component';
 import { AgentViewComponent } from './components/agent/agent-view/agent-view.component';
-
-import { OwlDateTimeModule, OwlNativeDateTimeModule, OwlDateTimeIntl } from 'ng-pick-datetime';
 import { AgentDashboardComponent } from './components/agent/agent-dashboard/agent-dashboard.component';
 import { ExtraComponent } from './components/extra/extra.component';
 
-
+import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from 'ngx-permissions';
 
 export class DefaultIntl extends OwlDateTimeIntl {
   upSecondLabel = 'Ajouter une seconde';
@@ -105,6 +107,7 @@ export class DefaultIntl extends OwlDateTimeIntl {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
     MalihuScrollbarModule.forRoot(),
@@ -116,10 +119,24 @@ export class DefaultIntl extends OwlDateTimeIntl {
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     IonRangeSliderModule,
+    NgxPermissionsModule.forRoot(),
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OwlDateTimeIntl, useClass: DefaultIntl },
-    PNotifyService
+    PNotifyService,
+    // DictionaryService,
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: (ds: DictionaryService, ps: NgxPermissionsService) => function () {
+    //     return ds.load().then((data) => {
+    //       return ps.loadPermissions(data)
+    //     })
+    //   },
+    //   deps: [LoadService, NgxPermissionsService],
+    //   multi: true
+    // }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col menu_fixed" malihu-scrollbar [scrollbarOptions]="scrollbarOptions">
   <div class="left_col scroll-view">
     <div class="navbar nav_title logo-fixed">
-      <a href="index.html" class="site_title">
+      <a routerLink="/" class="site_title">
         <img src="assets/images/logo1.png" alt="">
       </a>
     </div>
@@ -15,76 +15,85 @@
           Menu
         </span>
       </div>
-      <div class="menu_section ">
-        <ul class="nav side-menu">
-          <li [routerLinkActive]="['active']">
-            <a routerLink="/admin">
-              <img src="assets/images/icons/admin.svg" alt="" srcset=""> Admin
-            </a>
-          </li>
-          <li [routerLinkActive]="['active']">
-            <a routerLink="/filter">
-              <img src="assets/images/icons/search.svg" alt="" srcset=""> Filtre
-            </a>
-          </li>
-          <li [routerLinkActive]="['active']">
-            <a routerLink="/sla">
-              <img src="assets/images/icons/clock.svg" alt="" srcset=""> Sla
-            </a>
-          </li>
-          <li [routerLinkActive]="['active']">
-            <a routerLink="/company">
-              <img src="assets/images/icons/company.svg" alt="" srcset=""> Company
-            </a>
-          </li>
-
-          <li id="form-menu" (click)="mouseEnter($event)" (mouseenter)="mouseEnter($event)"
-            [routerLinkActive]="['active']" (mouseleave)="mouseLeave($event)">
-            <a class="form-menu has-child" routerLink="/agent">
-              <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
-            </a>
-            <ul class="nav child_menu">
-              <div class="menuTitle_area">
-                <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
-                <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
-                <span class="menuTitle_mobile">
-                  Agent
-                </span>
-              </div>
-              <li class="child_menu_title">
-                <div class="title">
-                  Agent
+        <div class="menu_section ">
+          <ul class="nav side-menu">
+            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_SUPER_ADMIN']">
+              <a routerLink="/admin">
+                <img src="assets/images/icons/admin.svg" alt="" srcset=""> Admin
+              </a>
+            </li>
+            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_AGENT']">
+              <a routerLink="/agent/dashboard">
+                <img src="assets/images/icons/users.svg" alt="" srcset=""> Dashboard
+              </a>
+            </li>
+            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
+              <a routerLink="/filter">
+                <img src="assets/images/icons/search.svg" alt="" srcset=""> Filter
+              </a>
+            </li>
+            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
+              <a routerLink="/sla">
+                <img src="assets/images/icons/clock.svg" alt="" srcset=""> Sla
+              </a>
+            </li>
+            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
+              <a routerLink="/company">
+                <img src="assets/images/icons/company.svg" alt="" srcset=""> Company
+              </a>
+            </li>
+            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
+              <a routerLink="/agent">
+                <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
+              </a>
+            </li>
+            <li *ngIf="false" id="form-menu" (click)="mouseEnter($event)" (mouseenter)="mouseEnter($event)"
+              [routerLinkActive]="['active']" (mouseleave)="mouseLeave($event)">
+              <a class="form-menu has-child" routerLink="/agent">
+                <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
+              </a>
+              <ul class="nav child_menu">
+                <div class="menuTitle_area">
+                  <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
+                  <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
+                  <span class="menuTitle_mobile">
+                    Agent
+                  </span>
                 </div>
-                <div class="dropdown-divider"></div>
-              </li>
-              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default">
-                  <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAl"
-                        aria-expanded="true" aria-controls="collapseAl">
-                        Dashborad
-                      </a>
-                    </h4>
+                <li class="child_menu_title">
+                  <div class="title">
+                    Agent
                   </div>
-                  <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
-                      <div class="item">
-                        <a [routerLinkActive]="['active']" routerLink="/agent/dashboard">Dashborad</a>
+                  <div class="dropdown-divider"></div>
+                </li>
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAl"
+                          aria-expanded="true" aria-controls="collapseAl">
+                          Dashborad
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body">
+                        <div class="item">
+                          <a [routerLinkActive]="['active']" routerLink="/agent/dashboard">Dashborad</a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </ul>
-          </li>
-          <li [routerLinkActive]="['active']">
-            <a routerLink="/extra">
-              Extra
-            </a>
-          </li>
-        </ul>
-      </div>
+              </ul>
+            </li>
+            <li *ngIf="true" [routerLinkActive]="['active']">
+              <a routerLink="/extra">
+                Extra
+              </a>
+            </li>
+          </ul>
+        </div>
     </div>
     <!-- /sidebar menu -->
 
@@ -93,7 +102,7 @@
       <a data-toggle="tooltip" data-placement="top" title="Plain écran" (click)='fullScreen()' id='btnFullScreen'>
         <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
       </a>
-      <a class="pull-right" data-toggle="tooltip" data-placement="top" title="Déconnection" routerLink="/logout">
+      <a class="pull-right" data-toggle="tooltip" data-placement="top" title="Déconnection" (click)="logout()">
         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
       </a>
     </div>

@@ -3,7 +3,7 @@
 
     <app-sidebar *ngIf="isLoggedIn"></app-sidebar>
 
-    <app-header *ngIf="isLoggedIn"></app-header>
+    <app-header *ngIf="isLoggedIn" [hasFilter]='hasFilter'></app-header>
 
     <!-- page content -->
     <div [ngClass]="{'right_col':isLoggedIn, 'h-100': !isLoggedIn}" role="main" malihu-scrollbar

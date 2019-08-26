@@ -1,3 +1,5 @@
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 interface FsDocument extends HTMLDocument {
@@ -27,7 +29,11 @@ export class SidebarComponent implements OnInit {
     theme: 'minimal',
   };
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -87,5 +93,9 @@ export class SidebarComponent implements OnInit {
     return !!(fsDoc.fullscreenElement || fsDoc.mozFullScreenElement || fsDoc.webkitFullscreenElement || fsDoc.msFullscreenElement);
   }
 
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
 }

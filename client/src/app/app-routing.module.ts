@@ -1,3 +1,4 @@
+import { AuthGuard } from './guards/auth.guard';
 import { ExtraComponent } from './components/extra/extra.component';
 import { ErrorComponent } from './components/error/error.component';
 import { LoginComponent } from './components/login/login.component';
@@ -26,11 +27,19 @@ import { AdminDatatableComponent } from './components/admin/admin-datatable/admi
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ItemListComponent } from './components/item/item-list/item-list.component';
+import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from 'ngx-permissions';
 
 const routes: Routes = [
-  { path: '', component: AdminDatatableComponent, pathMatch: 'full' },
+  { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   {
     path: 'admin',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_ADMIN'],
+        redirectTo: ''
+      }
+    },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: AdminDatatableComponent },
@@ -40,7 +49,29 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'account/admin',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        redirectTo: ''
+      }
+    },
+    children: [
+      { path: '', redirectTo: 'view', pathMatch: 'full' },
+      { path: 'view', component: AdminViewComponent },
+      { path: 'edit', component: AdminEditComponent }
+    ]
+  },
+  {
     path: 'agent',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_SUPER_CLIENT'],
+        redirectTo: ''
+      }
+    },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: AgentDatatableComponent },
@@ -51,7 +82,29 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'account/agent',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_AGENT', 'ROLE_AGENT'],
+        redirectTo: ''
+      }
+    },
+    children: [
+      { path: '', redirectTo: 'view', pathMatch: 'full' },
+      { path: 'view', component: AgentViewComponent },
+      { path: 'edit', component: AgentEditComponent }
+    ]
+  },
+  {
     path: 'company',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        redirectTo: ''
+      }
+    },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: CompanyDatatableComponent },
@@ -62,6 +115,13 @@ const routes: Routes = [
   },
   {
     path: 'filter',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        redirectTo: ''
+      }
+    },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: FilterDatatableComponent },
@@ -72,6 +132,13 @@ const routes: Routes = [
   },
   {
     path: 'sla',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        redirectTo: ''
+      }
+    },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: SlaDatatableComponent },
@@ -80,7 +147,32 @@ const routes: Routes = [
       { path: 'add', component: SlaAddComponent }
     ]
   },
-  { path: 'home', component: HomeComponent },
+  // {
+  //   path: 'selection',
+  //   canActivate: [AuthGuard, NgxPermissionsGuard],
+  //   data: {
+  //     permissions: {
+  //       only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_SUPER_AGENT', 'ROLE_AGENT'],
+  //       redirectTo: ''
+  //     }
+  //   },
+  //   children: [
+  //     { path: '', redirectTo: 'list', pathMatch: 'full' },
+  //     { path: 'list', component: SelectionDatatableComponent },
+  //     { path: 'view/:id', component: SelectionViewComponent },
+  //     { path: 'edit/:id', component: SelectionEditComponent },
+  //     { path: 'add', component: SelectionAddComponent }
+  //   ]
+  // },
+  {
+    path: 'agent/dashboard', component: AgentDashboardComponent, canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_SUPER_AGENT', 'ROLE_AGENT'],
+        redirectTo: ''
+      }
+    }
+  },
   { path: 'extra', component: ExtraComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: ErrorComponent }
@@ -89,7 +181,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'ignore' })],
+  imports: [
+    RouterModule.forRoot(
+      routes,
+      {
+        onSameUrlNavigation: 'ignore',
+        enableTracing: true
+      }),
+    NgxPermissionsModule.forRoot(),
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

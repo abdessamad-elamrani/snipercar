@@ -4,7 +4,7 @@
     <a id="menu_toggle" (window:resize)="onResize($event)">
       <i class="fa fa-bars"></i>
     </a>
-    <a href="index.html" class="logo-mobile">
+    <a routerLink="/" class="logo-mobile">
       <img src="assets/images/logo1.png" alt="">
     </a>
   </div>
@@ -12,12 +12,19 @@
 <div class="top_nav navbar-fixed-top">
   <div class="nav_menu">
     <nav>
+      <ul class="nav navbar-nav navbar-right" *ngIf="hasFilter">
+        <li>
+          <a id="fliter_toggle" href="javascript:;" (click)="fliterClicked($event)">
+            <i class="nc-icon nc-zoom-2"></i>
+          </a>
+        </li>
+      </ul>
       <ul class="nav navbar-nav navbar-right fixed_mobile">
         <li>
           <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             <img src="assets/images/user.png" alt="">
             <span class="user-profile-name">
-              Test Name
+              {{ sessionContext.user.username }}
               <span class=" fa fa-angle-down"></span>
             </span>
           </a>
@@ -26,31 +33,31 @@
               <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
               <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
               <span class="menuTitle_mobile">
-                Mon Profile
+                My Profile
               </span>
             </div>
             <li>
-              <div class="title">Mon Profile</div>
+              <div class="title">My Profile</div>
               <div class="dropdown-divider"></div>
             </li>
             <li>
               <a>
-                <img src="" alt="" srcset="" height="20"> Compte
+                <i class="fa fa-user"></i> Account
               </a>
             </li>
-            <li>
+            <li *ngIf="false">
               <a data-toggle="modal" data-target="#clientsModal">
-                <i class="fa fa-repeat"></i> Mode Super Client
+                <i class="fa fa-repeat"></i> Agent Mode
               </a>
             </li>
-            <li>
+            <li *ngIf="false">
               <a>
-                <i class="fa fa-undo"></i> Mode Admin
+                <i class="fa fa-undo"></i> Admin Mode
               </a>
             </li>
             <li>
-              <a routerLink="/logout">
-                <i class="fa fa-power-off"></i> Déconnection
+              <a (click)="logout()">
+                <i class="fa fa-power-off"></i> Logout
               </a>
             </li>
           </ul>
