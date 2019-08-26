@@ -65,7 +65,7 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
       ajax: (dataTablesParameters: any, callback) => {
         dataTablesParameters.filter = this.staticFilter;
         this.http.post<DataTablesResponse>(
-          '/api/sla',
+          '/api/sla/list',
           dataTablesParameters,
           {}
         ).subscribe((resp: any) => {
