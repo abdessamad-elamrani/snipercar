@@ -24,7 +24,8 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
     description: '',
   };
 
-  @ViewChild(DataTableDirective, {static: false}) datatableElement: DataTableDirective;
+  @ViewChild(DataTableDirective, { static: false })
+  datatableElement: DataTableDirective;
 
   // ----- Start Option Scrollbar -----------
   isScrollbar: true;
@@ -33,9 +34,6 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
     theme: 'minimal-dark'
   };
   // ----- End Option Scrollbar -----------
-
-  selectedAll = false;
-  selectedMulti = false;
 
   dtOptions: any = {};
   slas: any[];
@@ -65,7 +63,7 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
       ajax: (dataTablesParameters: any, callback) => {
         dataTablesParameters.filter = this.staticFilter;
         this.http.post<DataTablesResponse>(
-          '/api/sla/list',
+          '/api/sla/datatables',
           dataTablesParameters,
           {}
         ).subscribe((resp: any) => {
@@ -73,6 +71,7 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
           const dta = [];
           this.slas.forEach(sla => {
             dta.push({
+              id: sla.id,
               name: sla.name,
               description: sla.description,
               latency: sla.latency,
@@ -98,6 +97,9 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
         });
       },
       fnCreatedRow: function (nRow, aData, iDataIndex) {
+        console.error(nRow);
+        console.error(aData);
+        console.error(iDataIndex);
         $(nRow).attr('id', 'sla_' + aData.id);
       },
       columns: [
@@ -109,25 +111,25 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
       ],
       dom: '<t> <"row" <"col-md-4"l><"col-md-8"p>>',
       language: {
-        'sProcessing': 'Traitement en cours...',
-        'sSearch': 'Rechercher&nbsp;:',
-        'sLengthMenu': 'Afficher _MENU_ &eacute;l&eacute;ments',
-        'sInfo': 'Affichage de l\'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments',
-        'sInfoEmpty': 'Affichage de l\'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment',
-        'sInfoFiltered': '(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)',
+        'sProcessing': 'Processing ...',
+        'sSearch': 'Search&nbsp;:',
+        'sLengthMenu': 'Display _MENU_ elements',
+        'sInfo': 'Display of element _START_ to _END_ from _TOTAL_ elements',
+        'sInfoEmpty': 'Display of element 0 to 0 from 0 elements',
+        'sInfoFiltered': '(_MAX_ elements in total)',
         'sInfoPostFix': '',
-        'sLoadingRecords': 'Chargement en cours...',
-        'sZeroRecords': 'Aucun &eacute;l&eacute;ment &agrave; afficher',
-        'sEmptyTable': 'Aucune donn&eacute;e disponible dans le tableau',
+        'sLoadingRecords': 'Loading ...',
+        'sZeroRecords': 'No element to display',
+        'sEmptyTable': 'No data available in table',
         'oPaginate': {
-          'sFirst': 'Premier',
-          'sPrevious': 'Pr&eacute;c&eacute;dent',
-          'sNext': 'Suivant',
-          'sLast': 'Dernier'
+          'sFirst': 'First',
+          'sPrevious': 'Previous',
+          'sNext': 'Next',
+          'sLast': 'Last'
         },
         'oAria': {
-          'sSortAscending': ': activer pour trier la colonne par ordre croissant',
-          'sSortDescending': ': activer pour trier la colonne par ordre d&eacute;croissant'
+          'sSortAscending': ': activate for ascendent order',
+          'sSortDescending': ': activate for descendent order'
         }
       },
       // Use this attribute to enable the responsive extension
@@ -139,27 +141,11 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
     $('table').on('click', '.btnNavigate', (event) => {
       this.onNavigate($(event.currentTarget).data('url'));
     });
-    $('table').on('change', '[name="checkboxs[]"]', (event) => this.onCheckChange());
-    $('table').on('draw.dt', (event) => this.onCheckChange());
   }
 
   ngOnDestroy(): void {
     $.fn['dataTable'].ext.search.pop();
     $('table').off();
-  }
-
-  onSelectedAllChange() {
-    $('[name="checkboxs[]"]').prop('checked', this.selectedAll);
-    this.onCheckChange();
-  }
-
-  onCheckChange() {
-    const length = $('[name="checkboxs[]"]:checked').length;
-    if (length > 1) {
-      this.selectedMulti = true;
-    } else {
-      this.selectedMulti = false;
-    }
   }
 
   onNavigate(url) {
@@ -169,7 +155,7 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
   onDelete(id) {
     this.pnotify.notice({
       title: 'Confirmation',
-      text: 'Voulez-vous supprimer cet element ?',
+      text: 'Are you sure to delete this element ?',
       stack: {
         firstpos1: 70, firstpos2: 10,
         modal: true,
@@ -189,45 +175,7 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
               }
             },
             {
-              text: 'Annuler',
-              addClass: 'btn btn-default',
-              click: (notice) => {
-                notice.close();
-                notice.fire('pnotify.cancel', { notice });
-              }
-            }
-          ]
-        }
-      }
-    });
-  }
-
-  onBulkDelete() {
-    this.pnotify.notice({
-      title: 'Confirmation',
-      text: 'Voulez-vous supprimer la selection ?',
-      stack: {
-        firstpos1: 70, firstpos2: 10,
-        modal: true,
-        overlay_close: true
-      },
-      hide: false,
-      modules: {
-        Confirm: {
-          confirm: true,
-          buttons: [
-            {
-              text: 'Ok',
-              addClass: 'btn btn-chico',
-              click: notice => {
-                $('[name="checkboxs[]"]:checked').each((i, elt: any) => {
-                  this.delete($(elt).val());
-                });
-                notice.close();
-              }
-            },
-            {
-              text: 'Annuler',
+              text: 'Cancel',
               addClass: 'btn btn-default',
               click: (notice) => {
                 notice.close();
@@ -250,7 +198,7 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
         error => {
           this.pnotify.error({
             title: 'Erreur',
-            text: 'Une erreur est survenue !',
+            text: 'An error has occured !',
             stack: {
               firstpos1: 70, firstpos2: 10,
               modal: true,

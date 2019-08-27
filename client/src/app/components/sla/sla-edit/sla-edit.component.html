@@ -1,36 +1,37 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
-  <div class="x_panel">
-    <div class="x_title">
-      <h2>Sla :Test
-      </h2>
-      <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-      <form class="w-100">
-        <div class="form-group">
-          <label for="name"> Nom</label>
-          <input [(ngModel)]="sla.name" name="sla.name" type="text" class="form-control" maxlength="20" required>
-        </div>
-        <div class="form-group">
-          <label for="name"> Description</label>
-          <textarea [(ngModel)]="sla.description" name="sla.description" type="number" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="name"> Latence</label>
-          <input [(ngModel)]="sla.latency" name="sla.latency" type="number" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="name"> Prix</label>
-          <input [(ngModel)]="sla.price" name="sla.price" type="number" class="form-control" required>
-        </div>
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Sla : {{ sla.name }}
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input [(ngModel)]="sla.name" name="name" type="text" class="form-control" maxlength="50" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea [(ngModel)]='sla.description' name="description" class="form-control" rows="5" maxlength="300"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="latency">Latency</label>
+            <input [(ngModel)]="sla.latency" name="latency" type="number" class="form-control" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="price">Latency</label>
+            <input [(ngModel)]="sla.price" name="price" type="number" class="form-control" min="0" required>
+          </div>
 
-        <button type="submit" class="btn-slide" data-hover="Enregistrer" disabled="true">
-          <div>Enregistrer</div>
-        </button>
-        <button type="button" [routerLink]="['/sla/list']" class="btn-slide btn-slide-default" data-hover="Annuler">
-          <div>Annuler</div>
-        </button>
-      </form>
+          <button type="submit" class="btn-slide" data-hover="Save"
+            [disabled]="form.invalid">
+            <div>Save</div>
+          </button>
+          <button type="button" [routerLink]="['/sla/view', sla.id]"
+            class="btn-slide btn-slide-default" data-hover="Cancel">
+            <div>Cancel</div>
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
