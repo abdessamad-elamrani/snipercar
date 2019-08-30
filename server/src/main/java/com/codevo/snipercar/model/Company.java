@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.*;
 
 @Entity
@@ -51,7 +53,8 @@ public class Company {
 	private Sla sla;
 
 	@Column(name = "expiration")
-	@Temporal(TemporalType.TIMESTAMP)
+	//@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date expiration;
 
 	@Column(name = "active", nullable = false)

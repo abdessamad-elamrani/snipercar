@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from './../../../services/auth.service';
 import { Company } from './../../../models/company';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-company-view',
@@ -7,23 +11,24 @@ import { Company } from './../../../models/company';
   styleUrls: ['./company-view.component.css']
 })
 export class CompanyViewComponent implements OnInit {
-  public compnay: Company;
-  dateTimeFilter = (d: Date): boolean => {
-    return true;
-  }
 
-  constructor() {
-    this.compnay = {
-      id: 1,
-      active: true,
-      address: 'Test',
-      email: 'Test@gmail.com',
-      expiration: '01/12/2019',
-      name: 'test',
-      phone: '06258526485',
-      slaId: 1
-    };
+  company: Company;
 
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.company = new Company();
+    this.route.params.subscribe(params => {
+      this.http.get(
+        '/api/company/' + params['id']
+      ).subscribe((company: Company) => {
+        this.company = company;
+        this.company.expiration = moment(company.expiration).format('YYYY-MM-DD');
+      });
+    });
   }
 
   ngOnInit() {

@@ -6,7 +6,7 @@ export class SessionContext {
   roles: string[];
   user: User;
 
-  constructor() { 
+  constructor() {
     this.user = new User();
   }
 }

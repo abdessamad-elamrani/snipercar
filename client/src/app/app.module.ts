@@ -1,6 +1,6 @@
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -14,7 +14,7 @@ import { MalihuScrollbarModule } from 'ngx-malihu-scrollbar';
 import { DataTablesModule } from 'angular-datatables';
 import { Select2Module } from 'ng2-select2';
 import { IonRangeSliderModule } from 'ng2-ion-range-slider';
-import { OwlDateTimeModule, OwlNativeDateTimeModule, OwlDateTimeIntl } from 'ng-pick-datetime';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OwlDateTimeIntl, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
@@ -116,8 +116,6 @@ export class DefaultIntl extends OwlDateTimeIntl {
     Select2Module,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
     IonRangeSliderModule,
     NgxPermissionsModule.forRoot(),
   ],
@@ -125,6 +123,10 @@ export class DefaultIntl extends OwlDateTimeIntl {
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OwlDateTimeIntl, useClass: DefaultIntl },
+    {
+      provide: LOCALE_ID,
+      useValue: 'en-EN'
+    },
     PNotifyService,
     // DictionaryService,
     // {

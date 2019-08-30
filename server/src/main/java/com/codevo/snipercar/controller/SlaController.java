@@ -84,7 +84,7 @@ public class SlaController {
 		System.out.println("start=" + datatablesRequest.getStart());
 		System.out.println("length=" + datatablesRequest.getLength());
 		Pageable pageable = PageRequest.of(datatablesRequest.getStart(), datatablesRequest.getLength());
-		Page<Sla> data = slaRepository.findSlaForDatatables(pageable,
+		Page<Sla> data = slaRepository.findAllForDatatables(pageable,
 				datatablesRequest.getFilter().getOrDefault("name", ""),
 				datatablesRequest.getFilter().getOrDefault("description", ""));
 
@@ -140,6 +140,12 @@ public class SlaController {
 		slaRepository.deleteById(id);
 		
         return ResponseEntity.ok().build();
+	}
+	
+	@RequestMapping(value = "/select2", method = RequestMethod.GET)
+	public ResponseEntity<List<Sla>> readForSelect2() throws Exception {
+
+		return ResponseEntity.ok(slaRepository.findAll());
 	}
 
 }

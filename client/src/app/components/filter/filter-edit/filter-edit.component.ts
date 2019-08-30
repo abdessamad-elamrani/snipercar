@@ -13,11 +13,7 @@ export class FilterEditComponent implements OnInit {
   public websiteData: Array<Select2OptionData>;
 
   constructor() {
-    this.filter = {
-      id: 1,
-      url: 'https://www.google.com/',
-      websiteId: 1
-    };
+    this.filter = new Filter();
   }
 
   ngOnInit() {

@@ -1,303 +1,96 @@
-<!-- start datatable -->
-<div class="col-md-12 col-sm-12 col-xs-12">
-  <div class="x_panel has-datatable ">
-    <div class="x_title">
-      <h2>Comapny
-      </h2>
-      <div class="clearfix"></div>
-    </div>
-    <div class="x_content ">
-      <div class="btn-group" style="float: right;">
-        <button class="btn btnTopFix btn-tool" *ngIf="selectedMulti" (click)="onDeleteAll()">
-          Supprimer
-        </button>
-        <button routerLink="/company/add" class="btn btnTopFix btn-tool">
-          Ajouter
-        </button>
+<!-- start filter -->
+<div class="col-sm-12 col-xs-12 col-md-12 col-lg-3 pull-right ">
+    <div class="x_panel filterFixed">
+      <div class="x_title">
+        <h2>Filtre</h2>
+        <ul class="nav navbar-right panel_toolbox hidden-lg hidden-md">
+          <li>
+            <a class="collapse-filter" data-toggle="collapse" href=".details">
+              <i class="fa fa-chevron-down"></i>
+            </a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
       </div>
-      <table datatable [dtOptions]="dtOptions" class="row-border hover">
-        <thead>
-          <tr>
-            <th width="5%">
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" [(ngModel)]='selectedAll' name="selectedAll" (change)="onSelectedAllChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </th>
-            <th>Nom</th>
-            <th>Mobile</th>
-            <th>Mail</th>
-            <th>Adresse</th>
-            <th>Actif</th>
-            <th>expiration</th>
-            <th>Sla</th>
-            <th width="20%">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+      <div class="x_content panel_filter details collapse">
+        <form (ngSubmit)='onFilter()'>
+  
+          <div class="form-group">
+            <label for="select">Name</label>
+            <input [(ngModel)]="filter.name" name="name" type="text" class="form-control">
+          </div>
+  
+          <div class="col-md-12 col-sm-12 col-xs-12 marginTopMedium">
+            <div class="btnFixed">
+              <button type="submit" class="btn-slide" data-hover="Search">
+                <div>Search</div>
               </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="el-switch" style="font-size:80%">
-                <input type="checkbox" name="checkboxs[]" value="" (change)="onCheckChange()">
-                <span class="el-switch-style"></span>
-              </label>
-            </td>
-            <td>Nom 1</td>
-            <td>06251582545</td>
-            <td>Test@gmail.com</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Oui</td>
-            <td>30/12/2019</td>
-            <td>Test</td>
-            <td>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/view/1']">
-                <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="btn btnAction btnNavigate" [routerLink]="['/company/edit/1']">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <button class="btn btnAction btnDelete" (click)='onDelete()'>
-                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-<!-- end datatable -->
+  <!-- end filter  -->
+  
+  <!-- start datatable -->
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel ">
+      <div class="x_title">
+        <h2>Companys
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content ">
+        <div class="btn-group" style="float: right;">
+          <button routerLink="/company/add" class="btn btnTopFix btn-tool">
+            Add
+          </button>
+        </div>
+        <table datatable [dtOptions]="dtOptions" class="table table-striped w-100">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Sla</th>
+              <th>Active</th>
+              <th>Expiration</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <!-- <tbody>
+            <tr *ngFor="let company of companies" id="company_{{ company.id }}">
+              <th>
+                <label class="el-switch" style="font-size:80%">
+                  <input type="checkbox" name="checkboxs[]" value="{{  company.id }}" [checked]="selectedAll" (change)="onCheckChange($event)">
+                  <span class="el-switch-style"></span>
+                </label>
+              </th>
+              <td>{{ company.name }}</td>
+              <td>{{ company.phone }}</td>
+              <td>{{ company.email }}</td>
+              <td>{{ company.sla }}</td>
+              <td>{{ company.active }}</td>
+              <td>{{ company.expiration }}</td>
+              <td>
+                <a [routerLink]="['/company/view', company.id]" class="btn btnDelete">
+                  <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                </a>
+                <a [routerLink]="['/company/edit', company.id]" class="btn btnDelete">
+                  <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                </a>
+                <button class="btn btnDelete" (click)="onDelete(company.id)">
+                  <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="companies?.length == 0">
+              <td colspan="99" class="no-data-available">No Data !</td>
+            </tr>
+          </tbody> -->
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- end datatable -->

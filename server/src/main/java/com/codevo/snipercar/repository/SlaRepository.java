@@ -20,6 +20,11 @@ public interface SlaRepository extends JpaRepository<Sla, Long>{
 			+ "WHERE "
 			+ "	s.name LIKE CONCAT('%',:name,'%')"
 			+ "	AND s.description LIKE CONCAT('%',:description,'%')")
-	Page<Sla> findSlaForDatatables(Pageable pageable, @Param("name") String name, @Param("description") String description);
+	Page<Sla> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("description") String description);
+	
+	@Query(""
+			+ "SELECT s.id, s.name "
+			+ "FROM Sla s ")
+	List<Sla> findAllForSelect2();
 
 }

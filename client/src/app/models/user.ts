@@ -1,3 +1,6 @@
+import { Company } from './company';
+import { Selection } from './selection';
+
 export class User {
   id: number;
   active: boolean;
@@ -11,8 +14,13 @@ export class User {
   salt: string;
   smsNotif: boolean;
   username: string;
-  companyId: number;
-  currentSelectionId: number;
+  // companyId: number;
+  company: Company;
+  // currentSelectionId: number;
+  currectSelection: Selection;
 
-  constructor() { }
+  constructor() { 
+    this.company = new Company();
+    this.currectSelection = new Selection();
+  }
 }

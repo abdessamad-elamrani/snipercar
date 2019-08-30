@@ -97,9 +97,6 @@ export class SlaDatatableComponent implements OnInit, OnDestroy {
         });
       },
       fnCreatedRow: function (nRow, aData, iDataIndex) {
-        console.error(nRow);
-        console.error(aData);
-        console.error(iDataIndex);
         $(nRow).attr('id', 'sla_' + aData.id);
       },
       columns: [

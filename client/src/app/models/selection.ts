@@ -1,7 +1,12 @@
+import { User } from './user';
+
 export class Selection {
   id: number;
   name: string;
-  userId: number;
+  // userId: number;
+  user: User;
 
-  constructor() { }
+  constructor() {
+    this.user = new User();
+  }
 }

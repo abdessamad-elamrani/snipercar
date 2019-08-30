@@ -1,3 +1,5 @@
+import { Sla } from './sla';
+
 export class Company {
   id: number;
   active: boolean;
@@ -6,7 +8,10 @@ export class Company {
   expiration: string;
   name: string;
   phone: string;
-  slaId: number;
+  // slaId: number;
+  sla: Sla;
 
-  constructor() { }
+  constructor() {
+    this.sla = new Sla();
+  }
 }

@@ -1,7 +1,12 @@
+import { Website } from './website';
+
 export class Filter {
   id: number;
   url: string;
-  websiteId: number;
+  // websiteId: number;
+  website: Website;
 
-  constructor() { }
+  constructor() { 
+    this.website = new Website();
+  }
 }
