@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.codevo.snipercar.model.Sla;
+import com.codevo.snipercar.model.*;
 
 @Repository
 public interface SlaRepository extends JpaRepository<Sla, Long>{

@@ -33,6 +33,9 @@ public class Filter {
 	@ManyToOne
 	@JoinColumn(name = "website_id")
 	private Website website;
+	
+	@Column(name = "name", nullable = false)
+	private String name;
 
 	@Column(name = "url", nullable = false)
 	private String url;
@@ -44,8 +47,9 @@ public class Filter {
 //		this.items = new ArrayList<>();
 	}
 
-	public Filter(Website website, String url) {
+	public Filter(Website website, String name, String url) {
 		this.website = website;
+		this.name = name;
 		this.url = url;
 //		this.items = new ArrayList<>();
 	}

@@ -1,28 +1,34 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
-  <div class="x_panel">
-    <div class="x_title">
-      <h2>Add Filter
-      </h2>
-      <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-      <form class="w-100">
-        <div class="form-group">
-          <label for="name"> Url</label>
-          <input [(ngModel)]="filter.url" name="url" type="url" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label class="control-label">Website</label>
-          <select2 [data]="websiteData" [cssImport]=true></select2>
-        </div>
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Add Filter
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input [(ngModel)]="filter.name" name="name" type="text" class="form-control" maxlength="50" required>
+          </div>
+          <div class="form-group">
+            <label for="url">Url</label>
+            <input [(ngModel)]="filter.url" name="url" type="text" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="website">Website</label>
+            <select2 class="d-block" [data]="websitesData" [cssImport]=true (valueChanged)="websiteChanged($event)">
+            </select2>
+          </div>
 
-        <button type="submit" class="btn-slide" data-hover="Enregistrer" disabled="true">
-          <div>Enregistrer</div>
-        </button>
-        <button type="button" [routerLink]="['/filter/list']" class="btn-slide btn-slide-default" data-hover="Annuler">
-          <div>Annuler</div>
-        </button>
-      </form>
+          <button type="submit" class="btn-slide" data-hover="Save"
+            [disabled]="form.invalid">
+            <div>Save</div>
+          </button>
+          <button type="button" [routerLink]="['/filter/list']"
+            class="btn-slide btn-slide-default" data-hover="Cancel">
+            <div>Cancel</div>
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
