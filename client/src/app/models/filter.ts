@@ -8,6 +8,6 @@ export class Filter {
   website: Website;
 
   constructor() {
-    this.website = new Website();
+    // this.website = new Website();
   }
 }

@@ -7,6 +7,6 @@ export class Selection {
   user: User;
 
   constructor() {
-    this.user = new User();
+    // this.user = new User();
   }
 }

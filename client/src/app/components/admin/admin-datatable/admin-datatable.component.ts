@@ -1,119 +1,162 @@
+import { Observable } from 'rxjs/Observable';
+import { DataTablesResponse } from './../../../models/DataTablesResponse';
+import { HttpClient } from '@angular/common/http';
+import { Admin } from './../../../models/admin';
 import { Component, OnInit, OnDestroy, ViewChild, NgZone } from '@angular/core';
-import { PNotifyService } from './../../../services/pnotify.service';
+import { DataTableDirective } from 'angular-datatables';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
+import { PNotifyService } from '../../../services/pnotify.service';
 
 @Component({
   selector: 'app-admin-datatable',
   templateUrl: './admin-datatable.component.html',
   styleUrls: ['./admin-datatable.component.css']
 })
-export class AdminDatatableComponent implements OnInit {
+export class AdminDatatableComponent implements OnInit, OnDestroy {
 
-  dtOptions: DataTables.Settings = {};
-  selectedAll = false;
-  selectedMulti = false;
+  filter = {
+    name: '',
+    description: '',
+  };
+  staticFilter = {
+    name: '',
+    description: '',
+  };
+
+  @ViewChild(DataTableDirective, { static: false })
+  datatableElement: DataTableDirective;
+
+  // ----- Start Option Scrollbar -----------
+  isScrollbar: true;
+  scrollbarOptions = {
+    axis: 'y',
+    theme: 'minimal-dark'
+  };
+  // ----- End Option Scrollbar -----------
+
+  dtOptions: any = {};
+  admins: any[];
   pnotify = undefined;
-  constructor(pnotifyService: PNotifyService) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private zone: NgZone,
+    pnotifyService: PNotifyService
+  ) {
+    // this.filterForm = new FormGroup();
     this.pnotify = pnotifyService.getPNotify();
   }
 
-  ngOnInit() {
-
+  ngOnInit(): void {
     this.dtOptions = {
       searching: false,
       pageLength: 5,
+      serverSide: true,
       processing: true,
       lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-      order: [[1, 'asc']],
+      order: [[0, 'asc']],
       ordering: false,
       columnDefs: [
-        { orderable: false, targets: 0 }
+        { 'orderable': false, 'targets': 0 }
+      ],
+      ajax: (dataTablesParameters: any, callback) => {
+        dataTablesParameters.filter = this.staticFilter;
+        this.http.post<DataTablesResponse>(
+          '/api/admin/datatables',
+          dataTablesParameters,
+          {}
+        ).subscribe((resp: any) => {
+          this.admins = resp.data;
+          const dta = [];
+          this.admins.forEach(admin => {
+            dta.push({
+              id: admin.id,
+              name: admin.name,
+              email: admin.email,
+              phone: admin.phone,
+              role: admin.role,
+              active: admin.active ? 'Yes' : 'No',
+              actions: `
+                <a class="btn btnAction btnNavigate" data-url="/admin/view/${admin.id}">
+                  <i class="fa fa-search fa-2x" aria-hidden="true"></i>
+                </a>
+                <a class="btn btnAction btnNavigate" data-url="/admin/edit/${admin.id}">
+                  <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                </a>
+                <button class="btn btnAction btnDelete" data-admin-id="${admin.id}">
+                  <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                </button>
+              `
+            });
+          });
+          callback({
+            recordsTotal: resp.recordsTotal,
+            recordsFiltered: resp.recordsFiltered,
+            data: dta
+          });
+        });
+      },
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', 'admin_' + aData.id);
+      },
+      columns: [
+        { data: 'name' },
+        { data: 'email' },
+        { data: 'phone' },
+        { data: 'role' },
+        { data: 'active' },
+        { data: 'actions' },
       ],
       dom: '<t> <"row" <"col-md-4"l><"col-md-8"p>>',
       language: {
-        processing: 'Traitement en cours...',
-        search: 'Rechercher&nbsp;:',
-        lengthMenu: 'Afficher _MENU_ &eacute;l&eacute;ments',
-        info: 'Affichage de l\'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments',
-        infoEmpty: 'Affichage de l\'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment',
-        infoFiltered: '(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)',
-        infoPostFix: '',
-        loadingRecords: 'Chargement en cours...',
-        zeroRecords: 'Aucun &eacute;l&eacute;ment &agrave; afficher',
-        emptyTable: 'Aucune donn&eacute;e disponible dans le tableau',
-        paginate: {
-          first: 'Premier',
-          previous: 'Pr&eacute;c&eacute;dent',
-          next: 'Suivant',
-          last: 'Dernier'
+        'sProcessing': 'Processing ...',
+        'sSearch': 'Search&nbsp;:',
+        'sLengthMenu': 'Display _MENU_ elements',
+        'sInfo': 'Display of element _START_ to _END_ from _TOTAL_ elements',
+        'sInfoEmpty': 'Display of element 0 to 0 from 0 elements',
+        'sInfoFiltered': '(_MAX_ elements in total)',
+        'sInfoPostFix': '',
+        'sLoadingRecords': 'Loading ...',
+        'sZeroRecords': 'No element to display',
+        'sEmptyTable': 'No data available in table',
+        'oPaginate': {
+          'sFirst': 'First',
+          'sPrevious': 'Previous',
+          'sNext': 'Next',
+          'sLast': 'Last'
         },
-        aria: {
-          sortAscending: ': activer pour trier la colonne par ordre croissant',
-          sortDescending: ': activer pour trier la colonne par ordre d&eacute;croissant'
+        'oAria': {
+          'sSortAscending': ': activate for ascendent order',
+          'sSortDescending': ': activate for descendent order'
         }
       },
       // Use this attribute to enable the responsive extension
       responsive: true
     };
-
-  }
-
-  onSelectedAllChange() {
-    $('[name="checkboxs[]"]:enabled').prop('checked', this.selectedAll);
-    this.onCheckChange();
-  }
-  onCheckChange() {
-    const length = $('[name="checkboxs[]"]:checked').length;
-    if (length > 1) {
-      this.selectedMulti = true;
-    } else {
-      this.selectedMulti = false;
-    }
-  }
-
-  onDeleteAll() {
-    this.pnotify.notice({
-      title: 'Confirmation',
-      text: 'Voulez-vous supprimer tout les éléments ?',
-      stack: {
-        dir1: 'down',
-        firstpos1: 25,
-        modal: true,
-        overlay_close: true
-      },
-      hide: false,
-      modules: {
-        Confirm: {
-          confirm: true,
-          focus: false,
-          buttons: [
-            {
-              text: 'Ok',
-              addClass: 'btn btn-chico',
-              click: notice => {
-                alert('OK');
-                notice.close();
-              }
-            },
-            {
-              text: 'Annuler',
-              addClass: 'btn btn-default',
-              click: (notice) => {
-                notice.close();
-                notice.fire('pnotify.cancel', { notice });
-              }
-            }
-          ]
-        }
-      }
+    $('table').on('click', '.btnDelete', (event) => {
+      this.onDelete($(event.currentTarget).data('adminId'));
+    });
+    $('table').on('click', '.btnNavigate', (event) => {
+      this.onNavigate($(event.currentTarget).data('url'));
     });
   }
-  onDelete() {
+
+  ngOnDestroy(): void {
+    $.fn['dataTable'].ext.search.pop();
+    $('table').off();
+  }
+
+  onNavigate(url) {
+    this.zone.run(() => this.router.navigateByUrl(url));
+  }
+
+  onDelete(id) {
     this.pnotify.notice({
       title: 'Confirmation',
-      text: 'Voulez-vous supprimer cet element ?',
+      text: 'Are you sure to delete this element ?',
       stack: {
-        dir1: 'down',
-        firstpos1: 25,
+        firstpos1: 70, firstpos2: 10,
         modal: true,
         overlay_close: true
       },
@@ -121,18 +164,17 @@ export class AdminDatatableComponent implements OnInit {
       modules: {
         Confirm: {
           confirm: true,
-          focus: false,
           buttons: [
             {
               text: 'Ok',
               addClass: 'btn btn-chico',
               click: notice => {
-                alert('OK');
+                this.delete(id);
                 notice.close();
               }
             },
             {
-              text: 'Annuler',
+              text: 'Cancel',
               addClass: 'btn btn-default',
               click: (notice) => {
                 notice.close();
@@ -145,9 +187,47 @@ export class AdminDatatableComponent implements OnInit {
     });
   }
 
-  onExport() {
-
+  delete(id) {
+    this.http
+      .delete('/api/admin/' + id)
+      .subscribe(
+        result => {
+          document.getElementById('admin_' + id).remove();
+        },
+        error => {
+          this.pnotify.error({
+            title: 'Erreur',
+            text: 'An error has occured !',
+            stack: {
+              firstpos1: 70, firstpos2: 10,
+              modal: true,
+              overlay_close: true
+            },
+            hide: false,
+            modules: {
+              Confirm: {
+                confirm: true,
+                buttons: [
+                  {
+                    text: 'Ok',
+                    addClass: 'btn btn-chico',
+                    click: notice => {
+                      notice.close();
+                    }
+                  }
+                ]
+              }
+            }
+          });
+        }
+      );
   }
 
+  onFilter(): void {
+    this.staticFilter = this.filter;
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
 
 }

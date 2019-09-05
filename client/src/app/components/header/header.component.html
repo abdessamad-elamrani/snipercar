@@ -41,9 +41,16 @@
               <div class="dropdown-divider"></div>
             </li>
             <li>
-              <a>
-                <i class="fa fa-user"></i> Account
-              </a>
+              <ng-template [ngxPermissionsOnly]="['ROLE_ADMIN']">
+                <a [routerLink]="['/account/admin/view']">
+                  <i class="fa fa-user"></i> Account
+                </a>
+              </ng-template>
+              <ng-template [ngxPermissionsOnly]="['ROLE_CLIENT']">
+                <a [routerLink]="['/account/client/view']">
+                  <i class="fa fa-user"></i> Account
+                </a>
+              </ng-template>
             </li>
             <li *ngIf="false">
               <a data-toggle="modal" data-target="#clientsModal">

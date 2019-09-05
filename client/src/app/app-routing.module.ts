@@ -53,7 +53,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, NgxPermissionsGuard],
     data: {
       permissions: {
-        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        only: ['ROLE_ADMIN'],
         redirectTo: ''
       }
     },
@@ -64,11 +64,22 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'agent/dashboard',
+    component: AgentDashboardComponent,
+    // canActivate: [AuthGuard, NgxPermissionsGuard],
+    // data: {
+    //   permissions: {
+    //     only: ['ROLE_AGENT'],
+    //     redirectTo: 'extra'
+    //   }
+    // }
+  },
+  {
     path: 'agent',
     canActivate: [AuthGuard, NgxPermissionsGuard],
     data: {
       permissions: {
-        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_SUPER_CLIENT'],
+        only: ['ROLE_ADMIN', 'ROLE_SUPER_AGENT'],
         redirectTo: ''
       }
     },
@@ -78,7 +89,7 @@ const routes: Routes = [
       { path: 'view/:id', component: AgentViewComponent },
       { path: 'edit/:id', component: AgentEditComponent },
       { path: 'add', component: AgentAddComponent },
-      { path: 'dashboard', component: AgentDashboardComponent }
+      // { path: 'dashboard', component: AgentDashboardComponent }
     ]
   },
   {
@@ -86,7 +97,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, NgxPermissionsGuard],
     data: {
       permissions: {
-        only: ['ROLE_SUPER_AGENT', 'ROLE_AGENT'],
+        only: ['ROLE_AGENT'],
         redirectTo: ''
       }
     },
@@ -101,7 +112,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, NgxPermissionsGuard],
     data: {
       permissions: {
-        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        only: ['ROLE_ADMIN'],
         redirectTo: ''
       }
     },
@@ -118,7 +129,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, NgxPermissionsGuard],
     data: {
       permissions: {
-        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        only: ['ROLE_ADMIN'],
         redirectTo: ''
       }
     },
@@ -135,7 +146,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, NgxPermissionsGuard],
     data: {
       permissions: {
-        only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        only: ['ROLE_ADMIN'],
         redirectTo: ''
       }
     },
@@ -152,7 +163,7 @@ const routes: Routes = [
   //   canActivate: [AuthGuard, NgxPermissionsGuard],
   //   data: {
   //     permissions: {
-  //       only: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_SUPER_AGENT', 'ROLE_AGENT'],
+  //       only: ['ROLE_ADMIN', 'ROLE_AGENT'],
   //       redirectTo: ''
   //     }
   //   },
@@ -164,15 +175,6 @@ const routes: Routes = [
   //     { path: 'add', component: SelectionAddComponent }
   //   ]
   // },
-  {
-    path: 'agent/dashboard', component: AgentDashboardComponent, canActivate: [AuthGuard, NgxPermissionsGuard],
-    data: {
-      permissions: {
-        only: ['ROLE_SUPER_AGENT', 'ROLE_AGENT'],
-        redirectTo: ''
-      }
-    }
-  },
   { path: 'extra', component: ExtraComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: ErrorComponent }

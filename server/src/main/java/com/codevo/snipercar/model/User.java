@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -43,19 +44,22 @@ public class User {
 	private String email;
 
 	@Column(name = "salt", nullable = false)
-	private String salt;
+	private String salt = "snipercar_salt";
 
 	@Column(name = "password", nullable = false)
 	private String password;
+	@Transient
+	private Boolean passwordChange = false;
+	@Transient
+	private String newPassword;
+	@Transient
+	private String newPasswordConfirm;
 
-	@Column(name = "firstname", nullable = false)
-	private String firstname;
-
-	@Column(name = "lastname", nullable = false)
-	private String lastname;
+	@Column(name = "name", nullable = false)
+	private String name;
 
 	@Column(name = "role", nullable = false)
-    private String role;
+	private String role;
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
@@ -65,10 +69,10 @@ public class User {
 	private String phone;
 
 	@Column(name = "smsNotif", nullable = false)
-	private Boolean smsNotif;
+	private Boolean smsNotif = false;
 
 	@Column(name = "emailNotif", nullable = false)
-	private Boolean emailNotif;
+	private Boolean emailNotif = false;
 
 	@OneToMany(mappedBy = "user")
 	private List<Selection> selections;
@@ -78,23 +82,22 @@ public class User {
 	private Selection currentSelection;
 
 	@Column(name = "active", nullable = false)
-	private Boolean active;
+	private Boolean active = true;
 
-	public User() {
-		this.selections = new ArrayList<>();
-		this.username = "xxx";
-		this.email = "xxx";
-		this.salt = "xxx";
-		this.password = "xxx";
-		this.firstname = "xxx";
-		this.lastname = "xxx";
-		this.role = "ROLE_USER";
-		this.company = null;
-		this.phone = "xxx";
-		this.smsNotif = true;
-		this.emailNotif = true;
-		this.currentSelection = null;
-		this.active = true;
-	}
+//	public User() {
+//		this.selections = new ArrayList<>();
+//		this.username = "xxx";
+//		this.email = "xxx";
+//		this.salt = "xxx";
+//		this.password = "xxx";
+//		this.name = "xxx";
+//		this.role = "ROLE_USER";
+//		this.company = null;
+//		this.phone = "xxx";
+//		this.smsNotif = true;
+//		this.emailNotif = true;
+//		this.currentSelection = null;
+//		this.active = true;
+//	}
 
 }

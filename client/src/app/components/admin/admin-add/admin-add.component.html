@@ -1,80 +1,76 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
-  <div class="x_panel">
-    <div class="x_title">
-      <h2>Add Admin
-      </h2>
-      <div class="clearfix"></div>
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Admin : {{ admin.name }}
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input [(ngModel)]="admin.name" name="name" type="text" class="form-control" maxlength="20" required>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input [(ngModel)]="admin.username" name="username" type="text" class="form-control" maxlength="40" required
+              (keyup)="onUsernameChange()">
+            <div style="color: red" *ngIf='reservedUsernames.includes(admin.username)'>
+              Reserved username
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input [(ngModel)]="admin.email" name="email" type="text" class="form-control" maxlength="40" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input [(ngModel)]="admin.phone" name="phone" type="text" class="form-control" maxlength="40" required>
+          </div>
+          <div class="form-group">
+            <label for="name">Password</label>
+            <input [(ngModel)]="admin.newPassword" name="newPassword" #newPassword="ngModel" type="password"
+              class="form-control" maxlength="20" required>
+            <div style="color: red" *ngIf='newPassword.touched && newPassword.invalid'>
+              <div *ngIf='newPassword.errors.required'>
+                Required field
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name">Confirm your password</label>
+            <input [(ngModel)]="admin.newPasswordConfirm" name="newPasswordConfirm" #newPasswordConfirm="ngModel"
+              type="password" class="form-control" maxlength="20" required>
+            <div style="color: red" *ngIf='newPasswordConfirm.touched'>
+              <div *ngIf='newPasswordConfirm.invalid && newPasswordConfirm.errors.required'>
+                  Required field
+              </div>
+              <div *ngIf='admin.newPassword != admin.newPasswordConfirm'>
+                Different from password
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name">Role</label>
+            <select2 class="d-block" [data]="rolesData" [cssImport]=true (valueChanged)="roleChanged($event)">
+            </select2>
+          </div>
+          <div *ngIf="admin.role != 'SUPER_ADMIN'" class="form-check">
+            <label class="el-switch" style="font-size:80%">
+              <input type="checkbox" [(ngModel)]="admin.active" name="admin.active">
+              <span class="el-switch-style"></span>
+            </label>
+            <label class="margin-r">Active</label>
+          </div>
+          
+          <button type="submit" class="btn-slide" data-hover="Save"
+            [disabled]="form.invalid || reservedUsernames.includes(admin.username) || admin.passwordChange && (admin.newPassword != admin.newPasswordConfirm)">
+            <div>Save</div>
+          </button>
+          <button type="button" [routerLink]="isAccountPage ? ['/account/admin/view'] : ['/admin/view', admin.id]"
+            class="btn-slide btn-slide-default" data-hover="Cancel">
+            <div>Cancel</div>
+          </button>
+        </form>
+      </div>
     </div>
-    <div class="x_content">
-      <form class="w-100">
-        <div class="form-group">
-          <label for="name"> Nom</label>
-          <input [(ngModel)]="admin.lastname" name="lastname" type="text" class="form-control" maxlength="20" required>
-        </div>
-        <div class="form-group">
-          <label for="firstname"> Prénom</label>
-          <input [(ngModel)]="admin.firstname" name="firstname" type="text" class="form-control" maxlength="20"
-            required>
-        </div>
-        <div class="form-group">
-          <label for="username"> Username</label>
-          <input [(ngModel)]="admin.username" name="username" type="text" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="email"> Mail</label>
-          <input [(ngModel)]="admin.email" name="email" type="email" class="form-control" required>
-        </div>
-        <div class="form-check">
-          <label class="el-switch" style="font-size:100%">
-            <input type="checkbox" [(ngModel)]="admin.emailNotif" id="emailNotif" name="admin.emailNotif">
-            <span class="el-switch-style"></span>
-          </label>
-          <label class="ml-1" for="emailNotif">mail notification</label>
-        </div>
-        <div class="form-group">
-          <label for="password"> Mot de passe</label>
-          <input [(ngModel)]="admin.password" name="password" #password="ngModel" type="password" class="form-control"
-            maxlength="20" required>
-        </div>
-        <div class="form-group">
-          <label for="phone"> Mobile</label>
-          <input [(ngModel)]="admin.phone" name="phone" type="text" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label class="control-label">rôle</label>
-          <select2 [data]="roleData" [cssImport]=true></select2>
-        </div>
-        <div class="form-group">
-          <label for="salt"> salt</label>
-          <input [(ngModel)]="admin.salt" name="salt" type="text" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="salt"> salt</label>
-          <input [(ngModel)]="admin.salt" name="salt" type="text" class="form-control" required>
-        </div>
-        <div class="form-check">
-          <label class="el-switch" style="font-size:100%">
-            <input type="checkbox" [(ngModel)]="admin.smsNotif" id="smsNotif" name="admin.smsNotif">
-            <span class="el-switch-style"></span>
-          </label>
-          <label class="ml-1" for="smsNotif">SMS notification</label>
-        </div>
-        <div class="form-group">
-          <label class="control-label">ID de l'entreprise</label>
-          <select2 [data]="companyData" [cssImport]=true></select2>
-        </div>
-        <div class="form-group">
-          <label class="control-label">ID de sélection actuel</label>
-          <select2 [data]="selectionData" [cssImport]=true></select2>
-        </div>
-
-        <button type="submit" class="btn-slide" data-hover="Enregistrer" disabled="true">
-          <div>Enregistrer</div>
-        </button>
-        <button type="button" [routerLink]="['/admin/list']" class="btn-slide btn-slide-default" data-hover="Annuler">
-          <div>Annuler</div>
-        </button>
-      </form>
-    </div>
-  </div>
-</div>
