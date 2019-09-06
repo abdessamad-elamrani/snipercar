@@ -1,94 +1,51 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
-  <div class="x_panel">
-    <div class="x_title">
-      <h2>Agent : Test
-      </h2>
-      <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-      <form class="w-100">
-        <div class="form-group">
-          <label for="name"> Nom</label>
-          <input [(ngModel)]="agent.lastname" name="lastname" type="text" class="form-control" maxlength="20" required
-            disabled>
-        </div>
-        <div class="form-group">
-          <label for="firstname"> Prénom</label>
-          <input [(ngModel)]="agent.firstname" name="firstname" type="text" class="form-control" maxlength="20" required
-            disabled>
-        </div>
-        <div class="form-group">
-          <label for="username"> Username</label>
-          <input [(ngModel)]="agent.username" name="username" type="text" class="form-control" required disabled>
-        </div>
-        <div class="form-group">
-          <label for="email"> Mail</label>
-          <input [(ngModel)]="agent.email" name="email" type="email" class="form-control" required disabled>
-        </div>
-        <div class="form-check">
-          <label class="el-switch" style="font-size:100%">
-            <input type="checkbox" [(ngModel)]="agent.emailNotif" id="emailNotif" name="agent.emailNotif" disabled>
-            <span class="el-switch-style"></span>
-          </label>
-          <label class="ml-1" for="emailNotif">mail notification</label>
-        </div>
-        <div class="form-group">
-          <label for="password"> Mot de passe</label>
-          <input [(ngModel)]="agent.password" name="password" #password="ngModel" type="password" class="form-control"
-            maxlength="20" required disabled>
-        </div>
-        <div class="form-group">
-          <label for="phone"> Mobile</label>
-          <input [(ngModel)]="agent.phone" name="phone" type="text" class="form-control" required disabled>
-        </div>
-        <div class="form-group">
-          <label class="control-label">rôle</label>
-          <select [(ngModel)]='agent.role' name="agent.role" class="form-control" required disabled>
-            <option [value]="agent.role">
-              rôle 1
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="salt"> salt</label>
-          <input [(ngModel)]="agent.salt" name="salt" type="text" class="form-control" required disabled>
-        </div>
-        <div class="form-group">
-          <label for="salt"> salt</label>
-          <input [(ngModel)]="agent.salt" name="salt" type="text" class="form-control" required disabled>
-        </div>
-        <div class="form-check">
-          <label class="el-switch" style="font-size:100%">
-            <input type="checkbox" [(ngModel)]="agent.smsNotif" id="smsNotif" name="agent.smsNotif" disabled>
-            <span class="el-switch-style"></span>
-          </label>
-          <label class="ml-1" for="smsNotif">SMS notification</label>
-        </div>
-        <div class="form-group">
-          <label class="control-label">ID de l'entreprise</label>
-          <select [(ngModel)]='agent.companyId' name="agent.companyId" class="form-control" required disabled>
-            <option [value]="agent.companyId">
-              Test
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="control-label">ID de sélection actuel</label>
-          <select [(ngModel)]='agent.currentSelectionId' name="agent.currentSelectionId" class="form-control" required
-            disabled>
-            <option [value]="agent.currentSelectionId">
-              Test
-            </option>
-          </select>
-        </div>
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Agent : {{ agent.name }}
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input [(ngModel)]="agent.name" name="name" type="text" class="form-control" maxlength="20" required disabled>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input [(ngModel)]="agent.username" name="username" type="text" class="form-control" maxlength="20" required
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input [(ngModel)]="agent.phone" name="phone" type="text" class="form-control" required
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input [(ngModel)]="agent.email" name="email" type="text" class="form-control" required
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <input [(ngModel)]="agent.role" name="role" type="text" class="form-control" required
+              disabled>
+          </div>
+          <div *ngIf="agent.role != 'SUPER_AGENT'" class="form-check">
+            <label class="el-switch" style="font-size:80%">
+              <input type="checkbox" [(ngModel)]="agent.active" name="agent.active" disabled>
+              <span class="el-switch-style"></span>
+            </label>
+            <label class="margin-r">Active</label>
+          </div>
 
-        <button type="submit" class="btn-slide btn-slide-danger" [routerLink]="['/agent/edit/1']" data-hover="Modifer">
-          <div>Modifer</div>
-        </button>
-        <button type="button" [routerLink]="['/agent/list']" class="btn-slide btn-slide-default" data-hover="Annuler">
-          <div>Annuler</div>
-        </button>
-      </form>
-    </div>
-  </div>
-</div>
+          <button type="button" class="btn-slide" data-hover="Edit"
+            [routerLink]="isAccountPage ? ['/account/agent/edit'] : ['/agent/edit', agent.id]">
+            <div>Edit</div>
+          </button>
+          <button type="button" *ngIf="!isAccountPage" [routerLink]="['/agent/list']"
+            class="btn-slide btn-slide-default" data-hover="Back to list">
+            <div>Back to list</div>
+          </button>
+        </form>
+      </div>

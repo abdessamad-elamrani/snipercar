@@ -25,3 +25,34 @@ export class Admin {
     this.role = 'ADMIN';
   }
 }
+
+import { Company } from './company';
+import { Selection } from './selection';
+
+export class User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  salt: string;
+  password: string;
+  passwordChange: boolean;
+  newPassword: string;
+  newPasswordConfirm: string;
+  role: string;
+  // company: Company;
+  phone: string;
+  // smsNotif: boolean;
+  // emailNotif: boolean;
+  selections: Selection[];
+  // currectSelection: Selection;
+  active: boolean;
+
+  constructor() {
+    this.passwordChange = false;
+    this.active = true;
+    this.role = 'ADMIN';
+    // this.company = new Company();
+    // this.currectSelection = new Selection();
+  }
+}

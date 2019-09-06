@@ -8,7 +8,6 @@ export class Company {
   expiration: string;
   name: string;
   phone: string;
-  // slaId: number;
   sla: Sla;
 
   constructor() {

@@ -1,7 +1,7 @@
 import { Company } from './company';
 import { Selection } from './selection';
 
-export class User {
+export class Agent {
   id: number;
   name: string;
   username: string;
@@ -23,7 +23,7 @@ export class User {
   constructor() {
     this.passwordChange = false;
     this.active = true;
-    this.role = 'USER';
+    this.role = 'AGENT';
     // this.company = new Company();
     // this.currectSelection = new Selection();
   }

@@ -17,6 +17,8 @@ import com.codevo.snipercar.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	
+	User findByUsername(String username);
+
 	@Query(""
 			+ "SELECT u "
 			+ "FROM User u "
@@ -24,8 +26,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ " u.role IN ('ADMIN', 'SUPER_ADMIN')"
 			+ " AND u.name LIKE CONCAT('%',:name,'%')")
 	Page<User> findAllAdminsForDatatables(Pageable pageable, @Param("name") String name);
+	
+	@Query(""
+			+ "SELECT u "
+			+ "FROM User u "
+			+ "WHERE"
+			+ " u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ " AND u.name LIKE CONCAT('%',:name,'%')")
+	Page<User> findAllAgentsForDatatables(Pageable pageable, @Param("name") String name);
 
-	User findByUsername(String username);
 
 	@Query(""
 			+ "SELECT u "
@@ -34,6 +43,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ " u.role IN ('ADMIN', 'SUPER_ADMIN')"
 			+ " AND u.id = :id")
 	Optional<User> findAdminById(@Param("id") Long id);
+	
+	@Query(""
+			+ "SELECT u "
+			+ "FROM User u "
+			+ "WHERE"
+			+ " u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ " AND u.id = :id")
+	Optional<User> findAgentById(@Param("id") Long id);
 	
 	@Query(""
 			+ "SELECT u.username "

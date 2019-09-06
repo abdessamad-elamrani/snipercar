@@ -4,7 +4,6 @@ export class Filter {
   id: number;
   url: string;
   name: string;
-  // websiteId: number;
   website: Website;
 
   constructor() {
