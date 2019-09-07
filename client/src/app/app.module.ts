@@ -48,6 +48,10 @@ import { AgentDashboardComponent } from './components/agent/agent-dashboard/agen
 import { ExtraComponent } from './components/extra/extra.component';
 
 import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from 'ngx-permissions';
+import { SelectionDatatableComponent } from './components/selection/selection-datatable/selection-datatable.component';
+import { SelectionAddComponent } from './components/selection/selection-add/selection-add.component';
+import { SelectionEditComponent } from './components/selection/selection-edit/selection-edit.component';
+import { SelectionViewComponent } from './components/selection/selection-view/selection-view.component';
 
 export class DefaultIntl extends OwlDateTimeIntl {
   upSecondLabel = 'Ajouter une seconde';
@@ -103,6 +107,10 @@ export class DefaultIntl extends OwlDateTimeIntl {
     AgentViewComponent,
     AgentDashboardComponent,
     ExtraComponent,
+    SelectionDatatableComponent,
+    SelectionAddComponent,
+    SelectionEditComponent,
+    SelectionViewComponent,
   ],
   imports: [
     BrowserModule,

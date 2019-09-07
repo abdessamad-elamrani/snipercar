@@ -3,6 +3,7 @@ package com.codevo.snipercar.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,16 +18,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "company")
 @Getter
 @Setter
-@ToString(exclude = { "users" })
+@ToString//(exclude = { "users" })
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Company {
 
 	@Id
@@ -45,23 +48,23 @@ public class Company {
 	@Column(name = "phone", nullable = false)
 	private String phone;
 
-	@OneToMany(mappedBy = "company")
-	private List<User> users;
+//	@OneToMany(mappedBy = "company")
+//	private List<User> users;
 
 	@ManyToOne
 	@JoinColumn(name = "sla_id")
 	private Sla sla;
 
 	@Column(name = "expiration")
-	//@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern="yyyy-MM-dd")
+	//@Temporal(TemporalType.TIMESTAMP)
 	private Date expiration;
 
 	@Column(name = "active", nullable = false)
 	private Boolean active;
 
-	public Company() {
-		this.users = new ArrayList<>();
-	}
+//	public Company() {
+////		this.users = new ArrayList<>();
+//	}
 
 }

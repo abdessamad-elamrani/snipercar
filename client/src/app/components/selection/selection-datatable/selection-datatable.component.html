@@ -1,0 +1,88 @@
+<!-- start filter -->
+<div class="col-sm-12 col-xs-12 col-md-12 col-lg-3 pull-right ">
+    <div class="x_panel filterFixed">
+      <div class="x_title">
+        <h2>Filtre</h2>
+        <ul class="nav navbar-right panel_toolbox hidden-lg hidden-md">
+          <li>
+            <a class="collapse-filter" data-toggle="collapse" href=".details">
+              <i class="fa fa-chevron-down"></i>
+            </a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content panel_filter details collapse">
+        <form (ngSubmit)='onFilter()'>
+  
+          <div class="form-group">
+            <label for="select">Name</label>
+            <input [(ngModel)]="filter.name" name="name" type="text" class="form-control">
+          </div>
+  
+          <div class="col-md-12 col-sm-12 col-xs-12 marginTopMedium">
+            <div class="btnFixed">
+              <button type="submit" class="btn-slide" data-hover="Search">
+                <div>Search</div>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- end filter  -->
+  
+  <!-- start datatable -->
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel ">
+      <div class="x_title">
+        <h2>Selections
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content ">
+        <div class="btn-group" style="float: right;">
+          <button routerLink="/selection/add" class="btn btnTopFix btn-tool">
+            Add
+          </button>
+        </div>
+        <table datatable [dtOptions]="dtOptions" class="table table-striped w-100">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Owner</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <!-- <tbody>
+            <tr *ngFor="let selection of selections" id="selection_{{ selection.id }}">
+              <th>
+                <label class="el-switch" style="font-size:80%">
+                  <input type="checkbox" name="checkboxs[]" value="{{  selection.id }}" [checked]="selectedAll" (change)="onCheckChange($event)">
+                  <span class="el-switch-style"></span>
+                </label>
+              </th>
+              <td>{{ selection.name }}</td>
+              <td>{{ selection.owner }}</td>
+              <td>
+                <a [routerLink]="['/selection/view', selection.id]" class="btn btnDelete">
+                  <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                </a>
+                <a [routerLink]="['/selection/edit', selection.id]" class="btn btnDelete">
+                  <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                </a>
+                <button class="btn btnDelete" (click)="onDelete(selection.id)">
+                  <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="selections?.length == 0">
+              <td colspan="99" class="no-data-available">No Data !</td>
+            </tr>
+          </tbody> -->
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- end datatable -->

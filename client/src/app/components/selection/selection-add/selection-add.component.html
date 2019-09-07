@@ -1,0 +1,29 @@
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>New Selection
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input [(ngModel)]="selection.name" name="name" type="text" class="form-control" maxlength="50" required>
+        </div>
+        <div class="form-group">
+          <label for="owner">Owner</label>
+          <input [(ngModel)]="selection.user.name" name="owner" type="text" class="form-control" disabled>
+        </div>
+
+        <button type="submit" class="btn-slide" data-hover="Save"
+          [disabled]="form.invalid">
+          <div>Save</div>
+        </button>
+        <button type="button" [routerLink]="['/selection/list']" 
+          class="btn-slide btn-slide-default" data-hover="Cancel">
+          <div>Cancel</div>
+        </button>
+      </form>
+    </div>
+  </div>

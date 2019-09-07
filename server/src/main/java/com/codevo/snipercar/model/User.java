@@ -25,12 +25,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.*;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Entity
 @Table(name = "user")
 @Getter
 @Setter
 @ToString(exclude = { "selections" })
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
 	@Id
@@ -74,9 +79,13 @@ public class User {
 	@Column(name = "emailNotif", nullable = false)
 	private Boolean emailNotif = false;
 
-	@OneToMany(mappedBy = "user")
-	private List<Selection> selections;
+//	//@JsonBackReference
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "user")
+//	private List<Selection> selections;
 
+	//@JsonBackReference
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "current_selection_id", referencedColumnName = "id", nullable = true)
 	private Selection currentSelection;

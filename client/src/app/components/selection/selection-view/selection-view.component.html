@@ -1,0 +1,31 @@
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Selection : {{ selection.name }}
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <form class="w-100">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input [(ngModel)]="selection.name" name="name" type="text" class="form-control" maxlength="50" required
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="latency">Owner</label>
+            <input [(ngModel)]="selection.user.name" name="owner" type="text" class="form-control"
+              disabled>
+          </div>
+
+          <button type="button" class="btn-slide" 
+            [routerLink]="['/selection/edit', selection.id]" data-hover="Edit">
+            <div>Edit</div>
+          </button>
+          <button type="button" class="btn-slide btn-slide-default" 
+            [routerLink]="['/selection/list']" data-hover="Back to list">
+            <div>Back to list</div>
+          </button>
+        </form>
+      </div>
+    </div>

@@ -2,6 +2,7 @@ package com.codevo.snipercar.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.validation.constraints.Min;
 
 import lombok.*;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Entity
 @Table(name = "sla")
 @Getter
@@ -22,6 +25,7 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 public class Sla {
 
 	@Id
@@ -45,7 +49,7 @@ public class Sla {
 	@Min(0)
 	private Integer price;
 
-	public Sla() {
-
-	}
+//	public Sla() {
+//
+//	}
 }

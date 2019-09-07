@@ -2,6 +2,7 @@ package com.codevo.snipercar.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.persistence.Table;
 
 import lombok.*;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Entity
 @Table(name = "website")
 @Getter
@@ -20,6 +23,8 @@ import lombok.*;
 @ToString  
 // (exclude = { "filters" })
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Website {
 
 	@Id
@@ -35,14 +40,14 @@ public class Website {
 //	@OneToMany(mappedBy = "website")
 //	private List<Filter> filters = new ArrayList<>();;
 
-	public Website() { 
-//		this.filters = new ArrayList<>();
-	}
-
-	public Website(String name, String url) {
-		this.name = name;
-		this.url = url;
-//		this.filters = new ArrayList<>();
-	}
+//	public Website() { 
+////		this.filters = new ArrayList<>();
+//	}
+//
+//	public Website(String name, String url) {
+//		this.name = name;
+//		this.url = url;
+////		this.filters = new ArrayList<>();
+//	}
 
 }

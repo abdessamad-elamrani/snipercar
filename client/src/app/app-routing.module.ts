@@ -7,6 +7,10 @@ import { SlaAddComponent } from './components/sla/sla-add/sla-add.component';
 import { SlaEditComponent } from './components/sla/sla-edit/sla-edit.component';
 import { SlaViewComponent } from './components/sla/sla-view/sla-view.component';
 import { SlaDatatableComponent } from './components/sla/sla-datatable/sla-datatable.component';
+import { SelectionAddComponent } from './components/selection/selection-add/selection-add.component';
+import { SelectionEditComponent } from './components/selection/selection-edit/selection-edit.component';
+import { SelectionViewComponent } from './components/selection/selection-view/selection-view.component';
+import { SelectionDatatableComponent } from './components/selection/selection-datatable/selection-datatable.component';
 import { FilterAddComponent } from './components/filter/filter-add/filter-add.component';
 import { FilterEditComponent } from './components/filter/filter-edit/filter-edit.component';
 import { FilterViewComponent } from './components/filter/filter-view/filter-view.component';
@@ -158,23 +162,23 @@ const routes: Routes = [
       { path: 'add', component: SlaAddComponent }
     ]
   },
-  // {
-  //   path: 'selection',
-  //   canActivate: [AuthGuard, NgxPermissionsGuard],
-  //   data: {
-  //     permissions: {
-  //       only: ['ROLE_ADMIN', 'ROLE_AGENT'],
-  //       redirectTo: ''
-  //     }
-  //   },
-  //   children: [
-  //     { path: '', redirectTo: 'list', pathMatch: 'full' },
-  //     { path: 'list', component: SelectionDatatableComponent },
-  //     { path: 'view/:id', component: SelectionViewComponent },
-  //     { path: 'edit/:id', component: SelectionEditComponent },
-  //     { path: 'add', component: SelectionAddComponent }
-  //   ]
-  // },
+  {
+    path: 'selection',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_ADMIN', 'ROLE_AGENT'],
+        redirectTo: ''
+      }
+    },
+    children: [
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'list', component: SelectionDatatableComponent },
+      { path: 'view/:id', component: SelectionViewComponent },
+      { path: 'edit/:id', component: SelectionEditComponent },
+      { path: 'add', component: SelectionAddComponent }
+    ]
+  },
   { path: 'extra', component: ExtraComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: ErrorComponent }

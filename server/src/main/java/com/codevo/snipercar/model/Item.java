@@ -2,6 +2,7 @@ package com.codevo.snipercar.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,12 +19,16 @@ import javax.persistence.UniqueConstraint;
 
 import lombok.*;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Entity
 @Table(name = "item", uniqueConstraints = { @UniqueConstraint(columnNames = { "filter_id", "ref" }) })
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Item {
 
 	@Id
@@ -49,25 +54,25 @@ public class Item {
 
 	@Column(name = "created_at")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+	private Date createdAt = new Date();
 
 	@Column(name = "updated_at")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date updatedAt;
+	private Date updatedAt = new Date();
 
-	public Item() {
-		this.createdAt = new Date();
-		this.updatedAt = new Date();
-	}
-
-	public Item(Filter filter, String ref, String title, String url, String body) {
-		this.filter = filter;
-		this.ref = ref;
-		this.title = title;
-		this.url = url;
-		this.body = body;
-		this.createdAt = new Date();
-		this.updatedAt = new Date();
-	}
+//	public Item() {
+//		this.createdAt = new Date();
+//		this.updatedAt = new Date();
+//	}
+//
+//	public Item(Filter filter, String ref, String title, String url, String body) {
+//		this.filter = filter;
+//		this.ref = ref;
+//		this.title = title;
+//		this.url = url;
+//		this.body = body;
+//		this.createdAt = new Date();
+//		this.updatedAt = new Date();
+//	}
 
 }

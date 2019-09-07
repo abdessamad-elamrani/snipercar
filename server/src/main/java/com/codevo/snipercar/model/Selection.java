@@ -20,12 +20,17 @@ import javax.persistence.Table;
 
 import lombok.*;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Entity
 @Table(name = "selection")
 @Getter
 @Setter
 @ToString(exclude = { "filters" })
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Selection {
 
 	@Id
@@ -35,6 +40,7 @@ public class Selection {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+//	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -44,8 +50,8 @@ public class Selection {
 			@JoinColumn(name = "filter_id") })
 	private Set<Filter> filters;
 
-	public Selection() {
-		this.filters = new HashSet<>();
-	}
+//	public Selection() {
+//		this.filters = new HashSet<>();
+//	}
 
 }
