@@ -81,6 +81,9 @@ public class AgentController {
 	private UserRepository userRepository;
 
 	@Autowired
+	private SelectionRepository selectionRepository;
+
+	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
@@ -106,14 +109,15 @@ public class AgentController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<User> create(@Valid @RequestBody User user) throws Exception {
 
-		if(user.getNewPassword().isEmpty()) {
+		if (user.getNewPassword().isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty password");
 		}
-		if(!user.getNewPassword().equals(user.getNewPasswordConfirm())) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "new password mismatch " + user.getNewPassword() + "!=" + user.getNewPasswordConfirm());
+		if (!user.getNewPassword().equals(user.getNewPasswordConfirm())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"new password mismatch " + user.getNewPassword() + "!=" + user.getNewPasswordConfirm());
 		}
 		user.setPassword(bcryptEncoder.encode(user.getNewPassword()));
-		
+
 		return ResponseEntity.ok(userRepository.save(user));
 	}
 
@@ -142,11 +146,12 @@ public class AgentController {
 		}
 
 		if (user.getPasswordChange()) {
-			if(user.getNewPassword().isEmpty()) {
+			if (user.getNewPassword().isEmpty()) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty password");
 			}
-			if(!user.getNewPassword().equals(user.getNewPasswordConfirm())) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "new password mismatch " + user.getNewPassword() + "!=" + user.getNewPasswordConfirm());
+			if (!user.getNewPassword().equals(user.getNewPasswordConfirm())) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"new password mismatch " + user.getNewPassword() + "!=" + user.getNewPasswordConfirm());
 			}
 			user.setPassword(bcryptEncoder.encode(user.getNewPassword()));
 		}
@@ -180,49 +185,57 @@ public class AgentController {
 	}
 
 	@RequestMapping(value = "/dashboard/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> readDashboard(
-			@PathVariable(value = "id") Long id)
-			throws Exception {
+	public ResponseEntity<?> readDashboard(@PathVariable(value = "id") Long id) throws Exception {
 
 		Optional<User> OptionalUser = userRepository.findAgentById(id);
 		if (!OptionalUser.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for this id :: " + id);
 		}
-		
+
 		User user = OptionalUser.get();
 
-		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("smsNotif", user.getSmsNotif());
-		map.put("smsNotif", user.getEmailNotif());
+		map.put("emailNotif", user.getEmailNotif());
+		map.put("currentSelection", user.getCurrentSelection());
+		map.put("selections", selectionRepository.findByAgentId(id));
 
-		return ResponseEntity.ok(userRepository.save(user));
+		return ResponseEntity.ok(map);
 	}
-	
-	@RequestMapping(value = "/dashboard/{id}/{smsNotif}/{emailNotif}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateDashboard(
-			@PathVariable(value = "id") Long id
-			, @PathVariable(value = "smsNotif") Boolean smsNotif
-			, @PathVariable(value = "emailNotif") Boolean emailNotif)
-					throws Exception {
-		
+
+	@RequestMapping(value = "/dashboard/{id}/{smsNotif}/{emailNotif}/{currentSelectionId}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateDashboard(@PathVariable(value = "id") Long id,
+			@PathVariable(value = "smsNotif") Boolean smsNotif, @PathVariable(value = "emailNotif") Boolean emailNotif,
+			@PathVariable(value = "currentSelectionId") Long currentSelectionId) throws Exception {
+
 		Optional<User> OptionalUser = userRepository.findAgentById(id);
 		if (!OptionalUser.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for this id :: " + id);
 		}
-		
+
 		User user = OptionalUser.get();
 		user.setSmsNotif(smsNotif);
 		user.setEmailNotif(emailNotif);
-		
+		if (currentSelectionId > 0) {
+			Optional<Selection> OptionalSelection = selectionRepository.findById(currentSelectionId);
+			if (!OptionalSelection.isPresent()) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+						"Selection not found for this id :: " + currentSelectionId);
+			}
+			user.setCurrentSelection(OptionalSelection.get());
+		} else {
+			user.setCurrentSelection(null);
+		}
+
 		userRepository.save(user);
-		
-		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("smsNotif", user.getSmsNotif());
-		map.put("smsNotif", user.getEmailNotif());
-		
-		return ResponseEntity.ok(userRepository.save(user));
+		map.put("emailNotif", user.getEmailNotif());
+		map.put("currentSelection", user.getCurrentSelection());
+		map.put("selections", selectionRepository.findByAgentId(id));
+
+		return ResponseEntity.ok(map);
 	}
-	
-	
 
 }

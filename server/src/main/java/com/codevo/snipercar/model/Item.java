@@ -65,14 +65,14 @@ public class Item {
 //		this.updatedAt = new Date();
 //	}
 //
-//	public Item(Filter filter, String ref, String title, String url, String body) {
-//		this.filter = filter;
-//		this.ref = ref;
-//		this.title = title;
-//		this.url = url;
-//		this.body = body;
-//		this.createdAt = new Date();
-//		this.updatedAt = new Date();
-//	}
+	public Item(Filter filter, String ref, String title, String url, String body) {
+		this.filter = filter;
+		this.ref = ref;
+		this.title = title;
+		this.url = url;
+		this.body = body;
+		this.createdAt = new Date();
+		this.updatedAt = new Date();
+	}
 
 }

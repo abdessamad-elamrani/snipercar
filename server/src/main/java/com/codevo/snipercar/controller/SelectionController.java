@@ -78,6 +78,9 @@ public class SelectionController {
 	@Autowired
 	private SelectionRepository selectionRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
@@ -145,6 +148,17 @@ public class SelectionController {
 	public ResponseEntity<List<Selection>> readForSelect2() throws Exception {
 
 		return ResponseEntity.ok(selectionRepository.findAll());
+	}
+	
+	@RequestMapping(value = "/agent/{agentId}", method = RequestMethod.GET)
+	public ResponseEntity<List<Selection>> readAgentSelections(@PathVariable(value = "agentId") Long agentId) throws Exception {
+
+		Optional<User> agent = userRepository.findById(agentId);
+		if (!agent.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Agent not found for this id :: " + agentId);
+		}
+		
+		return ResponseEntity.ok(selectionRepository.findByAgentId(agentId));
 	}
 
 }

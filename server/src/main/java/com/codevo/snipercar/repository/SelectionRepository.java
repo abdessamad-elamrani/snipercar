@@ -25,5 +25,14 @@ public interface SelectionRepository extends JpaRepository<Selection, Long>{
 			+ "SELECT s.id, s.name "
 			+ "FROM Selection s ")
 	List<Selection> findAllForSelect2();
+	
+	@Query(""
+			+ "SELECT s "
+			+ "FROM Selection s "
+			+ "INNER JOIN s.user u "
+			+ "WHERE "
+			+ " u.role LIKE '%ADMIN%' "
+			+ "	OR u.id = :agentId")
+	List<Selection> findByAgentId(@Param("agentId") Long agentId);
 
 }

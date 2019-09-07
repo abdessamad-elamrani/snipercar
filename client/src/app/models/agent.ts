@@ -18,6 +18,7 @@ export class Agent {
   emailNotif: boolean;
   selections: Selection[];
   currectSelection: Selection;
+  // currectSelectionId: number;
   active: boolean;
 
   constructor() {
