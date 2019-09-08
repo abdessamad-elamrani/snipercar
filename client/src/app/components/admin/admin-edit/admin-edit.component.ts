@@ -46,7 +46,6 @@ export class AdminEditComponent implements OnInit {
         '/api/admin/' + id
       ).subscribe((admin: User) => {
         this.admin = admin;
-        console.error('this.admin', this.admin);
         this.http.get(
           '/api/admin/reservedUsernames/' + id
         ).subscribe((usernames: any[]) => {

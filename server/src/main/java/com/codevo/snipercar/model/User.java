@@ -1,5 +1,6 @@
 package com.codevo.snipercar.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +27,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.*;
 
 import com.fasterxml.jackson.annotation.*;
+import com.google.gson.annotations.Expose;
+//import org.fasterxml.jackson.annotate.JsonIgnore;
+//import org.codehaus.jackson.annotate.*;
 
 @Entity
 @Table(name = "user")
@@ -51,6 +55,7 @@ public class User {
 	@Column(name = "salt", nullable = false)
 	private String salt = "snipercar_salt";
 
+	@JsonIgnore
 	@Column(name = "password", nullable = false)
 	private String password;
 	@Transient
@@ -79,13 +84,11 @@ public class User {
 	@Column(name = "emailNotif", nullable = false)
 	private Boolean emailNotif = false;
 
-//	//@JsonBackReference
-//	@JsonIgnore
-//	@OneToMany(mappedBy = "user")
-//	private List<Selection> selections;
+	@JsonBackReference
+	@OneToMany(mappedBy = "user")
+	private List<Selection> selections;
 
-	//@JsonBackReference
-	@JsonIgnore
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name = "current_selection_id", referencedColumnName = "id", nullable = true)
 	private Selection currentSelection;

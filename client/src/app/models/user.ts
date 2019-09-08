@@ -17,7 +17,7 @@ export class User {
   smsNotif: boolean;
   emailNotif: boolean;
   selections: Selection[];
-  currectSelection: Selection;
+  currentSelection: Selection;
   active: boolean;
 
   constructor() {
@@ -25,6 +25,6 @@ export class User {
     this.active = true;
     this.role = 'USER';
     // this.company = new Company();
-    // this.currectSelection = new Selection();
+    // this.currentSelection = new Selection();
   }
 }

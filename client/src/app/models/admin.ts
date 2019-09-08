@@ -16,11 +16,11 @@ export class Admin {
   // companyId: number;
   // company: Company;
   // currentSelectionId: number;
-  // currectSelection: Selection;
+  // currentSelection: Selection;
 
   constructor() {
     // this.company = new Company();
-    // this.currectSelection = new Selection();
+    // this.currentSelection = new Selection();
     this.passwordChange = false;
     this.role = 'ADMIN';
   }
@@ -45,7 +45,7 @@ export class User {
   // smsNotif: boolean;
   // emailNotif: boolean;
   selections: Selection[];
-  // currectSelection: Selection;
+  // currentSelection: Selection;
   active: boolean;
 
   constructor() {
@@ -53,6 +53,6 @@ export class User {
     this.active = true;
     this.role = 'ADMIN';
     // this.company = new Company();
-    // this.currectSelection = new Selection();
+    // this.currentSelection = new Selection();
   }
 }

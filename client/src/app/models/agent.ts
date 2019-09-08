@@ -17,8 +17,8 @@ export class Agent {
   smsNotif: boolean;
   emailNotif: boolean;
   selections: Selection[];
-  currectSelection: Selection;
-  // currectSelectionId: number;
+  currectSecurrentSelectionlection: Selection;
+  // currentSelectionId: number;
   active: boolean;
 
   constructor() {
@@ -26,6 +26,6 @@ export class Agent {
     this.active = true;
     this.role = 'AGENT';
     // this.company = new Company();
-    // this.currectSelection = new Selection();
+    // this.currentSelection = new Selection();
   }
 }

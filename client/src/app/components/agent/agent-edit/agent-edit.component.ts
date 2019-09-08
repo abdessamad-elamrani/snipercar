@@ -46,7 +46,6 @@ export class AgentEditComponent implements OnInit {
         '/api/agent/' + id
       ).subscribe((agent: User) => {
         this.agent = agent;
-        console.error('this.agent', this.agent);
         this.http.get(
           '/api/agent/reservedUsernames/' + id
         ).subscribe((usernames: any[]) => {

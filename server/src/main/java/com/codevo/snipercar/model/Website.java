@@ -18,13 +18,13 @@ import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "website")
-@Getter
-@Setter
-@ToString  
-// (exclude = { "filters" })
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
+//@Getter
+//@Setter
+//@ToString  
+//// (exclude = { "filters" })
+//@EqualsAndHashCode
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class Website {
 
 	@Id
@@ -49,5 +49,26 @@ public class Website {
 //		this.url = url;
 ////		this.filters = new ArrayList<>();
 //	}
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 }

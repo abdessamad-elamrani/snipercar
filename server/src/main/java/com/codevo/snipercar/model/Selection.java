@@ -20,7 +20,11 @@ import javax.persistence.Table;
 
 import lombok.*;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "selection")
@@ -40,7 +44,7 @@ public class Selection {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-//	@JsonManagedReference
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;

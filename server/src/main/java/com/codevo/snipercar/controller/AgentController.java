@@ -35,6 +35,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,12 +56,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.codevo.snipercar.model.*;
 import com.codevo.snipercar.repository.*;
 import com.codevo.snipercar.component.*;
 import com.codevo.snipercar.service.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,12 +128,15 @@ public class AgentController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> read(@PathVariable(value = "id") Long id) throws Exception {
 
-//		Pageable pageable = PageRequest.of(0, 1);
 		Optional<User> user = userRepository.findAgentById(id);
 		if (!user.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for this id :: " + id);
 		}
-
+		
+//		ObjectMapper mapper = new ObjectMapper();
+//		String jsonInString = mapper.writeValueAsString(user.get());
+//		return mapper.readValue(jsonInString, User.class);
+		
 		return ResponseEntity.ok(user.get());
 	}
 
