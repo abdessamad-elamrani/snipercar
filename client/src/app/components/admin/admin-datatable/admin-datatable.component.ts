@@ -1,3 +1,4 @@
+import { AuthService } from '../../../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { DataTablesResponse } from './../../../models/DataTablesResponse';
 import { HttpClient } from '@angular/common/http';
@@ -7,6 +8,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { PNotifyService } from '../../../services/pnotify.service';
+import { NgxRolesService, NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-admin-datatable',
@@ -42,6 +44,7 @@ export class AdminDatatableComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private router: Router,
     private zone: NgZone,
+    private authService: AuthService,
     pnotifyService: PNotifyService
   ) {
     // this.filterForm = new FormGroup();
@@ -77,17 +80,24 @@ export class AdminDatatableComponent implements OnInit, OnDestroy {
               phone: admin.phone,
               role: admin.role,
               active: admin.active ? 'Yes' : 'No',
-              actions: `
-                <a class="btn btnAction btnNavigate" data-url="/admin/view/${admin.id}">
-                  <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-                </a>
-                <a class="btn btnAction btnNavigate" data-url="/admin/edit/${admin.id}">
-                  <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-                </a>
-                <button class="btn btnAction btnDelete" data-admin-id="${admin.id}">
-                  <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
-              `
+              actions: () => {
+                let actions = `
+                  <a class="btn btnAction btnNavigate" data-url="/admin/view/${admin.id}">
+                    <i class="fa fa-search fa-2x" aria-hidden="true"></i>
+                  </a>
+                  <a class="btn btnAction btnNavigate" data-url="/admin/edit/${admin.id}">
+                    <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                  </a>
+                `;
+                if (this.authService.sessionContextValue.user.id !== admin.id) {
+                  actions += `
+                    <button class="btn btnAction btnDelete" data-admin-id="${admin.id}">
+                      <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                    </button>
+                  `;
+                }
+                return actions;
+              }
             });
           });
           callback({
@@ -196,7 +206,7 @@ export class AdminDatatableComponent implements OnInit, OnDestroy {
         },
         error => {
           this.pnotify.error({
-            title: 'Erreur',
+            title: 'Error',
             text: 'An error has occured !',
             stack: {
               firstpos1: 70, firstpos2: 10,

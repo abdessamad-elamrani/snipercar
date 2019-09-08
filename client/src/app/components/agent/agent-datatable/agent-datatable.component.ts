@@ -73,9 +73,10 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
             dta.push({
               id: agent.id,
               name: agent.name,
+              company: agent.company ? agent.company.name : '',
+              role: agent.role,
               email: agent.email,
               phone: agent.phone,
-              role: agent.role,
               active: agent.active ? 'Yes' : 'No',
               actions: `
                 <a class="btn btnAction btnNavigate" data-url="/agent/view/${agent.id}">
@@ -102,9 +103,10 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
       },
       columns: [
         { data: 'name' },
+        { data: 'company' },
+        { data: 'role' },
         { data: 'email' },
         { data: 'phone' },
-        { data: 'role' },
         { data: 'active' },
         { data: 'actions' },
       ],
@@ -196,7 +198,7 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
         },
         error => {
           this.pnotify.error({
-            title: 'Erreur',
+            title: 'Error',
             text: 'An error has occured !',
             stack: {
               firstpos1: 70, firstpos2: 10,

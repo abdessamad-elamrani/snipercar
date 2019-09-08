@@ -1,35 +1,7 @@
-export class Admin {
-  id: number;
-  active: boolean;
-  email: string;
-  // emailNotif: boolean;
-  fullname: string;
-  password: string;
-  passwordChange: boolean;
-  newPassword: string;
-  newPasswordConfirm: string;
-  phone: string;
-  role: string;
-  salt: string;
-  // smsNotif: boolean;
-  username: string;
-  // companyId: number;
-  // company: Company;
-  // currentSelectionId: number;
-  // currentSelection: Selection;
-
-  constructor() {
-    // this.company = new Company();
-    // this.currentSelection = new Selection();
-    this.passwordChange = false;
-    this.role = 'ADMIN';
-  }
-}
-
 import { Company } from './company';
 import { Selection } from './selection';
 
-export class User {
+export class Admin {
   id: number;
   name: string;
   username: string;
@@ -40,12 +12,13 @@ export class User {
   newPassword: string;
   newPasswordConfirm: string;
   role: string;
-  // company: Company;
+  company: Company;
   phone: string;
-  // smsNotif: boolean;
-  // emailNotif: boolean;
+  smsNotif: boolean;
+  emailNotif: boolean;
   selections: Selection[];
-  // currentSelection: Selection;
+  currentSelection: Selection;
+  // currentSelectionId: number;
   active: boolean;
 
   constructor() {

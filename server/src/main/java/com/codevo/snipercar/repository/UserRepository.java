@@ -56,6 +56,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ "SELECT u.username "
 			+ "FROM User u "
 			+ "WHERE u.id <> :id")
-	List<Set> findAllReservedUsernames(@Param("id") Long id);
+	List<String> findAllReservedUsernames(@Param("id") Long id);
 
 }

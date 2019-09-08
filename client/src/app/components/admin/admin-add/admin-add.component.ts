@@ -37,9 +37,7 @@ export class AdminAddComponent implements OnInit {
     this.http.get(
       '/api/admin/reservedUsernames/0'
     ).subscribe((usernames: any[]) => {
-      for (let i = 0; i < usernames.length; i++) {
-        this.reservedUsernames.push(usernames[i].username);
-      }
+      this.reservedUsernames = usernames;
     });
     this.roles = {
       ADMIN: 'ADMIN',
@@ -82,8 +80,8 @@ export class AdminAddComponent implements OnInit {
       },
       (error) => {
         this.pnotify.error({
-          title: 'Erreur',
-          text: 'Une erreur est survenue !',
+          title: 'Error',
+          text: 'An Error has occured',
           stack: {
             firstpos1: 70, firstpos2: 10,
             modal: true,

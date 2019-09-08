@@ -9,34 +9,34 @@
         <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
           <div class="form-group">
             <label for="name">Name</label>
-            <input [(ngModel)]="agent.name" name="name" type="text" class="form-control" maxlength="20" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input [(ngModel)]="agent.username" name="username" type="text" class="form-control" maxlength="20" required
-              disabled>
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone</label>
-            <input [(ngModel)]="agent.phone" name="phone" type="text" class="form-control" required
-              disabled>
+            <input [(ngModel)]="agent.name" name="name" type="text" class="form-control" maxlength="20" disabled>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input [(ngModel)]="agent.email" name="email" type="text" class="form-control" required
-              disabled>
+            <input [(ngModel)]="agent.email" name="email" type="text" class="form-control" maxlength="40" disabled>
           </div>
           <div class="form-group">
-            <label for="role">Role</label>
-            <input [(ngModel)]="agent.role" name="role" type="text" class="form-control" required
-              disabled>
+            <label for="phone">Phone</label>
+            <input [(ngModel)]="agent.phone" name="phone" type="text" class="form-control" maxlength="40" disabled>
           </div>
-          <div *ngIf="agent.role != 'SUPER_AGENT'" class="form-check">
+          <div class="form-group">
+            <label for="name">Company</label>
+            <input [(ngModel)]="agent.company" name="company" type="text" class="form-control" maxlength="40" disabled>
+          </div>
+          <div class="form-group">
+            <label for="name">Role</label>
+            <input [(ngModel)]="agent.role" name="role" type="text" class="form-control" maxlength="40" disabled>
+          </div>
+          <div class="form-check">
             <label class="el-switch" style="font-size:80%">
               <input type="checkbox" [(ngModel)]="agent.active" name="agent.active" disabled>
               <span class="el-switch-style"></span>
             </label>
             <label class="margin-r">Active</label>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input [(ngModel)]="agent.username" name="username" type="text" class="form-control" maxlength="40" disabled>
           </div>
 
           <button type="button" class="btn-slide" data-hover="Edit"

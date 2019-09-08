@@ -72,8 +72,8 @@ export class AgentDashboardComponent implements OnInit {
       },
       (error) => {
         this.pnotify.error({
-          title: 'Erreur',
-          text: 'Une erreur est survenue !',
+          title: 'Error',
+          text: 'An Error has occured',
           stack: {
             firstpos1: 70, firstpos2: 10,
             modal: true,

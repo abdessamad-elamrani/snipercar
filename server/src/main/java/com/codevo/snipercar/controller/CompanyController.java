@@ -97,6 +97,12 @@ public class CompanyController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ResponseEntity<List<Company>> readAll() throws Exception {
+		
+		return ResponseEntity.ok(companyRepository.findAll());
+	}
+	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Company> create(@Valid @RequestBody Company company)
 			throws Exception {

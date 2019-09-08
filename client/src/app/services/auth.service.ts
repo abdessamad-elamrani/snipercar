@@ -62,4 +62,8 @@ export class AuthService {
       }
       return false;
     }
+
+    public hasRole(role: string) {
+      return this.roleService.getRole(role) ? true : false;
+    }
 }

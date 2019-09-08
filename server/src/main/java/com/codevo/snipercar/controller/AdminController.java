@@ -133,14 +133,21 @@ public class AdminController {
 	public ResponseEntity<User> update(@PathVariable(value = "id") Long id, @Valid @RequestBody User user)
 			throws Exception {
 
-		Optional<User> userOrig = userRepository.findAdminById(id);
-		if (!userOrig.isPresent()) {
+		Optional<User> OptionalUser = userRepository.findAdminById(id);
+		if (!OptionalUser.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for this id :: " + id);
 		}
 		if (user.getId() != id) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id mismatch " + user.getId() + "!=" + id);
 		}
 
+		User userOrig = OptionalUser.get();
+		userOrig.setName(user.getName());
+		userOrig.setEmail(user.getEmail());
+		userOrig.setPhone(user.getPhone());
+		userOrig.setRole(user.getRole());
+		userOrig.setActive(user.getActive());
+		userOrig.setUsername(user.getUsername());
 		if (user.getPasswordChange()) {
 			if(user.getNewPassword().isEmpty()) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty password");
@@ -148,10 +155,10 @@ public class AdminController {
 			if(!user.getNewPassword().equals(user.getNewPasswordConfirm())) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "new password mismatch " + user.getNewPassword() + "!=" + user.getNewPasswordConfirm());
 			}
-			user.setPassword(bcryptEncoder.encode(user.getNewPassword()));
+			userOrig.setPassword(bcryptEncoder.encode(user.getNewPassword()));
 		}
 
-		return ResponseEntity.ok(userRepository.save(user));
+		return ResponseEntity.ok(userRepository.save(userOrig));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -174,7 +181,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/reservedUsernames/{id}", method = RequestMethod.GET)
-	public ResponseEntity<List<Set>> readReservedUsernames(@PathVariable(value = "id") Long id) throws Exception {
+	public ResponseEntity<List<String>> readReservedUsernames(@PathVariable(value = "id") Long id) throws Exception {
 
 		return ResponseEntity.ok(userRepository.findAllReservedUsernames(id));
 	}

@@ -16,10 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -44,10 +46,14 @@ public class Selection {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@JsonManagedReference
+//	@JsonManagedReference(value="user_selection")
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@JsonBackReference(value="user_current_selection")
+	@OneToMany(mappedBy = "currentSelection")
+	private List<User> currentUsers;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "selection_filters", joinColumns = { @JoinColumn(name = "selection_id") }, inverseJoinColumns = {

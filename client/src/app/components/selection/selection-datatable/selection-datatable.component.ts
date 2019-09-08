@@ -188,7 +188,7 @@ export class SelectionDatatableComponent implements OnInit, OnDestroy {
         },
         error => {
           this.pnotify.error({
-            title: 'Erreur',
+            title: 'Error',
             text: 'An error has occured !',
             stack: {
               firstpos1: 70, firstpos2: 10,

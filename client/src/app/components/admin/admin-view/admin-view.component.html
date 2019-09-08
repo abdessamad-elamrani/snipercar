@@ -31,7 +31,7 @@
             <input [(ngModel)]="admin.role" name="role" type="text" class="form-control" required
               disabled>
           </div>
-          <div *ngIf="admin.role != 'SUPER_ADMIN'" class="form-check">
+          <div class="form-check">
             <label class="el-switch" style="font-size:80%">
               <input type="checkbox" [(ngModel)]="admin.active" name="admin.active" disabled>
               <span class="el-switch-style"></span>

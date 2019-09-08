@@ -16,8 +16,9 @@ export class AgentEditComponent implements OnInit {
   agent: User;
   isAccountPage: boolean;
   reservedUsernames: string[];
-  roles: {};
-  public rolesData: Array<any>;
+  public rolesData: any[];
+  public companiesData: any[];
+  companies: {};
   pnotify = undefined;
   // ----- Start DatePicker -----------
   dateTimeFilter = (d: Date): boolean => {
@@ -36,10 +37,6 @@ export class AgentEditComponent implements OnInit {
     this.agent = new User();
     this.reservedUsernames = [];
     this.isAccountPage = (this.router.url.indexOf('/account') === 0);
-    this.roles = {
-      AGENT: 'AGENT',
-      SUPER_AGENT: 'AGENT',
-    };
     this.route.params.subscribe(params => {
       const id = this.isAccountPage ? this.user.id : params['id'];
       this.http.get(
@@ -49,9 +46,21 @@ export class AgentEditComponent implements OnInit {
         this.http.get(
           '/api/agent/reservedUsernames/' + id
         ).subscribe((usernames: any[]) => {
-          for (let i = 0; i < usernames.length; i++) {
-            this.reservedUsernames.push(usernames[i].username);
-          }
+          this.reservedUsernames = usernames;
+        });
+        this.http.get(
+          '/api/company'
+        ).subscribe((companies: any[]) => {
+          this.companies = {};
+          this.companiesData = [];
+          companies.forEach((company, index) => {
+            this.companies[company.id] = company;
+            this.companiesData.push({
+              id: company.id,
+              text: company.name,
+              selected: this.agent.company && this.agent.company.id == company.id ? true : false
+            });
+          });
         });
         this.rolesData = [
           {
@@ -73,12 +82,20 @@ export class AgentEditComponent implements OnInit {
   ngOnInit() {
   }
 
+  hasRole(role: string) {
+    return this.authService.hasRole(role);
+  }
+
   roleChanged(e: any) {
-    this.agent.role = this.roles[e.value];
+    this.agent.role = e.value;
+  }
+
+  companyChanged(e: any) {
+    this.agent.company = this.companies[e.value];
   }
 
   onUsernameChange() {
-    this.agent.username = this.agent.username.replace(/\s/g, '');
+    this.agent.username = this.agent.username.replace(' ', '');
   }
 
   onSubmit(): void {
@@ -92,8 +109,8 @@ export class AgentEditComponent implements OnInit {
       },
       (error) => {
         this.pnotify.error({
-          title: 'Erreur',
-          text: 'Une erreur est survenue !',
+          title: 'Error',
+          text: 'An Error has occured',
           stack: {
             firstpos1: 70, firstpos2: 10,
             modal: true,

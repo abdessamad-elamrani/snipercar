@@ -2,8 +2,11 @@ import { AuthService } from './../../../services/auth.service';
 import { User } from './../../../models/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { PNotifyService } from '../../../services/pnotify.service';
+import { Select2OptionData } from 'ng2-select2';
+// import 'select2';
+// import * as $ from 'jquery';
 
 @Component({
   selector: 'app-admin-edit',
@@ -16,8 +19,7 @@ export class AdminEditComponent implements OnInit {
   admin: User;
   isAccountPage: boolean;
   reservedUsernames: string[];
-  roles: {};
-  public rolesData: Array<any>;
+  public rolesData: any[];
   pnotify = undefined;
   // ----- Start DatePicker -----------
   dateTimeFilter = (d: Date): boolean => {
@@ -36,22 +38,17 @@ export class AdminEditComponent implements OnInit {
     this.admin = new User();
     this.reservedUsernames = [];
     this.isAccountPage = (this.router.url.indexOf('/account') === 0);
-    this.roles = {
-      ADMIN: 'ADMIN',
-      SUPER_ADMIN: 'ADMIN',
-    };
     this.route.params.subscribe(params => {
       const id = this.isAccountPage ? this.user.id : params['id'];
       this.http.get(
         '/api/admin/' + id
-      ).subscribe((admin: User) => {
+      ).subscribe((admin: any) => {
+        console.error('admin', admin);
         this.admin = admin;
         this.http.get(
           '/api/admin/reservedUsernames/' + id
         ).subscribe((usernames: any[]) => {
-          for (let i = 0; i < usernames.length; i++) {
-            this.reservedUsernames.push(usernames[i].username);
-          }
+          this.reservedUsernames = usernames;
         });
         this.rolesData = [
           {
@@ -74,17 +71,20 @@ export class AdminEditComponent implements OnInit {
   }
 
   roleChanged(e: any) {
-    this.admin.role = this.roles[e.value];
+    this.admin.role = e.value;
   }
 
   onUsernameChange() {
-    this.admin.username = this.admin.username.replace(/\s/g, '');
+    this.admin.username = this.admin.username.replace(' ', '');
   }
 
   onSubmit(): void {
+    // const headers = new Headers({ 'Content-Type': 'application/json' });
+    // const options = new RequestOptions({ headers: headers });
     this.http.put(
       '/api/admin/' + this.admin.id,
-      this.admin
+      this.admin,
+      // options
     ).subscribe(
       (admin: User) => {
         this.admin = admin;
@@ -92,8 +92,8 @@ export class AdminEditComponent implements OnInit {
       },
       (error) => {
         this.pnotify.error({
-          title: 'Erreur',
-          text: 'Une erreur est survenue !',
+          title: 'Error',
+          text: 'An Error has occured',
           stack: {
             firstpos1: 70, firstpos2: 10,
             modal: true,

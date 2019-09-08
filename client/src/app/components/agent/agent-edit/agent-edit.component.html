@@ -12,20 +12,41 @@
             <input [(ngModel)]="agent.name" name="name" type="text" class="form-control" maxlength="20" required>
           </div>
           <div class="form-group">
-            <label for="username">Username</label>
-            <input [(ngModel)]="agent.username" name="username" type="text" class="form-control" maxlength="40" required
-              (keyup)="onUsernameChange()">
-            <div style="color: red" *ngIf='reservedUsernames.includes(agent.username)'>
-              Reserved username
-            </div>
-          </div>
-          <div class="form-group">
             <label for="email">Email</label>
             <input [(ngModel)]="agent.email" name="email" type="text" class="form-control" maxlength="40" required>
           </div>
           <div class="form-group">
             <label for="phone">Phone</label>
             <input [(ngModel)]="agent.phone" name="phone" type="text" class="form-control" maxlength="40" required>
+          </div>
+          <div class="form-group">
+            <label for="name">Company</label>
+            <select2 class="d-block" [data]="companiesData" [cssImport]=true 
+            (valueChanged)="companyChanged($event)" 
+            [disabled]="!hasRole('ROLE_ADMIN')">
+            </select2>
+          </div>
+          <div class="form-group">
+            <label for="name">Role</label>
+            <select2 class="d-block" [data]="rolesData" [cssImport]=true 
+            (valueChanged)="roleChanged($event)" 
+            [disabled]="!hasRole('ROLE_ADMIN')">
+            </select2>
+          </div>
+          <div class="form-check">
+            <label class="el-switch" style="font-size:80%">
+              <input type="checkbox" [(ngModel)]="agent.active" name="agent.active" [disabled]="!hasRole('ROLE_ADMIN')">
+              <span class="el-switch-style"></span>
+            </label>
+            <label class="margin-r">Active</label>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input [(ngModel)]="agent.username" name="username" type="text" class="form-control" maxlength="40" required
+              (keyup)="onUsernameChange()">
+            <div style="color: red" *ngIf='reservedUsernames.includes(agent.username)'>
+              Reserved username
+            </div>
           </div>
           <div class="form-check">
             <label class="el-switch" style="font-size:80%">
@@ -56,18 +77,6 @@
                 Different from password
               </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="name">Role</label>
-            <select2 class="d-block" [data]="rolesData" [cssImport]=true (valueChanged)="roleChanged($event)">
-            </select2>
-          </div>
-          <div *ngIf="agent.role != 'SUPER_AGENT'" class="form-check">
-            <label class="el-switch" style="font-size:80%">
-              <input type="checkbox" [(ngModel)]="agent.active" name="agent.active" [disabled]="user.role != 'SUPER_AGENT'">
-              <span class="el-switch-style"></span>
-            </label>
-            <label class="margin-r">Active</label>
           </div>
           
           <button type="submit" class="btn-slide" data-hover="Save"

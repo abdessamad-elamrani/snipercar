@@ -15,8 +15,9 @@ export class AgentAddComponent implements OnInit {
   agent: User;
   isAccountPage: boolean;
   reservedUsernames: string[];
-  roles: {};
   public rolesData: Array<any>;
+  public companiesData: any[];
+  companies: {};
   pnotify = undefined;
   // ----- Start DatePicker -----------
   dateTimeFilter = (d: Date): boolean => {
@@ -33,6 +34,9 @@ export class AgentAddComponent implements OnInit {
   ) {
     this.agent = new User();
     this.agent.role = 'AGENT';
+    if (!this.authService.hasRole('ADMIN')) {
+      this.agent.company = this.authService.sessionContextValue.user.company;
+    }
     this.reservedUsernames = [];
     this.http.get(
       '/api/agent/reservedUsernames/0'
@@ -41,10 +45,20 @@ export class AgentAddComponent implements OnInit {
         this.reservedUsernames.push(usernames[i].username);
       }
     });
-    this.roles = {
-      AGENT: 'AGENT',
-      SUPER_AGENT: 'AGENT',
-    };
+    this.http.get(
+      '/api/company'
+    ).subscribe((companies: any[]) => {
+      this.companies = {};
+      this.companiesData = [];
+      companies.forEach((company, index) => {
+        this.companies[company.id] = company;
+        this.companiesData.push({
+          id: company.id,
+          text: company.name,
+          selected: this.agent.company && this.agent.company.id == company.id ? true : false
+        });
+      });
+    });
     this.rolesData = [
       {
         id: 'AGENT',
@@ -63,8 +77,16 @@ export class AgentAddComponent implements OnInit {
   ngOnInit() {
   }
 
+  hasRole(role: string) {
+    return this.authService.hasRole(role);
+  }
+
   roleChanged(e: any) {
-    this.agent.role = this.roles[e.value];
+    this.agent.role = e.value;
+  }
+
+  companyChanged(e: any) {
+    this.agent.company = this.companies[e.value];
   }
 
   onUsernameChange() {
@@ -82,8 +104,8 @@ export class AgentAddComponent implements OnInit {
       },
       (error) => {
         this.pnotify.error({
-          title: 'Erreur',
-          text: 'Une erreur est survenue !',
+          title: 'Error',
+          text: 'An Error has occured',
           stack: {
             firstpos1: 70, firstpos2: 10,
             modal: true,

@@ -18,12 +18,12 @@
         <div class="menu_section ">
           <ul class="nav side-menu">
             <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_SUPER_ADMIN']">
-              <a routerLink="/admin">
+              <a routerLink="/admin/list">
                 <img src="assets/images/icons/admin.svg" alt="" srcset=""> Admin
               </a>
             </li>
             <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
-              <a routerLink="/filter">
+              <a routerLink="/filter/list">
                 <img src="assets/images/icons/search.svg" alt="" srcset=""> Filter
               </a>
             </li>
@@ -33,22 +33,22 @@
               </a>
             </li>
             <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_AGENT']">
-              <a routerLink="/selection">
+              <a routerLink="/selection/list">
                 <img src="assets/images/icons/search.svg" alt="" srcset=""> Selection
               </a>
             </li>
             <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
-              <a routerLink="/sla">
+              <a routerLink="/sla/list">
                 <img src="assets/images/icons/clock.svg" alt="" srcset=""> Sla
               </a>
             </li>
             <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
-              <a routerLink="/company">
+              <a routerLink="/company/list">
                 <img src="assets/images/icons/company.svg" alt="" srcset=""> Company
               </a>
             </li>
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
-              <a routerLink="/agent">
+            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_SUPER_AGENT']">
+              <a routerLink="/agent/list">
                 <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
               </a>
             </li>

@@ -84,11 +84,11 @@ public class User {
 	@Column(name = "emailNotif", nullable = false)
 	private Boolean emailNotif = false;
 
-	@JsonBackReference
+	@JsonBackReference(value="user_selection")
 	@OneToMany(mappedBy = "user")
 	private List<Selection> selections;
 
-	@JsonBackReference
+//	@JsonManagedReference(value="user_current_selection")
 	@OneToOne
 	@JoinColumn(name = "current_selection_id", referencedColumnName = "id", nullable = true)
 	private Selection currentSelection;

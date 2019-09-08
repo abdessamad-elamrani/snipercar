@@ -17,7 +17,7 @@ export class Agent {
   smsNotif: boolean;
   emailNotif: boolean;
   selections: Selection[];
-  currectSecurrentSelectionlection: Selection;
+  currentSelection: Selection;
   // currentSelectionId: number;
   active: boolean;
 

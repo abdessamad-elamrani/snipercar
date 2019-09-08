@@ -95,8 +95,8 @@ export class ExtraComponent implements OnInit {
   }
   onError() {
     this.pnotify.error({
-      title: 'Erreur',
-      text: 'Une erreur est survenue !',
+      title: 'Error',
+      text: 'An Error has occured',
       stack: {
         dir1: 'down',
         firstpos1: 25,
