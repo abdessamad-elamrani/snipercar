@@ -7,6 +7,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { PNotifyService } from '../../../services/pnotify.service';
+import { AuthService } from './../../../services/auth.service';
 
 @Component({
   selector: 'app-agent-datatable',
@@ -17,11 +18,11 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
 
   filter = {
     name: '',
-    description: '',
+    companyId: 0
   };
   staticFilter = {
     name: '',
-    description: '',
+    companyId: 0
   };
 
   @ViewChild(DataTableDirective, { static: false })
@@ -42,9 +43,14 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private router: Router,
     private zone: NgZone,
+    private authService: AuthService,
     pnotifyService: PNotifyService
   ) {
     // this.filterForm = new FormGroup();
+    if (!this.authService.hasRole('ROLE_ADMIN')) {
+      this.filter.companyId = this.authService.sessionContextValue.user.company.id;
+    }
+    this.staticFilter = this.filter;
     this.pnotify = pnotifyService.getPNotify();
   }
 
@@ -78,17 +84,24 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
               email: agent.email,
               phone: agent.phone,
               active: agent.active ? 'Yes' : 'No',
-              actions: `
+              actions: () => {
+                let actions = `
                 <a class="btn btnAction btnNavigate" data-url="/agent/view/${agent.id}">
                   <i class="fa fa-search fa-2x" aria-hidden="true"></i>
                 </a>
                 <a class="btn btnAction btnNavigate" data-url="/agent/edit/${agent.id}">
                   <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
                 </a>
-                <button class="btn btnAction btnDelete" data-agent-id="${agent.id}">
-                  <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
-              `
+                `;
+                if (this.authService.sessionContextValue.user.id !== agent.id) {
+                  actions += `
+                  <button class="btn btnAction btnDelete" data-agent-id="${agent.id}">
+                    <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                  </button>
+                  `;
+                }
+                return actions;
+              }
             });
           });
           callback({

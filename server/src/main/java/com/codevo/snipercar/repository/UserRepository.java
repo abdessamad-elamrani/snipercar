@@ -34,6 +34,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ " u.role IN ('AGENT', 'SUPER_AGENT')"
 			+ " AND u.name LIKE CONCAT('%',:name,'%')")
 	Page<User> findAllAgentsForDatatables(Pageable pageable, @Param("name") String name);
+	
+	@Query(""
+			+ "SELECT u "
+			+ "FROM User u "
+			+ "INNER JOIN u.company c "
+			+ "WHERE"
+			+ " u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ " AND u.name LIKE CONCAT('%',:name,'%')"
+			+ " AND c.id = :companyId")
+	Page<User> findAllAgentsForDatatables(Pageable pageable, @Param("name") String name, @Param("companyId") Long companyId);
 
 
 	@Query(""

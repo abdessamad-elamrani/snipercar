@@ -94,11 +94,22 @@ public class AgentController {
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest)
 			throws Exception {
 
-		System.out.println("start=" + datatablesRequest.getStart());
-		System.out.println("length=" + datatablesRequest.getLength());
 		Pageable pageable = PageRequest.of(datatablesRequest.getStart(), datatablesRequest.getLength());
-		Page<User> data = userRepository.findAllAgentsForDatatables(pageable,
-				datatablesRequest.getFilter().getOrDefault("name", ""));
+		Long companyId = new Long(0);
+		try{
+			companyId = Long.parseLong(datatablesRequest.getFilter().getOrDefault("companyId", "0"));
+		} catch (Exception e) {
+			//do nothing
+		}
+		Page<User> data;
+		if(companyId > 0) {
+			data = userRepository.findAllAgentsForDatatables(pageable,
+					datatablesRequest.getFilter().getOrDefault("name", ""),
+					companyId);
+		} else {
+			data = userRepository.findAllAgentsForDatatables(pageable,
+					datatablesRequest.getFilter().getOrDefault("name", ""));
+		}
 
 		DatatablesResponse datatablesResponse = new DatatablesResponse();
 		datatablesResponse.setData(data.getContent());

@@ -1,3 +1,4 @@
+import { AuthService } from './../../../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { DataTablesResponse } from './../../../models/DataTablesResponse';
 import { HttpClient } from '@angular/common/http';
@@ -17,9 +18,11 @@ export class SelectionDatatableComponent implements OnInit, OnDestroy {
 
   filter = {
     name: '',
+    userId: 0
   };
   staticFilter = {
     name: '',
+    userId: 0
   };
 
   @ViewChild(DataTableDirective, { static: false })
@@ -40,9 +43,14 @@ export class SelectionDatatableComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private router: Router,
     private zone: NgZone,
+    private authService: AuthService,
     pnotifyService: PNotifyService
   ) {
     // this.filterForm = new FormGroup();
+    if (!this.authService.hasRole('ROLE_ADMIN')) {
+      this.filter.userId = this.authService.sessionContextValue.user.id;
+    }
+    this.staticFilter = this.filter;
     this.pnotify = pnotifyService.getPNotify();
   }
 

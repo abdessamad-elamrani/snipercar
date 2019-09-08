@@ -84,11 +84,22 @@ public class SelectionController {
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
-		System.out.println("start=" + datatablesRequest.getStart());
-		System.out.println("length=" + datatablesRequest.getLength());
 		Pageable pageable = PageRequest.of(datatablesRequest.getStart(), datatablesRequest.getLength());
-		Page<Selection> data = selectionRepository.findAllForDatatables(pageable,
-				datatablesRequest.getFilter().getOrDefault("name", ""));
+		Long userId = new Long(0);
+		try{
+			userId = Long.parseLong(datatablesRequest.getFilter().getOrDefault("userId", "0"));
+		} catch (Exception e) {
+			//do nothing
+		}
+		Page<Selection> data;
+		if(userId > 0) {
+			data = selectionRepository.findAllForDatatables(pageable,
+					datatablesRequest.getFilter().getOrDefault("name", ""),
+					userId);
+		} else {
+			data = selectionRepository.findAllForDatatables(pageable,
+					datatablesRequest.getFilter().getOrDefault("name", ""));
+		}
 
 		DatatablesResponse datatablesResponse = new DatatablesResponse();
 		datatablesResponse.setData(data.getContent());

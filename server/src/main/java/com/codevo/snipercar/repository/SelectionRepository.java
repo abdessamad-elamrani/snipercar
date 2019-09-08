@@ -24,6 +24,15 @@ public interface SelectionRepository extends JpaRepository<Selection, Long>{
 	Page<Selection> findAllForDatatables(Pageable pageable, @Param("name") String name);
 	
 	@Query(""
+			+ "SELECT s "
+			+ "FROM Selection s "
+			+ "INNER JOIN s.user u "
+			+ "WHERE "
+			+ "	s.name LIKE CONCAT('%',:name,'%')"
+			+ "	AND u.id = :userId")
+	Page<Selection> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("userId") Long userId);
+	
+	@Query(""
 			+ "SELECT s.id, s.name "
 			+ "FROM Selection s ")
 	List<Selection> findAllForSelect2();
