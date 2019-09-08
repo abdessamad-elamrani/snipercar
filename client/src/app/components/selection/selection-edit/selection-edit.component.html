@@ -12,8 +12,12 @@
             <input [(ngModel)]="selection.name" name="name" type="text" class="form-control" maxlength="50" required>
           </div>
           <div class="form-group">
-            <label for="owner">Latency</label>
+            <label for="owner">Owner</label>
             <input [(ngModel)]="selection.user.name" name="owner" type="text" class="form-control" disabled>
+          </div>
+          <div class="form-group">
+            <label for="owner">Filters</label>
+            <select2 [data]="filtersData" [cssImport]=true [options]="filtersOptions" (valueChanged)="onFiltersCHange($event)"></select2>
           </div>
 
           <button type="submit" class="btn-slide" data-hover="Save"

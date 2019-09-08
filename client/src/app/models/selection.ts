@@ -8,6 +8,7 @@ export class Selection {
   filters: Filter[];
 
   constructor() {
+    this.filters = [];
     // this.user = new User();
   }
 }

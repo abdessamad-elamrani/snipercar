@@ -13,6 +13,9 @@ import { PNotifyService } from '../../../services/pnotify.service';
 export class SelectionEditComponent implements OnInit {
 
   selection: Selection;
+  filters: {};
+  filtersData: any[];
+  filtersOptions: {};
   pnotify = undefined;
 
   constructor(
@@ -26,14 +29,41 @@ export class SelectionEditComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.http.get(
         '/api/selection/' + params['id']
-      ).subscribe((selection: Selection) => {
-        this.selection = selection;
+        ).subscribe((selection: Selection) => {
+          let selectedFilters = [];
+          this.selection = selection;
+          this.selection.filters.forEach((filter, index) => {
+            selectedFilters.push(filter.id);
+          });
+          this.http.get(
+            '/api/filter'
+          ).subscribe((filters: any[]) => {
+            this.filters = {};
+            this.filtersData = [];
+            filters.forEach((filter, index) => {
+              this.filters[filter.id] = filter;
+              this.filtersData.push({
+                id: filter.id,
+                text: filter.name,
+                selected: selectedFilters.includes(filter.id) ? true : false
+              });
+            });
+          });
       });
     });
+    this.filtersOptions = { multiple: 'true' };
     this.pnotify = pnotifyService.getPNotify();
   }
 
   ngOnInit() {
+  }
+
+  onFiltersCHange(e: any) {
+    let filters = [];
+    e.value.forEach((filterId, index) => {
+      filters.push(this.filters[filterId]);
+    });
+    this.selection.filters = filters;
   }
 
   onSubmit(): void {

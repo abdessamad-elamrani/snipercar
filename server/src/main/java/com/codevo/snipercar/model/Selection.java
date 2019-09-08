@@ -55,7 +55,7 @@ public class Selection {
 	@OneToMany(mappedBy = "currentSelection")
 	private List<User> currentUsers;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "selection_filters", joinColumns = { @JoinColumn(name = "selection_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "filter_id") })
 	private Set<Filter> filters;

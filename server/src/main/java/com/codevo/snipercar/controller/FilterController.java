@@ -97,6 +97,12 @@ public class FilterController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ResponseEntity<List<Filter>> readAll() throws Exception {
+		
+		return ResponseEntity.ok(filterRepository.findAll());
+	}
+	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Filter> create(@Valid @RequestBody Filter filter)
 			throws Exception {

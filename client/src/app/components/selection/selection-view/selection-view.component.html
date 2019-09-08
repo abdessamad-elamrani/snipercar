@@ -9,16 +9,18 @@
         <form class="w-100">
           <div class="form-group">
             <label for="name">Name</label>
-            <input [(ngModel)]="selection.name" name="name" type="text" class="form-control" maxlength="50" required
-              disabled>
+            <input [(ngModel)]="selection.name" name="name" type="text" class="form-control" disabled>
           </div>
           <div class="form-group">
-            <label for="latency">Owner</label>
-            <input [(ngModel)]="selection.user.name" name="owner" type="text" class="form-control"
-              disabled>
+            <label for="owner">Owner</label>
+            <input [(ngModel)]="selection.user.name" name="owner" type="text" class="form-control" disabled>
+          </div>
+          <div class="form-group">
+            <label for="filters">Filters</label>
+            <select2 [data]="filtersData" [cssImport]=true [options]="filtersOptions"></select2>
           </div>
 
-          <button type="button" class="btn-slide" 
+          <button type="button" class="btn-slide"
             [routerLink]="['/selection/edit', selection.id]" data-hover="Edit">
             <div>Edit</div>
           </button>
