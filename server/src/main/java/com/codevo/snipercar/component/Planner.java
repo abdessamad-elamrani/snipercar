@@ -32,14 +32,14 @@ public class Planner {
 	private FilterRepository filterRepository;
 
 //	@Scheduled(fixedRate = 10000)
-    public void parseAll() throws NotFoundException, IOException {
-        logger.info("Planner::parseAll :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+    public void callParser() throws NotFoundException, IOException {
+        logger.info("Planner::callParser :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
 
     	//call parser with multithread
         List<Website> websites = websiteRepository.findAll();
         for(Website website : websites) {
         	List<Filter> filters = filterRepository.findByWebsite(website);
-        	//TODO: implement in multi-threads
+        	//TODO: implement in multi-threads => a thread per website
         	for(Filter filter : filters) {
         		int counter = parser.parse(filter);
         		System.out.println("website=" + website.getName() + ", counter = " + counter);
@@ -47,5 +47,30 @@ public class Planner {
         }
         
         return;
+    }
+    
+//	@Scheduled(fixedRate = 10000)
+    public void callNotifier() {
+    	logger.info("Planner::callNotifier :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+    	
+    	//TODO: implement logic
+    	//for each Company create a thread
+    	//for each active Agent in Company:
+    	//  check for Agent.currentSelection.filters.items that are not sent (not in AgentItems)
+    	//  send them referring to Agent.smsNotif & Agent.emailNotif
+    	//  add line to AgentItems
+    	
+    	return;
+    }
+    
+//	@Scheduled(fixedRate = 10000)
+    public void callPurger() {
+    	logger.info("Planner::callPurger :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+    	
+    	//TODO: implement logic
+    	//purge based on updatedAt not createdAt date
+    	//or keep last 100 items of each filter
+    	
+    	return;
     }
 }

@@ -18,7 +18,7 @@ export class ItemListComponent implements OnInit {
     private http: HttpClient
   ) {
     this.route.params.subscribe(params => {
-      this.filterId = params['id'];
+      this.filterId = params['id'] || 1;
       this.getItems();
     });
   }
@@ -28,7 +28,7 @@ export class ItemListComponent implements OnInit {
 
   getItems() {
     this.http.get(
-      '/api/v1/items/' + this.filterId
+      '/api/items/' + this.filterId
     ).subscribe((items: any[]) => {
       this.items = items;
     });

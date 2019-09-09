@@ -35,6 +35,7 @@ import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: 'item/list/:id', component: ItemListComponent},
   {
     path: 'admin',
     canActivate: [AuthGuard, NgxPermissionsGuard],
