@@ -81,10 +81,8 @@ public class CompanyController {
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
-		System.out.println("start=" + datatablesRequest.getStart());
-		System.out.println("length=" + datatablesRequest.getLength());
-		Pageable pageable = PageRequest.of(datatablesRequest.getStart(), datatablesRequest.getLength());
-		Page<Company> data = companyRepository.findAllForDatatables(pageable,
+		Pageable pageable = PageRequest.of(datatablesRequest.getStart() / datatablesRequest.getLength(), datatablesRequest.getLength());
+		Page<Map<String, String>> data = companyRepository.findAllForDatatables(pageable,
 				datatablesRequest.getFilter().getOrDefault("name", ""));
 
 		DatatablesResponse datatablesResponse = new DatatablesResponse();

@@ -20,52 +20,75 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findByUsername(String username);
 
 	@Query(""
-			+ "SELECT u "
-			+ "FROM User u "
-			+ "WHERE"
-			+ " u.role IN ('ADMIN', 'SUPER_ADMIN')"
-			+ " AND u.name LIKE CONCAT('%',:name,'%')")
-	Page<User> findAllAdminsForDatatables(Pageable pageable, @Param("name") String name);
+			+ " SELECT "
+			+ "   u.id     AS id,"
+			+ "   u.name   AS name,"
+			+ "   c.name   AS companyName,"
+			+ "   u.role   AS role,"
+			+ "   u.email  AS email,"
+			+ "   u.phone  AS phone,"
+			+ "   u.active AS active"
+			+ " FROM User u"
+			+ " LEFT JOIN u.company c"
+			+ " WHERE"
+			+ "   u.role IN ('ADMIN', 'SUPER_ADMIN')"
+			+ "   AND u.name LIKE CONCAT('%',:name,'%')")
+	Page<Map<String, String>> findAllAdminsForDatatables(Pageable pageable, @Param("name") String name);
 	
 	@Query(""
-			+ "SELECT u "
-			+ "FROM User u "
-			+ "WHERE"
-			+ " u.role IN ('AGENT', 'SUPER_AGENT')"
-			+ " AND u.name LIKE CONCAT('%',:name,'%')")
-	Page<User> findAllAgentsForDatatables(Pageable pageable, @Param("name") String name);
+			+ " SELECT"
+			+ "   u.id     AS id,"
+			+ "   u.name   AS name,"
+			+ "   c.name   AS companyName,"
+			+ "   u.role   AS role,"
+			+ "   u.email  AS email,"
+			+ "   u.phone  AS phone,"
+			+ "   u.active AS active"
+			+ " FROM User u"
+			+ " LEFT JOIN u.company c"
+			+ " WHERE"
+			+ "   u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ "   AND u.name LIKE CONCAT('%',:name,'%')")
+	Page<Map<String, String>> findAllAgentsForDatatables(Pageable pageable, @Param("name") String name);
 	
 	@Query(""
-			+ "SELECT u "
-			+ "FROM User u "
-			+ "INNER JOIN u.company c "
-			+ "WHERE"
-			+ " u.role IN ('AGENT', 'SUPER_AGENT')"
-			+ " AND u.name LIKE CONCAT('%',:name,'%')"
-			+ " AND c.id = :companyId")
-	Page<User> findAllAgentsForDatatables(Pageable pageable, @Param("name") String name, @Param("companyId") Long companyId);
+			+ " SELECT"
+			+ "   u.id     AS id,"
+			+ "   u.name   AS name,"
+			+ "   c.name   AS companyName,"
+			+ "   u.role   AS role,"
+			+ "   u.email  AS email,"
+			+ "   u.phone  AS phone,"
+			+ "   u.active AS active"
+			+ " FROM User u"
+			+ " LEFT JOIN u.company c"
+			+ " WHERE"
+			+ "   u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ "   AND u.name LIKE CONCAT('%',:name,'%')"
+			+ "   AND c.id = :companyId")
+	Page<Map<String, String>> findAllAgentsForDatatables(Pageable pageable, @Param("name") String name, @Param("companyId") Long companyId);
 
 
 	@Query(""
-			+ "SELECT u "
-			+ "FROM User u "
-			+ "WHERE"
-			+ " u.role IN ('ADMIN', 'SUPER_ADMIN')"
-			+ " AND u.id = :id")
+			+ " SELECT u"
+			+ " FROM User u"
+			+ " WHERE"
+			+ "   u.role IN ('ADMIN', 'SUPER_ADMIN')"
+			+ "   AND u.id = :id")
 	Optional<User> findAdminById(@Param("id") Long id);
 	
 	@Query(""
-			+ "SELECT u "
-			+ "FROM User u "
-			+ "WHERE"
-			+ " u.role IN ('AGENT', 'SUPER_AGENT')"
-			+ " AND u.id = :id")
+			+ " SELECT u"
+			+ " FROM User u"
+			+ " WHERE"
+			+ "   u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ "   AND u.id = :id")
 	Optional<User> findAgentById(@Param("id") Long id);
 	
 	@Query(""
-			+ "SELECT u.username "
-			+ "FROM User u "
-			+ "WHERE u.id <> :id")
+			+ " SELECT u.username"
+			+ " FROM User u"
+			+ " WHERE u.id <> :id")
 	List<String> findAllReservedUsernames(@Param("id") Long id);
 
 }

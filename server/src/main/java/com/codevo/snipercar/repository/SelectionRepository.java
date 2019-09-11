@@ -1,6 +1,7 @@
 package com.codevo.snipercar.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -17,33 +18,40 @@ import com.codevo.snipercar.model.*;
 public interface SelectionRepository extends JpaRepository<Selection, Long>{
 	
 	@Query(""
-			+ "SELECT s "
-			+ "FROM Selection s "
-			+ "WHERE "
-			+ "	s.name LIKE CONCAT('%',:name,'%')")
-	Page<Selection> findAllForDatatables(Pageable pageable, @Param("name") String name);
+			+ " SELECT"
+			+ "   s.id   AS id,"
+			+ "   s.name AS name,"
+			+ "   u.name AS userName"
+			+ " FROM Selection s"
+			+ " LEFT JOIN s.user u"
+			+ " WHERE"
+			+ "   s.name LIKE CONCAT('%',:name,'%')")
+	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name);
 	
 	@Query(""
-			+ "SELECT s "
-			+ "FROM Selection s "
-			+ "INNER JOIN s.user u "
-			+ "WHERE "
-			+ "	s.name LIKE CONCAT('%',:name,'%')"
-			+ "	AND u.id = :userId")
-	Page<Selection> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("userId") Long userId);
+			+ " SELECT"
+			+ "   s.id   AS id,"
+			+ "   s.name AS name,"
+			+ "   u.name AS userName"
+			+ " FROM Selection s"
+			+ " LEFT JOIN s.user u"
+			+ " WHERE"
+			+ "	  s.name LIKE CONCAT('%',:name,'%')"
+			+ "	  AND u.id = :userId")
+	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("userId") Long userId);
 	
 	@Query(""
-			+ "SELECT s.id, s.name "
-			+ "FROM Selection s ")
+			+ " SELECT s.id, s.name"
+			+ " FROM Selection s")
 	List<Selection> findAllForSelect2();
 	
 	@Query(""
-			+ "SELECT s "
-			+ "FROM Selection s "
-			+ "INNER JOIN s.user u "
-			+ "WHERE "
-			+ " u.role LIKE '%ADMIN%' "
-			+ "	OR u.id = :agentId")
+			+ " SELECT s"
+			+ " FROM Selection s"
+			+ " INNER JOIN s.user u"
+			+ " WHERE"
+			+ "   u.role LIKE '%ADMIN%'"
+			+ "	  OR u.id = :agentId")
 	List<Selection> findByAgentId(@Param("agentId") Long agentId);
 
 }

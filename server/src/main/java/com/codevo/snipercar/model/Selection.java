@@ -46,19 +46,20 @@ public class Selection {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-//	@JsonManagedReference(value="user_selection")
+//	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
-	@JsonBackReference(value="user_current_selection")
-	@OneToMany(mappedBy = "currentSelection")
-	private List<User> currentUsers;
+
+//	@JsonBackReference
+//	@OneToMany(mappedBy = "currentSelection")
+//	private List<User> currentUsers;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "selection_filters", joinColumns = { @JoinColumn(name = "selection_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "filter_id") })
-	private Set<Filter> filters;
+	@JoinTable(name = "selection_filters", 
+			joinColumns = { @JoinColumn(name = "selection_id") }, 
+			inverseJoinColumns = { @JoinColumn(name = "filter_id") })
+	private Set<Filter> filters = new HashSet<>();
 
 //	public Selection() {
 //		this.filters = new HashSet<>();

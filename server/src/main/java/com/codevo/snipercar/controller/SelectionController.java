@@ -84,14 +84,14 @@ public class SelectionController {
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
-		Pageable pageable = PageRequest.of(datatablesRequest.getStart(), datatablesRequest.getLength());
+		Pageable pageable = PageRequest.of(datatablesRequest.getStart() / datatablesRequest.getLength(), datatablesRequest.getLength());
 		Long userId = new Long(0);
 		try{
 			userId = Long.parseLong(datatablesRequest.getFilter().getOrDefault("userId", "0"));
 		} catch (Exception e) {
 			//do nothing
 		}
-		Page<Selection> data;
+		Page<Map<String, String>> data;
 		if(userId > 0) {
 			data = selectionRepository.findAllForDatatables(pageable,
 					datatablesRequest.getFilter().getOrDefault("name", ""),

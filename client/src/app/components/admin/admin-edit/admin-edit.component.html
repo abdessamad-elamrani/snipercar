@@ -23,7 +23,7 @@
             <label for="name">Role</label>
             <select2 class="d-block" [data]="rolesData" [cssImport]=true 
             (valueChanged)="roleChanged($event)" 
-            [disabled]="user.id == admin.id">
+            [disabled]="true || user.id == admin.id">
             </select2>
           </div>
           <div class="form-check">

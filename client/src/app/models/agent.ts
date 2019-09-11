@@ -25,7 +25,7 @@ export class Agent {
     this.passwordChange = false;
     this.active = true;
     this.role = 'AGENT';
-    // this.company = new Company();
-    // this.currentSelection = new Selection();
+    this.company = new Company();
+    this.currentSelection = new Selection();
   }
 }

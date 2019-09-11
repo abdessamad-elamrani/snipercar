@@ -9,6 +9,6 @@ export class Selection {
 
   constructor() {
     this.filters = [];
-    // this.user = new User();
+    this.user = new User();
   }
 }

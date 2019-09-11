@@ -8,9 +8,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -76,15 +78,21 @@ import java.net.URL;
 public class FilterController {
 
 	@Autowired
-	private FilterRepository filterRepository;  
+	private FilterRepository filterRepository;
+
+	@Autowired
+	private SelectionRepository selectionRepository;
+
+	@PersistenceContext
+	EntityManager em;
 
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
-	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
+	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest)
+			throws Exception {
 
-		System.out.println("start=" + datatablesRequest.getStart());
-		System.out.println("length=" + datatablesRequest.getLength());
-		Pageable pageable = PageRequest.of(datatablesRequest.getStart(), datatablesRequest.getLength());
-		Page<Filter> data = filterRepository.findAllForDatatables(pageable,
+		Pageable pageable = PageRequest.of(datatablesRequest.getStart() / datatablesRequest.getLength(),
+				datatablesRequest.getLength());
+		Page<Map<String, String>> data = filterRepository.findAllForDatatables(pageable,
 				datatablesRequest.getFilter().getOrDefault("name", ""));
 
 		DatatablesResponse datatablesResponse = new DatatablesResponse();
@@ -96,17 +104,16 @@ public class FilterController {
 
 		return ResponseEntity.ok(datatablesResponse);
 	}
-	
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<List<Filter>> readAll() throws Exception {
-		
+
 		return ResponseEntity.ok(filterRepository.findAll());
 	}
-	
+
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<Filter> create(@Valid @RequestBody Filter filter)
-			throws Exception {
-		
+	public ResponseEntity<Filter> create(@Valid @RequestBody Filter filter) throws Exception {
+
 		return ResponseEntity.ok(filterRepository.save(filter));
 	}
 
@@ -132,19 +139,27 @@ public class FilterController {
 
 		return ResponseEntity.ok(filterRepository.save(filter));
 	}
-	
+
+	@Transactional
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity delete(@PathVariable(value = "id") Long id)
-			throws Exception {
-		
-		Optional<Filter> filter = filterRepository.findById(id);
-		if (!filter.isPresent()) {
+	public ResponseEntity delete(@PathVariable(value = "id") Long id) throws Exception {
+
+		Optional<Filter> optionalFilter = filterRepository.findById(id);
+		if (!optionalFilter.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filter not found for this id :: " + id);
 		}
+
+		Filter filter = optionalFilter.get();
 		
-		filterRepository.deleteById(id);
-		
-        return ResponseEntity.ok().build();
+//		filter.getSelections().clear();
+//		for(Selection selection : filter.getSelections()) {
+////			selection.getFilters().remove(filter);
+//		}
+//		filter.getSelections().remove(selection);
+//		em.remove(filter);
+	    filterRepository.deleteById(id);
+
+		return ResponseEntity.ok().build();
 	}
 
 }

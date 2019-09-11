@@ -13,10 +13,9 @@ import { PNotifyService } from '../../../services/pnotify.service';
 export class AdminAddComponent implements OnInit {
 
   admin: User;
-  isAccountPage: boolean;
   reservedUsernames: string[];
   roles: {};
-  public rolesData: Array<any>;
+  rolesData: Array<any>;
   pnotify = undefined;
   // ----- Start DatePicker -----------
   dateTimeFilter = (d: Date): boolean => {

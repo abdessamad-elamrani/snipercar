@@ -71,8 +71,8 @@ export class FilterDatatableComponent implements OnInit, OnDestroy {
             dta.push({
               id: filter.id,
               name: filter.name,
-              url: filter.url,
-              websiteName: filter.website.name,
+              description: filter.description,
+              websiteName: filter.websiteName,
               actions: `
                 <a class="btn btnAction btnNavigate" data-url="/filter/view/${filter.id}">
                   <i class="fa fa-search fa-2x" aria-hidden="true"></i>
@@ -98,7 +98,7 @@ export class FilterDatatableComponent implements OnInit, OnDestroy {
       },
       columns: [
         { data: 'name' },
-        { data: 'url' },
+        { data: 'description' },
         { data: 'websiteName' },
         { data: 'actions' },
       ],

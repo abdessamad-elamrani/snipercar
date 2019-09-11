@@ -1,6 +1,7 @@
 package com.codevo.snipercar.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,16 +16,21 @@ import com.codevo.snipercar.model.*;
 public interface SlaRepository extends JpaRepository<Sla, Long>{
 	
 	@Query(""
-			+ "SELECT s "
-			+ "FROM Sla s "
-			+ "WHERE "
-			+ "	s.name LIKE CONCAT('%',:name,'%')"
-			+ "	AND s.description LIKE CONCAT('%',:description,'%')")
-	Page<Sla> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("description") String description);
+			+ " SELECT"
+			+ "   s.id          AS id,"
+			+ "   s.name        AS name,"
+			+ "   s.description AS description,"
+			+ "   s.latency     AS latency,"
+			+ "   s.price       AS price"
+			+ " FROM Sla s"
+			+ " WHERE"
+			+ " 	 s.name LIKE CONCAT('%',:name,'%')"
+			+ " 	 AND s.description LIKE CONCAT('%',:description,'%')")
+	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("description") String description);
 	
 	@Query(""
-			+ "SELECT s.id, s.name "
-			+ "FROM Sla s ")
+			+ " SELECT s.id, s.name"
+			+ " FROM Sla s")
 	List<Sla> findAllForSelect2();
 
 }

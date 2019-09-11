@@ -87,10 +87,8 @@ public class AdminController {
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest)
 			throws Exception {
 
-		System.out.println("start=" + datatablesRequest.getStart());
-		System.out.println("length=" + datatablesRequest.getLength());
-		Pageable pageable = PageRequest.of(datatablesRequest.getStart(), datatablesRequest.getLength());
-		Page<User> data = userRepository.findAllAdminsForDatatables(pageable,
+		Pageable pageable = PageRequest.of(datatablesRequest.getStart() / datatablesRequest.getLength(), datatablesRequest.getLength());
+		Page<Map<String, String>> data = userRepository.findAllAdminsForDatatables(pageable,
 				datatablesRequest.getFilter().getOrDefault("name", ""));
 
 		DatatablesResponse datatablesResponse = new DatatablesResponse();

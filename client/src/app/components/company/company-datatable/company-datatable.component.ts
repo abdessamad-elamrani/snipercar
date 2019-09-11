@@ -73,7 +73,7 @@ export class CompanyDatatableComponent implements OnInit, OnDestroy {
               name: company.name,
               email: company.email,
               phone: company.phone,
-              sla: company.sla.name,
+              sla: company.slaName,
               active: company.active,
               expiration:  moment(company.expiration).format('MM/DD/YYYY'),
               actions: `

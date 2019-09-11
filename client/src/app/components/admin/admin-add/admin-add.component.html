@@ -52,7 +52,7 @@
           </div>
           <div class="form-group">
             <label for="name">Role</label>
-            <select2 class="d-block" [data]="rolesData" [cssImport]=true (valueChanged)="roleChanged($event)">
+            <select2 class="d-block" [data]="rolesData" [cssImport]=true disabled=true (valueChanged)="roleChanged($event)">
             </select2>
           </div>
           <div class="form-check">
@@ -67,7 +67,7 @@
             [disabled]="form.invalid || reservedUsernames.includes(admin.username) || admin.passwordChange && (admin.newPassword != admin.newPasswordConfirm)">
             <div>Save</div>
           </button>
-          <button type="button" [routerLink]="isAccountPage ? ['/account/admin/view'] : ['/admin/view', admin.id]"
+          <button type="button" [routerLink]="['/account/admin/list']"
             class="btn-slide btn-slide-default" data-hover="Cancel">
             <div>Cancel</div>
           </button>

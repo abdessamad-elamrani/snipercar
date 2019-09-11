@@ -11,6 +11,7 @@ export class Company {
   sla: Sla;
 
   constructor() {
-    // this.sla = new Sla();
+    this.sla = new Sla();
+    this.active = true;
   }
 }

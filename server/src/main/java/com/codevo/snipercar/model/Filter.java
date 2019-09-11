@@ -1,9 +1,11 @@
 package com.codevo.snipercar.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
@@ -32,7 +35,7 @@ import javax.persistence.OneToMany;
 public class Filter {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@ManyToOne
@@ -41,10 +44,13 @@ public class Filter {
 	
 	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "description", nullable = false)
+	private String description;
 
 	@Column(name = "url", nullable = false)
 	private String url;
-
+	
 //	@OneToMany(mappedBy = "filter")
 //	private List<Item> items;
 
@@ -58,5 +64,5 @@ public class Filter {
 //		this.url = url;
 ////		this.items = new ArrayList<>();
 //	}
-
+	
 }

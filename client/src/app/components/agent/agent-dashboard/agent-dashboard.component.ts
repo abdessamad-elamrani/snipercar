@@ -63,6 +63,8 @@ export class AgentDashboardComponent implements OnInit {
       {}
     ).subscribe(
       (dashboard: any) => {
+        this.agent.smsNotif = dashboard.smsNotif;
+        this.agent.emailNotif = dashboard.emailNotif;
         this.agent.currentSelection = dashboard.currentSelection;
         this.selections = dashboard.selections;
         this.selectionsData = {};

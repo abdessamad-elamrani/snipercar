@@ -79,7 +79,7 @@ export class SelectionDatatableComponent implements OnInit, OnDestroy {
             dta.push({
               id: selection.id,
               name: selection.name,
-              owner: selection.user.name,
+              owner: selection.userName,
               actions: `
                 <a class="btn btnAction btnNavigate" data-url="/selection/view/${selection.id}">
                   <i class="fa fa-search fa-2x" aria-hidden="true"></i>

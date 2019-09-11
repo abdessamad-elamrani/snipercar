@@ -79,7 +79,7 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
             dta.push({
               id: agent.id,
               name: agent.name,
-              company: agent.company ? agent.company.name : '',
+              company: agent.companyName,
               role: agent.role,
               email: agent.email,
               phone: agent.phone,

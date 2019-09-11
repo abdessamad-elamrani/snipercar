@@ -24,7 +24,7 @@ export class User {
     this.passwordChange = false;
     this.active = true;
     this.role = 'USER';
-    // this.company = new Company();
+    this.company = new Company();
     // this.currentSelection = new Selection();
   }
 }
