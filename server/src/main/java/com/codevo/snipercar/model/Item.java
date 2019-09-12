@@ -1,9 +1,11 @@
 package com.codevo.snipercar.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
@@ -22,7 +25,7 @@ import lombok.*;
 import com.fasterxml.jackson.annotation.*;
 
 @Entity
-@Table(name = "item", uniqueConstraints = { @UniqueConstraint(columnNames = { "filter_id", "ref" }) })
+@Table(name = "item", uniqueConstraints = { @UniqueConstraint(columnNames = { "website_id", "ref" }) })
 @Getter
 @Setter
 @ToString
@@ -34,10 +37,10 @@ public class Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	
 	@ManyToOne
-	@JoinColumn(name = "filter_id")
-	private Filter filter;
+	@JoinColumn(name = "website_id")
+	private Website website;
 
 	@Column(name = "ref", nullable = false)
 	private String ref;
@@ -51,6 +54,9 @@ public class Item {
 	@Lob
 	@Column(name = "body", nullable = false)
 	private String body;
+	
+	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<FilterItem> filterItems = new ArrayList<>();
 
 	@Column(name = "created_at")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -65,8 +71,8 @@ public class Item {
 //		this.updatedAt = new Date();
 //	}
 //
-	public Item(Filter filter, String ref, String title, String url, String body) {
-		this.filter = filter;
+	public Item(Website website, String ref, String title, String url, String body) {
+		this.website = website;
 		this.ref = ref;
 		this.title = title;
 		this.url = url;

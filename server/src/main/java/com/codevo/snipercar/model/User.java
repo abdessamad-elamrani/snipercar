@@ -2,6 +2,7 @@ package com.codevo.snipercar.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -95,8 +97,27 @@ public class User {
 	@JoinColumn(name = "current_selection_id", referencedColumnName = "id", nullable = true)
 	private Selection currentSelection;
 
+	@Transient
+	private Selection previousSelection;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<UserItem> userItems;
+
+	@Column(name = "current_selection_start")
+	@JsonFormat(pattern = "yyyy-MM-dd h:i:s")
+	// @Temporal(TemporalType.TIMESTAMP)
+	private Date currentSelectionStart = new Date();
+
 	@Column(name = "active", nullable = false)
 	private Boolean active = true;
+
+	@PreUpdate
+	public void preUpdate() {
+		if (!previousSelection.equals(this.currentSelection)) {
+			this.currentSelectionStart = new Date();
+		}
+	}
 
 //	public User() {
 //		this.selections = new ArrayList<>();

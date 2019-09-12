@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -16,6 +15,7 @@ import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -34,7 +34,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 
 import com.codevo.snipercar.model.*;
 import com.codevo.snipercar.repository.*;
@@ -50,13 +49,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class Notifier {
+public class Purger {
 
 	@Autowired
-	private CompanyRepository companyRepository;
-
+	private WebsiteRepository websiteRepository;
+	
 	@Autowired
-	private UserRepository userRepository;
+	private FilterRepository filterRepository;
 	
 	@Autowired
 	private ItemRepository itemRepository;
@@ -64,40 +63,41 @@ public class Notifier {
 	@PersistenceContext
 	EntityManager em;
 
-	@Async
-	public CompletableFuture<Integer> notifyCompanyAgents(Company company) throws NotFoundException, IOException {
-		int counter = 0;
+	public int purgeDatabase() {
 
-		List<User> agents = userRepository.findAllActiveAgentsByCompany(company);
-		for(User agent : agents) {
-			List<Item> items = itemRepository.findAgentPendingItems(agent);
-			for(Item item : items) {
-				UserItem userItem = new UserItem(agent, item);
-				if(agent.getSmsNotif()) {
-					userItem.setSmsSent(this.sendSms(agent, item));
-				}
-				if(agent.getEmailNotif()) {
-					userItem.setEmailSent(this.sendEmail(agent, item));
-				}
-				em.persist(userItem);
+		// purge filterItems
+		int filterItemsCounter = 0;
+		List<Website> websites = websiteRepository.findAll();
+		for (Website website : websites) {
+			List<Filter> filters = filterRepository.findByWebsite(website);
+			for (Filter filter : filters) {
+				Query query = em.createQuery(""
+						+ " DELETE fi"
+						+ " FROM FilterItem fi"
+						+ " INNER JOIN ("
+						+ "   SELECT filterItem"
+						+ "   FROM Item filterItem"
+						+ "   WHERE filterItem.filter = :filter"
+						+ "   ORDER BY filterItem.createdBy DESC, filterItem.updatedBy DESC"
+						+ "   LIMIT 1, OFFSET :offset"
+						+ " ) AS lastFilterItem ON lastFilterItem.createdAt > fi.createdAt"
+						+ " WHERE fi.filter = :filter"
+						+ "");
+				filterItemsCounter += query.setParameter("filter", filter)
+						.setParameter("offset", 99).executeUpdate();
 			}
 		}
-		
-		return CompletableFuture.completedFuture(counter);
-	}
-	
-	private boolean sendSms(User agent, Item item) {
-		
-		//TODO: to be implemented
-		
-		return true;
-	}
-	
-	private boolean sendEmail(User agent, Item item) {
-		
-		//TODO: to be implemented
-		
-		return true;
+		//purge orphan items
+		Query query = em.createQuery(""
+				+ " DELETE i"
+				+ " FROM Item i"
+				+ " LEFT JOIN i.filterItem fi"
+				+ " WHERE fi.id IS NULL"
+				+ "");
+		int itemsCounter = query.executeUpdate();
+
+		return filterItemsCounter;
+
 	}
 
 }

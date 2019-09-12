@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.codevo.snipercar.model.Company;
 import com.codevo.snipercar.model.User;
 
 @Repository
@@ -90,5 +91,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ " FROM User u"
 			+ " WHERE u.id <> :id")
 	List<String> findAllReservedUsernames(@Param("id") Long id);
+	
+	@Query(""
+			+ " SELECT u"
+			+ " FROM User u"
+			+ " WHERE"
+			+ "   u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ "   AND u.active = 1"
+			+ "   AND u.company = :company")
+	List<User> findAllActiveAgentsByCompany(@Param("company") Company company);
 
 }

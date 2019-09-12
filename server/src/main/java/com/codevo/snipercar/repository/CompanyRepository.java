@@ -1,5 +1,6 @@
 package com.codevo.snipercar.repository;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -26,7 +27,15 @@ public interface CompanyRepository extends JpaRepository<Company, Long>{
 			+ " FROM Company c"
 			+ " LEFT JOIN c.sla s"
 			+ " WHERE"
-			+ " 	 c.name LIKE CONCAT('%',:name,'%')")
+			+ "   c.name LIKE CONCAT('%',:name,'%')")
 	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name);
+
+	@Query(""
+			+ " SELECT c"
+			+ " FROM Company c"
+			+ " WHERE"
+			+ "   c.active = TRUE"
+			+ "   AND c.expiration >= NOW()")
+	List<Company> findAllActive();
 
 }

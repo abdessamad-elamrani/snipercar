@@ -28,6 +28,8 @@ public interface WebsiteRepository extends JpaRepository<Website, Long>{
 	@Query(""
 			+ " SELECT s.id, s.name"
 			+ " FROM Website s")
-	List<Website> findAllForSelect2(); 
+	List<Website> findAllForSelect2();
+
+	List<Website> findAll(); 
 
 }

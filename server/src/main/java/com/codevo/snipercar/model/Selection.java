@@ -60,6 +60,9 @@ public class Selection {
 			joinColumns = { @JoinColumn(name = "selection_id") }, 
 			inverseJoinColumns = { @JoinColumn(name = "filter_id") })
 	private Set<Filter> filters = new HashSet<>();
+	
+	@Column(name = "is_default", nullable = false)
+	private Boolean isDefault = false;
 
 //	public Selection() {
 //		this.filters = new HashSet<>();

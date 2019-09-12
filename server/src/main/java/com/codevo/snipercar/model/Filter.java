@@ -51,6 +51,9 @@ public class Filter {
 	@Column(name = "url", nullable = false)
 	private String url;
 	
+	@OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<FilterItem> filterItems = new ArrayList<>();
+	
 //	@OneToMany(mappedBy = "filter")
 //	private List<Item> items;
 

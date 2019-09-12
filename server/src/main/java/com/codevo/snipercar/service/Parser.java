@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -33,6 +34,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 
 import com.codevo.snipercar.model.*;
 import com.codevo.snipercar.repository.*;
@@ -49,12 +51,35 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class Parser {
+
+	@Autowired
+	private WebsiteRepository websiteRepository;
+
+	@Autowired
+	private FilterRepository filterRepository;
+
 	@Autowired
 	private ItemRepository itemRepository;
+	
+	@Autowired
+	private FilterItemRepository filterItemRepository;
+
 	@PersistenceContext
 	EntityManager em;
 
-	public int parse(Filter filter) throws NotFoundException, IOException {
+	@Async
+	public CompletableFuture<Integer> parseWebsiteFilters(Website website) throws NotFoundException, IOException {
+		int counter = 0;
+
+		List<Filter> filters = filterRepository.findByWebsite(website);
+		for (Filter filter : filters) {
+			counter += this.parseFilter(filter);
+		}
+
+		return CompletableFuture.completedFuture(counter);
+	}
+
+	public int parseFilter(Filter filter) throws NotFoundException, IOException {
 		int counter = 0;
 
 		if (filter.getWebsite().getName().toLowerCase().contains("marktplaats")) {
@@ -96,14 +121,23 @@ public class Parser {
 			url = "https://www.marktplaats.nl" + elt.get("vipUrl").getAsString();
 			title = elt.get("title").getAsString();
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+				FilterItem filterItem;
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
 					item.setUrl(url);
 					item.setUpdatedAt(new Date());
+					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+					if(filterItem == null) {
+						filterItem = new FilterItem(filter, item);
+						item.getFilterItems().add(filterItem);
+						counter++;
+					}
 				} else {
-					item = new Item(filter, ref, title, url, body);
+					item = new Item(filter.getWebsite(), ref, title, url, body);
+					filterItem = new FilterItem(filter, item);
+					item.getFilterItems().add(filterItem);
 					counter++;
 				}
 				em.persist(item);
@@ -128,14 +162,23 @@ public class Parser {
 			title += " " + element.selectFirst("h2.cldt-summary-version").text();
 			ref = element.selectFirst("div.cldt-summary-full-item-main[data-articleid]").attr("data-articleid");
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+				FilterItem filterItem;
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
 					item.setUrl(url);
 					item.setUpdatedAt(new Date());
+					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+					if(filterItem == null) {
+						filterItem = new FilterItem(filter, item);
+						item.getFilterItems().add(filterItem);
+						counter++;
+					}
 				} else {
-					item = new Item(filter, ref, title, url, body);
+					item = new Item(filter.getWebsite(), ref, title, url, body);
+					filterItem = new FilterItem(filter, item);
+					item.getFilterItems().add(filterItem);
 					counter++;
 				}
 				em.persist(item);
@@ -162,7 +205,8 @@ public class Parser {
 		// https://api.anwb.nl/occasion-hexon-search?vehicle.brand.keyword=bmw&limit=24&viewwrapper=grid
 
 		// Headers : x-anwb-client-id = innzlrw2VjJNTsfWGaTK0C887VOO5mIJ
-		String data = Jsoup.connect(filter.getUrl()).header("x-anwb-client-id", "innzlrw2VjJNTsfWGaTK0C887VOO5mIJ").ignoreContentType(true).execute().body();
+		String data = Jsoup.connect(filter.getUrl()).header("x-anwb-client-id", "innzlrw2VjJNTsfWGaTK0C887VOO5mIJ")
+				.ignoreContentType(true).execute().body();
 		JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
 
 		JsonArray elts = jsonObject.getAsJsonArray("results");
@@ -173,18 +217,27 @@ public class Parser {
 			ref = elt.get("id").getAsString();
 			vehicle = elt.get("vehicle").getAsJsonObject();
 			url = "https://www.anwb.nl/auto/kopen/detail/merk=" + this.slugify(vehicle.get("brand").getAsString())
-					+ "/model=" + this.slugify(vehicle.get("model").getAsString()) 
-					+ "/overzicht/" + elt.get("id").getAsString();
+					+ "/model=" + this.slugify(vehicle.get("model").getAsString()) + "/overzicht/"
+					+ elt.get("id").getAsString();
 			title = elt.get("advertisement").getAsJsonObject().get("title").getAsString();
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+				FilterItem filterItem;
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
 					item.setUrl(url);
 					item.setUpdatedAt(new Date());
+					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+					if(filterItem == null) {
+						filterItem = new FilterItem(filter, item);
+						item.getFilterItems().add(filterItem);
+						counter++;
+					}
 				} else {
-					item = new Item(filter, ref, title, url, body);
+					item = new Item(filter.getWebsite(), ref, title, url, body);
+					filterItem = new FilterItem(filter, item);
+					item.getFilterItems().add(filterItem);
 					counter++;
 				}
 				em.persist(item);
@@ -207,14 +260,23 @@ public class Parser {
 			title = element.selectFirst("div.occ_cartitle.popup_title").text();
 			ref = element.selectFirst("a[href]").attr("data-id");
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+				FilterItem filterItem;
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
 					item.setUrl(url);
 					item.setUpdatedAt(new Date());
+					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+					if(filterItem == null) {
+						filterItem = new FilterItem(filter, item);
+						item.getFilterItems().add(filterItem);
+						counter++;
+					}
 				} else {
-					item = new Item(filter, ref, title, url, body);
+					item = new Item(filter.getWebsite(), ref, title, url, body);
+					filterItem = new FilterItem(filter, item);
+					item.getFilterItems().add(filterItem);
 					counter++;
 				}
 				em.persist(item);
@@ -251,14 +313,23 @@ public class Parser {
 			title = elt.get("name").getAsString();
 			System.out.println("title" + title);
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+				FilterItem filterItem;
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
 					item.setUrl(url);
 					item.setUpdatedAt(new Date());
+					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+					if(filterItem == null) {
+						filterItem = new FilterItem(filter, item);
+						item.getFilterItems().add(filterItem);
+						counter++;
+					}
 				} else {
-					item = new Item(filter, ref, title, url, body);
+					item = new Item(filter.getWebsite(), ref, title, url, body);
+					filterItem = new FilterItem(filter, item);
+					item.getFilterItems().add(filterItem);
 					counter++;
 				}
 				em.persist(item);
@@ -298,14 +369,23 @@ public class Parser {
 					+ elt.get("id").getAsString();
 			title = elt.get("title").getAsString();
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+				FilterItem filterItem;
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
 					item.setUrl(url);
 					item.setUpdatedAt(new Date());
+					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+					if(filterItem == null) {
+						filterItem = new FilterItem(filter, item);
+						item.getFilterItems().add(filterItem);
+						counter++;
+					}
 				} else {
-					item = new Item(filter, ref, title, url, body);
+					item = new Item(filter.getWebsite(), ref, title, url, body);
+					filterItem = new FilterItem(filter, item);
+					item.getFilterItems().add(filterItem);
 					counter++;
 				}
 				em.persist(item);
@@ -334,14 +414,23 @@ public class Parser {
 				ref = matcher.group(1);
 			}
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
-				Item item = itemRepository.findByRefAndFilter(ref, filter);
+				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+				FilterItem filterItem;
 				if (item != null) {
 					item.setBody(body);
 					item.setTitle(title);
 					item.setUrl(url);
 					item.setUpdatedAt(new Date());
+					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+					if(filterItem == null) {
+						filterItem = new FilterItem(filter, item);
+						item.getFilterItems().add(filterItem);
+						counter++;
+					}
 				} else {
-					item = new Item(filter, ref, title, url, body);
+					item = new Item(filter.getWebsite(), ref, title, url, body);
+					filterItem = new FilterItem(filter, item);
+					item.getFilterItems().add(filterItem);
 					counter++;
 				}
 				em.persist(item);
