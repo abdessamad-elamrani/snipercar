@@ -34,7 +34,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long>{
 			+ " SELECT c"
 			+ " FROM Company c"
 			+ " WHERE"
-			+ "   c.active = TRUE"
+			+ "   c.active = 1"
 			+ "   AND c.expiration >= NOW()")
 	List<Company> findAllActive();
 

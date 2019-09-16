@@ -37,6 +37,9 @@ export class AgentDashboardComponent implements OnInit {
       this.selectionsData = {};
       this.selections.forEach((selection, index) => {
         this.selectionsData[selection.id] = selection;
+        if (!this.agent.currentSelection && selection.isDefault) {
+          this.agent.currentSelection = selection;
+        }
       });
     });
     this.pnotify = pnotifyService.getPNotify();
@@ -70,6 +73,9 @@ export class AgentDashboardComponent implements OnInit {
         this.selectionsData = {};
         this.selections.forEach((selection, index) => {
           this.selectionsData[selection.id] = selection;
+          if (!this.agent.currentSelection && selection.isDefault) {
+            this.agent.currentSelection = selection;
+          }
         });
       },
       (error) => {

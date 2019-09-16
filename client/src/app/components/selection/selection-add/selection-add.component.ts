@@ -13,6 +13,7 @@ import { PNotifyService } from '../../../services/pnotify.service';
 })
 export class SelectionAddComponent implements OnInit {
 
+  isAdmin: boolean;
   selection: Selection;
   filters: {};
   filtersData: any[];
@@ -26,6 +27,7 @@ export class SelectionAddComponent implements OnInit {
     private authService: AuthService,
     pnotifyService: PNotifyService
   ) {
+    this.isAdmin = this.authService.hasRole('ROLE_ADMIN');
     this.selection = new Selection();
     this.selection.user = this.authService.sessionContextValue.user;
     let selectedFilters = [];

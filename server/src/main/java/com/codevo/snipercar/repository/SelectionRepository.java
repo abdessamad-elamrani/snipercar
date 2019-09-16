@@ -21,7 +21,10 @@ public interface SelectionRepository extends JpaRepository<Selection, Long>{
 			+ " SELECT"
 			+ "   s.id   AS id,"
 			+ "   s.name AS name,"
-			+ "   u.name AS userName"
+			+ "   u.id AS userId,"
+			+ "   u.name AS userName,"
+			+ "   u.role AS role,"
+			+ "   s.isDefault AS isDefault"
 			+ " FROM Selection s"
 			+ " LEFT JOIN s.user u"
 			+ " WHERE"
@@ -32,7 +35,10 @@ public interface SelectionRepository extends JpaRepository<Selection, Long>{
 			+ " SELECT"
 			+ "   s.id   AS id,"
 			+ "   s.name AS name,"
-			+ "   u.name AS userName"
+			+ "   u.id AS userId,"
+			+ "   u.name AS userName,"
+			+ "   u.role AS role,"
+			+ "   s.isDefault AS isDefault"
 			+ " FROM Selection s"
 			+ " LEFT JOIN s.user u"
 			+ " WHERE"
@@ -53,5 +59,7 @@ public interface SelectionRepository extends JpaRepository<Selection, Long>{
 			+ "   u.role LIKE '%ADMIN%'"
 			+ "	  OR u.id = :agentId")
 	List<Selection> findByAgentId(@Param("agentId") Long agentId);
+
+	List<Selection> findAllByIsDefault(boolean isDefault);
 
 }

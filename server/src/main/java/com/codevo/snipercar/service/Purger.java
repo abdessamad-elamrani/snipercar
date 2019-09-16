@@ -3,6 +3,7 @@ package com.codevo.snipercar.service;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -71,30 +72,76 @@ public class Purger {
 		for (Website website : websites) {
 			List<Filter> filters = filterRepository.findByWebsite(website);
 			for (Filter filter : filters) {
-				Query query = em.createQuery(""
-						+ " DELETE fi"
+				Query selectQuery1 = em.createQuery(""
+						+ " SELECT fi"
 						+ " FROM FilterItem fi"
-						+ " INNER JOIN ("
-						+ "   SELECT filterItem"
-						+ "   FROM Item filterItem"
-						+ "   WHERE filterItem.filter = :filter"
-						+ "   ORDER BY filterItem.createdBy DESC, filterItem.updatedBy DESC"
-						+ "   LIMIT 1, OFFSET :offset"
-						+ " ) AS lastFilterItem ON lastFilterItem.createdAt > fi.createdAt"
 						+ " WHERE fi.filter = :filter"
+						+ " ORDER BY fi.createdAt DESC, fi.updatedAt DESC"
 						+ "");
-				filterItemsCounter += query.setParameter("filter", filter)
-						.setParameter("offset", 99).executeUpdate();
+				List<FilterItem> filterItems1 = selectQuery1
+						.setParameter("filter", filter)
+						.setFirstResult(99)
+						.setMaxResults(1)
+						.getResultList();
+				if(filterItems1.isEmpty()) {
+					continue;
+				}
+				Query selectQuery2 = em.createQuery(""
+						+ " SELECT fi"
+						+ " FROM FilterItem fi"
+						+ " WHERE"
+						+ "   fi.filter = :filter"
+						+ "   AND fi.createdAt < :createdAt"
+						+ "");
+				List<FilterItem> filterItems2 = selectQuery2
+						.setParameter("filter", filter)
+						.setParameter("createdAt", filterItems1.get(0).getCreatedAt())
+						.getResultList();
+				if(filterItems2.isEmpty()) {
+					continue;
+				}
+				List<Long> ids = new ArrayList<Long>();
+				for(FilterItem filterItem : filterItems2) {
+					ids.add(filterItem.getId());
+				}
+				Query deleteQuery = em.createQuery("DELETE FROM FilterItem fi WHERE fi.id IN :ids");
+				deleteQuery.setParameter("ids", ids).executeUpdate();
+//				Query query = em.createQuery(""
+//						+ " DELETE FROM FilterItem fi_"
+//						+ " WHERE fi_ IN ("
+//						+ "   SELECT fi"
+//						+ "   FROM FilterItem fi"
+//						+ "   INNER JOIN ("
+//						+ "     SELECT filterItem"
+//						+ "     FROM FilterItem filterItem"
+//						+ "     WHERE filterItem.filter = :filter"
+//						+ "     ORDER BY filterItem.createdBy DESC, filterItem.updatedBy DESC"
+//						+ "     LIMIT 1, OFFSET :offset"
+//						+ "   ) AS lastFilterItem ON lastFilterItem.createdAt > fi.createdAt"
+//						+ "   WHERE fi.filter = :filter"
+//						+ " )"
+//						+ "");
+//				filterItemsCounter += query
+//						.setParameter("filter", filter).setParameter("offset", 99)
+//						.executeUpdate();
 			}
 		}
 		//purge orphan items
-		Query query = em.createQuery(""
-				+ " DELETE i"
+		Query selectQuery = em.createQuery(""
+				+ " SELECT i"
 				+ " FROM Item i"
-				+ " LEFT JOIN i.filterItem fi"
+				+ " LEFT JOIN i.filterItems fi"
 				+ " WHERE fi.id IS NULL"
 				+ "");
-		int itemsCounter = query.executeUpdate();
+		List<Item> items = selectQuery.getResultList();
+		if(!items.isEmpty()) {
+			List<Long> ids = new ArrayList<Long>();
+			for(Item item : items) {
+				ids.add(item.getId());
+			}
+			Query deleteQuery = em.createQuery("DELETE FROM Item i WHERE i.id IN :ids");
+			deleteQuery.setParameter("ids", ids).executeUpdate();
+		}
 
 		return filterItemsCounter;
 

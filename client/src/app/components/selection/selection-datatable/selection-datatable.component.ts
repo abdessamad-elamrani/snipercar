@@ -80,17 +80,28 @@ export class SelectionDatatableComponent implements OnInit, OnDestroy {
               id: selection.id,
               name: selection.name,
               owner: selection.userName,
-              actions: `
-                <a class="btn btnAction btnNavigate" data-url="/selection/view/${selection.id}">
-                  <i class="fa fa-search fa-2x" aria-hidden="true"></i>
-                </a>
-                <a class="btn btnAction btnNavigate" data-url="/selection/edit/${selection.id}">
-                  <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-                </a>
-                <button class="btn btnAction btnDelete" data-selection-id="${selection.id}">
-                  <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
-              `
+              role: selection.role,
+              isDefault: selection.isDefault ? 'Yes' : 'No',
+              actions: () => {
+                let actions = `
+                  <a class="btn btnAction btnNavigate" data-url="/selection/view/${selection.id}">
+                    <i class="fa fa-search fa-2x" aria-hidden="true"></i>
+                  </a>
+                  <a class="btn btnAction btnNavigate" data-url="/selection/edit/${selection.id}">
+                    <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                  </a>
+                `;
+                if (!selection.isDefault &&
+                  (this.authService.hasRole('ROLE_ADMIN') ||
+                    selection.userId == this.authService.sessionContextValue.user.id)) {
+                  actions += `
+                    <button class="btn btnAction btnDelete" data-selection-id="${selection.id}">
+                      <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                    </button>
+                  `;
+                }
+                return actions;
+              }
             });
           });
           callback({
@@ -106,6 +117,8 @@ export class SelectionDatatableComponent implements OnInit, OnDestroy {
       columns: [
         { data: 'name' },
         { data: 'owner' },
+        { data: 'role' },
+        { data: 'isDefault' },
         { data: 'actions' },
       ],
       dom: '<t> <"row" <"col-md-4"l><"col-md-8"p>>',

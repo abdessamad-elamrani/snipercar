@@ -35,6 +35,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -133,9 +134,20 @@ public class SelectionController {
 	public ResponseEntity<Selection> update(@PathVariable(value = "id") Long id, @Valid @RequestBody Selection selection)
 			throws Exception {
 
+		if (!selection.getId().equals(id)) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Selection id mismatch " + selection.getId() + "!=" + id);
+		}
 		Optional<Selection> selectionOrig = selectionRepository.findById(id);
-		if (selection.getId() != id || !selectionOrig.isPresent()) {
+		if (!selectionOrig.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Selection not found for this id :: " + id);
+		}
+		
+		if(selection.getIsDefault() && !selectionOrig.get().getIsDefault()) {
+			List<Selection> selections = selectionRepository.findAllByIsDefault(true);
+			for(Selection s : selections) {
+				s.setIsDefault(false);
+				selectionRepository.save(s);
+			}
 		}
 
 		return ResponseEntity.ok(selectionRepository.save(selection));

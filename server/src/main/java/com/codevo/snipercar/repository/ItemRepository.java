@@ -1,5 +1,6 @@
 package com.codevo.snipercar.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,21 +31,23 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
 	@Query(""
 			+ " SELECT DISTINCT i"
 			+ " FROM User u"
-			+ " INNER JOIN u.currentSelection s"
+			+ " INNER JOIN User admin ON admin.role LIKE '%ADMIN%'"
+			+ " INNER JOIN Selection s ON (u.currentSelection IS NOT NULL AND u.currentSelection = s) OR (u.currentSelection IS NULL AND s.user = admin AND s.isDefault = 1)"
 			+ " INNER JOIN s.filters f"
 			+ " INNER JOIN f.filterItems fi"
 			+ " INNER JOIN fi.item i"
-			+ " LEFT JOIN u.userItems ui WITH ui.item = i"
+			+ " LEFT JOIN u.userItems ui"
+			+ " LEFT JOIN UserItem ui1 ON ui1.id = ui.id AND ui1.item = i"
 			+ " INNER JOIN u.company c"
 			+ " INNER JOIN c.sla sla"
 			+ " WHERE"
 			+ "   u = :agent"
-			+ "   AND fi.createdAt <= SQL('(sysdaste - interval sla.latency minute)')"
+			+ "   AND fi.createdAt <= :createdAt"
 			+ "   AND fi.createdAt >= u.currentSelectionStart"
 			+ "   AND ui.id IS NULL"
 			+ " ORDER BY fi.createdAt ASC, fi.updatedAt ASC"
 			)
-	List<Item> findAgentPendingItems(User agent);
+	List<Item> findAgentPendingItems(User agent, Date createdAt); 
 	
 //	@Query(""
 //			+ "SELECT i "

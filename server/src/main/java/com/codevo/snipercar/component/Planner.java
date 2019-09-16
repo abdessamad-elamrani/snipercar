@@ -40,7 +40,8 @@ public class Planner {
 
 //	@Scheduled(fixedRate = 10000)
 	public void callParser() throws NotFoundException, IOException {
-		logger.info("Planner::callParser :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+		logger.info("Planner::callParser :: Start ", dateTimeFormatter.format(LocalDateTime.now()));
+		System.out.println("Planner::callParser :: Start " + dateTimeFormatter.format(LocalDateTime.now()));
 
 		List<CompletableFuture<Integer>> counters = new ArrayList<>();
 		List<Website> websites = websiteRepository.findAll();
@@ -49,30 +50,40 @@ public class Planner {
 		}
 		CompletableFuture.allOf(counters.toArray(new CompletableFuture<?>[counters.size()])).join();
 
+		logger.info("Planner::callParser :: End ", dateTimeFormatter.format(LocalDateTime.now()));
+		System.out.println("Planner::callParser :: End " + dateTimeFormatter.format(LocalDateTime.now()));
 		return;
 	}
 
-//	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 10000)
 	public void callNotifier() throws NotFoundException, IOException {
-		logger.info("Planner::callNotifier :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+		logger.info("Planner::callNotifier :: Start ", dateTimeFormatter.format(LocalDateTime.now()));
+		System.out.println("Planner::callNotifier :: Start " + dateTimeFormatter.format(LocalDateTime.now()));
 
 		List<CompletableFuture<Integer>> counters = new ArrayList<>();
 		List<Company> companies = companyRepository.findAllActive();
+		System.out.println(companies.size() + " active companies found");
 		for (Company company : companies) {
 			counters.add(notifier.notifyCompanyAgents(company));
 		}
 		CompletableFuture.allOf(counters.toArray(new CompletableFuture<?>[counters.size()])).join();
 
+		logger.info("Planner::callNotifier :: End ", dateTimeFormatter.format(LocalDateTime.now()));
+		System.out.println("Planner::callNotifier :: End " + dateTimeFormatter.format(LocalDateTime.now()));
 		return;
 	}
 
 //	@Scheduled(cron = "0 0 0 * * ?")
+//	@Scheduled(fixedRate = 10000)
 	public void callPurger() {
-		logger.info("Planner::callPurger :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+		logger.info("Planner::callPurger :: Start ", dateTimeFormatter.format(LocalDateTime.now()));
+		System.out.println("Planner::callPurger :: Start " + dateTimeFormatter.format(LocalDateTime.now()));
 
 		// TODO: implement logic
 		purger.purgeDatabase();
 
+		logger.info("Planner::callPurger :: End ", dateTimeFormatter.format(LocalDateTime.now()));
+		System.out.println("Planner::callPurger :: End " + dateTimeFormatter.format(LocalDateTime.now()));
 		return;
 	}
 }

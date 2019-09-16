@@ -3,6 +3,7 @@ package com.codevo.snipercar.service;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -16,6 +17,7 @@ import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -69,8 +71,14 @@ public class Notifier {
 		int counter = 0;
 
 		List<User> agents = userRepository.findAllActiveAgentsByCompany(company);
+		System.out.println(agents.size() + " active agents found for company " + company.getName());
 		for(User agent : agents) {
-			List<Item> items = itemRepository.findAgentPendingItems(agent);
+			System.out.println("agent " + agent.getUsername());
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.MINUTE, -agent.getCompany().getSla().getLatency());
+			Date createdAt = cal.getTime();
+			List<Item> items = itemRepository.findAgentPendingItems(agent, createdAt);
+			System.out.println(items.size() + " items to be sent to agent " + agent.getUsername());
 			for(Item item : items) {
 				UserItem userItem = new UserItem(agent, item);
 				if(agent.getSmsNotif()) {

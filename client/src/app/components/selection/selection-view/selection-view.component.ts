@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectionViewComponent implements OnInit {
 
+  isAdmin: boolean;
   selection: Selection;
   filters: {};
   filtersData: any[];
@@ -23,6 +24,7 @@ export class SelectionViewComponent implements OnInit {
     private router: Router,
     private authService: AuthService
   ) {
+    this.isAdmin = this.authService.hasRole('ROLE_ADMIN');
     this.selection = new Selection();
     this.route.params.subscribe(params => {
       this.http.get(

@@ -105,7 +105,7 @@ public class User {
 	private List<UserItem> userItems;
 
 	@Column(name = "current_selection_start")
-	@JsonFormat(pattern = "yyyy-MM-dd h:i:s")
+//	@JsonFormat(pattern = "yyyy-MM-dd h:i:s")
 	// @Temporal(TemporalType.TIMESTAMP)
 	private Date currentSelectionStart = new Date();
 
@@ -114,7 +114,7 @@ public class User {
 
 	@PreUpdate
 	public void preUpdate() {
-		if (!previousSelection.equals(this.currentSelection)) {
+		if (previousSelection != this.currentSelection) {
 			this.currentSelectionStart = new Date();
 		}
 	}

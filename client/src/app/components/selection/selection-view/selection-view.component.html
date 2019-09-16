@@ -15,6 +15,20 @@
             <label for="owner">Owner</label>
             <input [(ngModel)]="selection.user.name" name="owner" type="text" class="form-control" disabled>
           </div>
+          <!-- <div *ngIf="isAdmin && selection.user.role.includes('ADMIN')" class="form-check">
+            <label class="el-switch" style="font-size:80%">
+              <input type="checkbox" [(ngModel)]="selection.isDefault" name="selection.isDefault" disabled>
+              <span class="el-switch-style"></span>
+            </label>
+            <label class="margin-r">Default</label>
+          </div> -->
+          <div *ngIf="isAdmin && selection.user.role.includes('ADMIN')" class="form-group">
+            <label for="isDefault">Default</label>
+            <select id="isDefault" [(ngModel)]="selection.isDefault" name="isDefault" class="form-control" disabled>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
           <div class="form-group">
             <label for="filters">Filters</label>
             <select2 [data]="filtersData" [cssImport]=true [options]="filtersOptions"></select2>
