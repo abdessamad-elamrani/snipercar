@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.codevo.snipercar.model.*;
 
 @Repository
-public interface FilterRepository extends JpaRepository<Filter, Long>{
+public interface FilterRepository extends JpaRepository<Filter, Long> {
 	
 	@Query(""
 			+ " SELECT"
@@ -27,8 +27,9 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
 			+ " FROM Filter f"
 			+ " LEFT JOIN f.website w"
 			+ " WHERE"
-			+ " 	 f.name LIKE CONCAT('%',:name,'%')")
-	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name);
+			+ " 	 f.name LIKE CONCAT('%',:name,'%')"
+			+ " 	 AND (w.id = :websiteId OR :websiteId = '0')")
+	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("websiteId") Long websiteId); 
 
 	List<Filter> findByWebsite(Website website);
 	

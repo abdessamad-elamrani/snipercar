@@ -15,90 +15,90 @@
           Menu
         </span>
       </div>
-        <div class="menu_section ">
-          <ul class="nav side-menu">
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_SUPER_ADMIN']">
-              <a routerLink="/admin/list">
-                <img src="assets/images/icons/admin.svg" alt="" srcset=""> Admin
-              </a>
-            </li>
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
-              <a routerLink="/filter/list">
-                <img src="assets/images/icons/search.svg" alt="" srcset=""> Filter
-              </a>
-            </li>
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_AGENT']">
-              <a routerLink="/agent/dashboard">
-                <img src="assets/images/icons/users.svg" alt="" srcset=""> Dashboard
-              </a>
-            </li>
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_AGENT']">
-              <a routerLink="/selection/list">
-                <img src="assets/images/icons/search.svg" alt="" srcset=""> Selection
-              </a>
-            </li>
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
-              <a routerLink="/sla/list">
-                <img src="assets/images/icons/clock.svg" alt="" srcset=""> Sla
-              </a>
-            </li>
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
-              <a routerLink="/company/list">
-                <img src="assets/images/icons/company.svg" alt="" srcset=""> Company
-              </a>
-            </li>
-            <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_SUPER_AGENT']">
-              <a routerLink="/agent/list">
-                <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
-              </a>
-            </li>
-            <li *ngIf="false" id="form-menu" (click)="mouseEnter($event)" (mouseenter)="mouseEnter($event)"
-              [routerLinkActive]="['active']" (mouseleave)="mouseLeave($event)">
-              <a class="form-menu has-child" routerLink="/agent">
-                <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
-              </a>
-              <ul class="nav child_menu">
-                <div class="menuTitle_area">
-                  <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
-                  <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
-                  <span class="menuTitle_mobile">
-                    Agent
-                  </span>
+      <div class="menu_section ">
+        <ul class="nav side-menu">
+          <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_SUPER_ADMIN']">
+            <a routerLink="/admin/list">
+              <img src="assets/images/icons/admin.svg" alt="" srcset=""> Admin
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
+            <a routerLink="/filter/list">
+              <img src="assets/images/icons/search.svg" alt="" srcset=""> Filter
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_AGENT']">
+            <a routerLink="/agent/dashboard">
+              <img src="assets/images/icons/users.svg" alt="" srcset=""> Dashboard
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_AGENT']">
+            <a routerLink="/selection/list">
+              <img src="assets/images/icons/search.svg" alt="" srcset=""> Selection
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
+            <a routerLink="/sla/list">
+              <img src="assets/images/icons/clock.svg" alt="" srcset=""> Sla
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN']">
+            <a routerLink="/company/list">
+              <img src="assets/images/icons/company.svg" alt="" srcset=""> Company
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']" *ngxPermissionsOnly="['ROLE_ADMIN', 'ROLE_SUPER_AGENT']">
+            <a routerLink="/agent/list">
+              <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
+            </a>
+          </li>
+          <li *ngIf="false" id="form-menu" (click)="mouseEnter($event)" (mouseenter)="mouseEnter($event)"
+            [routerLinkActive]="['active']" (mouseleave)="mouseLeave($event)">
+            <a class="form-menu has-child" routerLink="/agent">
+              <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
+            </a>
+            <ul class="nav child_menu">
+              <div class="menuTitle_area">
+                <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
+                <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
+                <span class="menuTitle_mobile">
+                  Agent
+                </span>
+              </div>
+              <li class="child_menu_title">
+                <div class="title">
+                  Agent
                 </div>
-                <li class="child_menu_title">
-                  <div class="title">
-                    Agent
+                <div class="dropdown-divider"></div>
+              </li>
+              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAl"
+                        aria-expanded="true" aria-controls="collapseAl">
+                        Dashborad
+                      </a>
+                    </h4>
                   </div>
-                  <div class="dropdown-divider"></div>
-                </li>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
-                      <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAl"
-                          aria-expanded="true" aria-controls="collapseAl">
-                          Dashborad
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="panel-body">
-                        <div class="item">
-                          <a [routerLinkActive]="['active']" routerLink="/agent/dashboard">Dashborad</a>
-                        </div>
+                  <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      <div class="item">
+                        <a [routerLinkActive]="['active']" routerLink="/agent/dashboard">Dashborad</a>
                       </div>
                     </div>
                   </div>
                 </div>
-              </ul>
-            </li>
-            <li *ngIf="true" [routerLinkActive]="['active']">
-              <a routerLink="/extra">
-                Extra
-              </a>
-            </li>
-          </ul>
-        </div>
+              </div>
+            </ul>
+          </li>
+          <li *ngIf="false" [routerLinkActive]="['active']">
+            <a routerLink="/extra">
+              Extra
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
     <!-- /sidebar menu -->
 

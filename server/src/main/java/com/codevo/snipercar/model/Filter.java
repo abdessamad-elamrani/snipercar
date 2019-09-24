@@ -1,6 +1,7 @@
 package com.codevo.snipercar.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.*;
 
@@ -21,6 +23,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PreUpdate;
 
 
 @Entity
@@ -51,6 +55,13 @@ public class Filter {
 	@Column(name = "url", nullable = false)
 	private String url;
 	
+	@Column(name = "parsed")
+	private Boolean parsed = false;
+	
+	@JsonIgnore
+	@Transient
+	private Filter previousState;
+	
 	@OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<FilterItem> filterItems = new ArrayList<>();
 	
@@ -68,4 +79,20 @@ public class Filter {
 ////		this.items = new ArrayList<>();
 //	}
 	
+	@PostLoad 
+	public void setPreviousState(){
+		previousState = new Filter();
+		previousState.setWebsite(website);
+		previousState.setName(name);
+		previousState.setUrl(url);
+		previousState.setParsed(parsed);
+	}
+	
+	@PreUpdate
+	public void preUpdate() {
+		if (!this.previousState.getUrl().equals(this.getUrl()) ||
+				!this.previousState.getWebsite().equals(this.getWebsite())) {
+			this.parsed = false;
+		}
+	}
 }

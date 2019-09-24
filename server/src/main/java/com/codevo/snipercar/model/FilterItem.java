@@ -46,6 +46,9 @@ public class FilterItem {
 	@JoinColumn(name = "item_id")
 	private Item item;
 
+	@Column(name = "first_parse")
+	private Boolean firstParse = true;
+	
 	@Column(name = "created_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt = new Date();
@@ -57,6 +60,7 @@ public class FilterItem {
 	public FilterItem(Filter filter, Item item) {
 		this.filter = filter;
 		this.item = item;
+		this.firstParse = !filter.getParsed();
 	}
 
 }

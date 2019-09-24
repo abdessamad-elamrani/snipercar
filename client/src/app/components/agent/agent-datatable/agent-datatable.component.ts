@@ -1,3 +1,4 @@
+import { Company } from './../../../models/company';
 import { Observable } from 'rxjs/Observable';
 import { DataTablesResponse } from './../../../models/DataTablesResponse';
 import { HttpClient } from '@angular/common/http';
@@ -25,6 +26,8 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
     companyId: 0
   };
 
+  public companyData: any[];
+
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
@@ -50,6 +53,7 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
     if (!this.authService.hasRole('ROLE_ADMIN')) {
       this.filter.companyId = this.authService.sessionContextValue.user.company.id;
     }
+    this.initCompany();
     this.staticFilter = this.filter;
     this.pnotify = pnotifyService.getPNotify();
   }
@@ -236,6 +240,38 @@ export class AgentDatatableComponent implements OnInit, OnDestroy {
           });
         }
       );
+  }
+
+  initCompany() {
+    if (this.authService.hasRole('ROLE_AGENT')) {
+      const company = this.authService.sessionContextValue.user.company;
+      this.filter.companyId = company.id;
+      this.companyData = [{
+        id: company.id,
+        text: company.name,
+        selected: true
+      }];
+    } else {
+      this.http.get(
+        '/api/company/select2'
+      ).subscribe((companies: any[]) => {
+        this.companyData = companies.map((company, index) => {
+          return {
+            id: company.id,
+            text: company.name,
+            // selected: company.id == this.search.companyId
+          };
+        });
+        this.companyData.unshift({
+          id: 0,
+          text: '--',
+          selected: true
+        });
+      });
+    }
+  }
+  companyChanged(e: any) {
+    this.filter.companyId = e.value;
   }
 
   onFilter(): void {

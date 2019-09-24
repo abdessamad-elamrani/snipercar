@@ -1,65 +1,69 @@
 <!-- start filter -->
 <div class="col-sm-12 col-xs-12 col-md-12 col-lg-3 pull-right ">
-    <div class="x_panel filterFixed">
-      <div class="x_title">
-        <h2>Filtre</h2>
-        <ul class="nav navbar-right panel_toolbox hidden-lg hidden-md">
-          <li>
-            <a class="collapse-filter" data-toggle="collapse" href=".details">
-              <i class="fa fa-chevron-down"></i>
-            </a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content panel_filter details collapse">
-        <form (ngSubmit)='onFilter()'>
-  
-          <div class="form-group">
-            <label for="select">Name</label>
-            <input [(ngModel)]="filter.name" name="name" type="text" class="form-control">
+  <div class="x_panel filterFixed">
+    <div class="x_title">
+      <h2>Filtre</h2>
+      <ul class="nav navbar-right panel_toolbox hidden-lg hidden-md">
+        <li>
+          <a class="collapse-filter" data-toggle="collapse" href=".details">
+            <i class="fa fa-chevron-down"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content panel_filter details collapse">
+      <form (ngSubmit)='onFilter()'>
+        <div class="form-group">
+          <label for="select">Name</label>
+          <input [(ngModel)]="filter.name" name="name" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="companyId">Company</label>
+          <select2 class="d-block" [data]="companyData" [cssImport]=true (valueChanged)="companyChanged($event)">
+          </select2>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 marginTopMedium">
+          <div class="btnFixed">
+            <button type="submit" class="btn-slide" data-hover="Search">
+              <div>Search</div>
+            </button>
           </div>
-  
-          <div class="col-md-12 col-sm-12 col-xs-12 marginTopMedium">
-            <div class="btnFixed">
-              <button type="submit" class="btn-slide" data-hover="Search">
-                <div>Search</div>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
-  <!-- end filter  -->
-  
-  <!-- start datatable -->
-  <div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel ">
-      <div class="x_title">
-        <h2>Agents
-        </h2>
-        <div class="clearfix"></div>
+</div>
+<!-- end filter  -->
+
+<!-- start datatable -->
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel ">
+    <div class="x_title">
+      <h2>Agents
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content ">
+      <div class="btn-group" style="float: right;">
+        <button routerLink="/agent/add" class="btn btnTopFix btn-tool">
+          Add
+        </button>
       </div>
-      <div class="x_content ">
-        <div class="btn-group" style="float: right;">
-          <button routerLink="/agent/add" class="btn btnTopFix btn-tool">
-            Add
-          </button>
-        </div>
-        <table datatable [dtOptions]="dtOptions" class="table table-striped w-100">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Role</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Active</th>
-              <th>Actions</th> 
-            </tr>
-          </thead>
-          <!-- <tbody>
+      <table datatable [dtOptions]="dtOptions" class="table table-striped w-100">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <!-- <tbody>
             <tr *ngFor="let agent of agents" id="agent_{{ agent.id }}">
               <th>
                 <label class="el-switch" style="font-size:80%">
@@ -87,8 +91,8 @@
               <td colspan="99" class="no-data-available">No Data !</td>
             </tr>
           </tbody> -->
-        </table>
-      </div>
+      </table>
     </div>
   </div>
-  <!-- end datatable -->
+</div>
+<!-- end datatable -->

@@ -144,5 +144,11 @@ public class CompanyController {
 		
         return ResponseEntity.ok().build();
 	}
+	
+	@RequestMapping(value = "/select2", method = RequestMethod.GET)
+	public ResponseEntity<List<Company>> readForSelect2() throws Exception {
+
+		return ResponseEntity.ok(companyRepository.findAll()); 
+	}
 
 }

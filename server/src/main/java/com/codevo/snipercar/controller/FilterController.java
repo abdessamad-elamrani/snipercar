@@ -93,7 +93,8 @@ public class FilterController {
 		Pageable pageable = PageRequest.of(datatablesRequest.getStart() / datatablesRequest.getLength(),
 				datatablesRequest.getLength());
 		Page<Map<String, String>> data = filterRepository.findAllForDatatables(pageable,
-				datatablesRequest.getFilter().getOrDefault("name", ""));
+				datatablesRequest.getFilter().getOrDefault("name", ""),
+				new Long(datatablesRequest.getFilter().getOrDefault("websiteId", "0")));
 
 		DatatablesResponse datatablesResponse = new DatatablesResponse();
 		datatablesResponse.setData(data.getContent());

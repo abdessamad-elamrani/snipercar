@@ -55,7 +55,7 @@ public class Planner {
 		return;
 	}
 
-	@Scheduled(fixedRate = 10000)
+//	@Scheduled(fixedRate = 10000)
 	public void callNotifier() throws NotFoundException, IOException {
 		logger.info("Planner::callNotifier :: Start ", dateTimeFormatter.format(LocalDateTime.now()));
 		System.out.println("Planner::callNotifier :: Start " + dateTimeFormatter.format(LocalDateTime.now()));

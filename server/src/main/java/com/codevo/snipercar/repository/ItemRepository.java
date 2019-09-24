@@ -42,6 +42,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
 			+ " INNER JOIN c.sla sla"
 			+ " WHERE"
 			+ "   u = :agent"
+			+ "   AND fi.firstParse = 0"
 			+ "   AND fi.createdAt <= :createdAt"
 			+ "   AND fi.createdAt >= u.currentSelectionStart"
 			+ "   AND ui.id IS NULL"

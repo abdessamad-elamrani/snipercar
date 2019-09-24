@@ -1,3 +1,4 @@
+import { AuthService } from './../../../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { DataTablesResponse } from './../../../models/DataTablesResponse';
 import { HttpClient } from '@angular/common/http';
@@ -17,10 +18,14 @@ export class FilterDatatableComponent implements OnInit, OnDestroy {
 
   search = {
     name: '',
+    websiteId: 0
   };
   staticSearch = {
     name: '',
+    websiteId: 0
   };
+
+  public websiteData: any[];
 
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
@@ -38,11 +43,13 @@ export class FilterDatatableComponent implements OnInit, OnDestroy {
   pnotify = undefined;
   constructor(
     private http: HttpClient,
+    private authService: AuthService,
     private router: Router,
     private zone: NgZone,
     pnotifyService: PNotifyService
   ) {
-    // this.filterForm = new FormGroup();
+    this.staticSearch = this.search;
+    this.initWebsite();
     this.pnotify = pnotifyService.getPNotify();
   }
 
@@ -215,6 +222,28 @@ export class FilterDatatableComponent implements OnInit, OnDestroy {
           });
         }
       );
+  }
+
+  initWebsite() {
+    this.http.get(
+      '/api/website/select2'
+    ).subscribe((companies: any[]) => {
+      this.websiteData = companies.map((website, index) => {
+        return {
+          id: website.id,
+          text: website.name,
+          // selected: website.id == this.search.websiteId
+        };
+      });
+      this.websiteData.unshift({
+        id: 0,
+        text: '--',
+        selected: true
+      });
+    });
+  }
+  websiteChanged(e: any) {
+    this.search.websiteId = e.value;
   }
 
   onFilter(): void {

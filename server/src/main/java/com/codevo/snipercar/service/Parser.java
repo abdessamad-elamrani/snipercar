@@ -99,6 +99,11 @@ public class Parser {
 		} else if (filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
 			counter = this.parseViabovag(filter);
 		}
+		
+		if(!filter.getParsed()) {
+			filter.setParsed(true);
+			em.persist(filter);
+		}
 
 		return counter;
 	}
