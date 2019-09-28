@@ -31,11 +31,14 @@ import { AdminDatatableComponent } from './components/admin/admin-datatable/admi
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ItemListComponent } from './components/item/item-list/item-list.component';
+import { ItemViewComponent } from './components/item/item-view/item-view.component';
 import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from 'ngx-permissions';
+import { APP_BASE_HREF } from '@angular/common';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
-  { path: 'item/list/:id', component: ItemListComponent},
+  { path: 'item/list/:id', component: ItemListComponent },
+  { path: 'item/:id', component: ItemViewComponent },
   {
     path: 'admin',
     canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -197,6 +200,7 @@ const routes: Routes = [
       }),
     NgxPermissionsModule.forRoot(),
   ],
+  providers: [{ provide: APP_BASE_HREF, useValue: '/web' }],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

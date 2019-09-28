@@ -55,6 +55,7 @@ public class Item {
 	@Column(name = "body", nullable = false)
 	private String body;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<FilterItem> filterItems = new ArrayList<>();
 
