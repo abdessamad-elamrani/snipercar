@@ -124,7 +124,7 @@ public class CompanyController {
 			throws Exception {
 
 		Optional<Company> companyOrig = companyRepository.findById(id);
-		if (company.getId() != id || !companyOrig.isPresent()) {
+		if (!company.getId().equals(id) || !companyOrig.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found for this id :: " + id);
 		}
 

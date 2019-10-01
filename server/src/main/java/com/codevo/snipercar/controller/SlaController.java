@@ -119,7 +119,7 @@ public class SlaController {
 			throws Exception {
 
 		Optional<Sla> slaOrig = slaRepository.findById(id);
-		if (sla.getId() != id || !slaOrig.isPresent()) {
+		if (!sla.getId().equals(id) || !slaOrig.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sla not found for this id :: " + id);
 		}
 

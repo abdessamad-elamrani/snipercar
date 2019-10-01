@@ -134,7 +134,7 @@ public class FilterController {
 			throws Exception {
 
 		Optional<Filter> filterOrig = filterRepository.findById(id);
-		if (filter.getId() != id || !filterOrig.isPresent()) {
+		if (!filter.getId().equals(id) || !filterOrig.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filter not found for this id :: " + id);
 		}
 

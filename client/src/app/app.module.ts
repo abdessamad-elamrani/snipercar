@@ -18,7 +18,6 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule, OwlDateTimeIntl, OWL_DATE_T
 
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { ItemListComponent } from './components/item/item-list/item-list.component';
 import { ItemViewComponent } from './components/item/item-view/item-view.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -80,7 +79,6 @@ export class DefaultIntl extends OwlDateTimeIntl {
 @NgModule({
   declarations: [
     AppComponent,
-    ItemListComponent,
     ItemViewComponent,
     SidebarComponent,
     HeaderComponent,

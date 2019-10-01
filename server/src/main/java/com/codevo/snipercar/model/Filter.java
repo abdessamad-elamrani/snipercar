@@ -62,6 +62,7 @@ public class Filter {
 	@Transient
 	private Filter previousState;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<FilterItem> filterItems = new ArrayList<>();
 	

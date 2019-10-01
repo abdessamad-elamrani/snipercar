@@ -135,7 +135,7 @@ public class AdminController {
 		if (!OptionalUser.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for this id :: " + id);
 		}
-		if (user.getId() != id) {
+		if (!user.getId().equals(id)) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id mismatch " + user.getId() + "!=" + id);
 		}
 

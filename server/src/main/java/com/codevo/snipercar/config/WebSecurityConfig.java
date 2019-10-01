@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
             .ignoring()
-                .antMatchers("/web/**", "/assets/**", "/*.*");
+                .antMatchers("/", "/web/**", "/assets/**", "/*.*");
     }
 	
 	@Override
@@ -68,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				.antMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
 //				.antMatchers(HttpMethod.POST, "/api/send/sms").permitAll()
 //				.antMatchers(HttpMethod.POST, "/api/send/email").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/item/{id}").permitAll()
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				// all other requests need to be authenticated
 				.anyRequest().authenticated()

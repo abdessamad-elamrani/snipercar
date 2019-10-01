@@ -6,13 +6,17 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -51,6 +55,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class Purger {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Purger.class);
+	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	@Autowired
 	private WebsiteRepository websiteRepository;
@@ -64,10 +71,12 @@ public class Purger {
 	@PersistenceContext
 	EntityManager em;
 
-	public int purgeDatabase() {
+	public void purgeDatabase() {
+		logger.info("Purger::purgeDatabase [START]");
 
 		// purge filterItems
 		int filterItemsCounter = 0;
+		int itemsCounter = 0;
 		List<Website> websites = websiteRepository.findAll();
 		for (Website website : websites) {
 			List<Filter> filters = filterRepository.findByWebsite(website);
@@ -104,6 +113,7 @@ public class Purger {
 				for(FilterItem filterItem : filterItems2) {
 					ids.add(filterItem.getId());
 				}
+				filterItemsCounter += ids.size();
 				Query deleteQuery = em.createQuery("DELETE FROM FilterItem fi WHERE fi.id IN :ids");
 				deleteQuery.setParameter("ids", ids).executeUpdate();
 //				Query query = em.createQuery(""
@@ -139,11 +149,13 @@ public class Purger {
 			for(Item item : items) {
 				ids.add(item.getId());
 			}
+			itemsCounter += ids.size();
 			Query deleteQuery = em.createQuery("DELETE FROM Item i WHERE i.id IN :ids");
 			deleteQuery.setParameter("ids", ids).executeUpdate();
 		}
 
-		return filterItemsCounter;
+		logger.info("Purger::purgeDatabase [END]   filterItemsCounter=" + filterItemsCounter + ", itemsCounter=" + itemsCounter);
+		return;
 
 	}
 

@@ -6,12 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,8 @@ import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -36,6 +39,7 @@ import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
+import com.codevo.snipercar.component.Planner;
 import com.codevo.snipercar.model.*;
 import com.codevo.snipercar.repository.*;
 
@@ -51,6 +55,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class Parser {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Parser.class);
+	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	@Autowired
 	private WebsiteRepository websiteRepository;
@@ -69,42 +76,51 @@ public class Parser {
 
 	@Async
 	public CompletableFuture<Integer> parseWebsiteFilters(Website website) throws NotFoundException, IOException {
+		logger.info("Parser::parseWebsiteFilters [START] website=" + website.getName());
 		int counter = 0;
 
 		List<Filter> filters = filterRepository.findByWebsite(website);
+		logger.info("Parser::parseWebsiteFilters website=" + website.getName() + ", filters=" + filters.size());
 		for (Filter filter : filters) {
 			counter += this.parseFilter(filter);
 		}
 
+		logger.info("Parser::parseWebsiteFilters [END] website=" + website.getName() + ", counter=" + counter);
 		return CompletableFuture.completedFuture(counter);
 	}
 
 	public int parseFilter(Filter filter) throws NotFoundException, IOException {
+		logger.info("Parser::parseFilter [START] website=" + filter.getWebsite().getName() + ", filter=" + filter.getName());
 		int counter = 0;
 
-		if (filter.getWebsite().getName().toLowerCase().contains("marktplaats")) {
-			counter = this.parseMarktplaats(filter);
-		} else if (filter.getWebsite().getName().toLowerCase().contains("autoscout24")) {
-			counter = this.parseAutoScout24(filter);
-		} else if (filter.getWebsite().getName().toLowerCase().contains("facebook")) {
-			counter = this.parseFacebook(filter);
-		} else if (filter.getWebsite().getName().toLowerCase().contains("anwb")) {
-			counter = this.parseAnwb(filter);
-		} else if (filter.getWebsite().getName().toLowerCase().contains("gaspedaal")) {
-			counter = this.parseGaspedaal(filter);
-		} else if (filter.getWebsite().getName().toLowerCase().contains("autoweek")) {
-			counter = this.parseAutoweek(filter);
-		} else if (filter.getWebsite().getName().toLowerCase().contains("autotrader")) {
-			counter = this.parseAutotrader(filter);
-		} else if (filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
-			counter = this.parseViabovag(filter);
-		}
-		
-		if(!filter.getParsed()) {
-			filter.setParsed(true);
-			em.persist(filter);
+		try {
+			if (filter.getWebsite().getName().toLowerCase().contains("marktplaats")) {
+				counter = this.parseMarktplaats(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("autoscout24")) {
+				counter = this.parseAutoScout24(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("facebook")) {
+				counter = this.parseFacebook(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("anwb")) {
+				counter = this.parseAnwb(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("gaspedaal")) {
+				counter = this.parseGaspedaal(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("autoweek")) {
+				counter = this.parseAutoweek(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("autotrader")) {
+				counter = this.parseAutotrader(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
+				counter = this.parseViabovag(filter);
+			}
+			
+			if(!filter.getParsed()) {
+				filter.setParsed(true);
+				em.persist(filter);
+			}
+		} catch (Exception e) {
+			logger.error("Parser::parseFilter website=" + filter.getWebsite().getName() + ", filter=" + filter.getName(), e);
 		}
 
+		logger.info("Parser::parseFilter [END] website=" + filter.getWebsite().getName() + ", filter=" + filter.getName());
 		return counter;
 	}
 
@@ -316,7 +332,6 @@ public class Parser {
 			}
 			url = "https://www.autoweek.nl" + elt.get("url").getAsString();
 			title = elt.get("name").getAsString();
-			System.out.println("title" + title);
 			if (!ref.isEmpty() && !title.isEmpty() && !url.isEmpty() && !body.isEmpty()) {
 				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
 				FilterItem filterItem;
@@ -397,7 +412,6 @@ public class Parser {
 			}
 		}
 
-		System.out.println("counter=" + counter);
 		return counter;
 	}
 

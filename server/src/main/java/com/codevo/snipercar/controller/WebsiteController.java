@@ -118,7 +118,7 @@ public class WebsiteController {
 			throws Exception {
 
 		Optional<Website> websiteOrig = websiteRepository.findById(id);
-		if (website.getId() != id || !websiteOrig.isPresent()) {
+		if (!website.getId().equals(id) || !websiteOrig.isPresent()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Website not found for this id :: " + id);
 		}
 

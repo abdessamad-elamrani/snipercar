@@ -1,19 +1,25 @@
 package com.codevo.snipercar.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
-@RequestMapping("/web")
 public class WebController {
 	
-	@RequestMapping("/**")
+	@RequestMapping("/")
+	public String redirect() {
+	    return "redirect:/web";
+	}
+	
+	@RequestMapping("/web/**")
 	public String index() {
-//		return new ModelAndView("index");
-	    return "index.html";
+		return "index.html";
 	}
 
 }
