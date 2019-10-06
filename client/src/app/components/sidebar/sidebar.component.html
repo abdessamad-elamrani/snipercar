@@ -52,6 +52,53 @@
               <img src="assets/images/icons/users.svg" alt="" srcset=""> Agent
             </a>
           </li>
+          <li id="form-menu" (click)="mouseEnter($event)" (mouseenter)="mouseEnter($event)"
+            [routerLinkActive]="['active']" (mouseleave)="mouseLeave($event)" *ngxPermissionsOnly="['ROLE_ADMIN']">
+            <a class="form-menu has-child" routerLink="/monitoring">
+              <img src="assets/images/icons/users.svg" alt="" srcset=""> Monitoring
+            </a>
+            <ul class="nav child_menu">
+              <div class="menuTitle_area">
+                <button class="close_menuMobile"> <i class="fa fa-remove"></i> </button>
+                <button class="back_menuMobile"><i class="fa fa-chevron-left"></i> </button>
+                <span class="menuTitle_mobile">
+                  Monitoring
+                </span>
+              </div>
+              <li class="child_menu_title">
+                <div class="title">
+                  Monitoring
+                </div>
+                <div class="dropdown-divider"></div>
+              </li>
+              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAl"
+                        aria-expanded="true" aria-controls="collapseAl">
+                        Items & Notifications
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      <div class="item">
+                        <a [routerLinkActive]="['active']" routerLink="/monitoring/user-item">Notifications</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="collapseAl" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                      <div class="item">
+                        <a [routerLinkActive]="['active']" routerLink="/monitoring/filter-item">Items</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </li>
           <li *ngIf="false" id="form-menu" (click)="mouseEnter($event)" (mouseenter)="mouseEnter($event)"
             [routerLinkActive]="['active']" (mouseleave)="mouseLeave($event)">
             <a class="form-menu has-child" routerLink="/agent">

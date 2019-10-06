@@ -1,0 +1,68 @@
+<!-- start search -->
+<div class="col-sm-12 col-xs-12 col-md-12 col-lg-3 pull-right ">
+  <div class="x_panel filterFixed">
+    <div class="x_title">
+      <h2>Search</h2>
+      <ul class="nav navbar-right panel_toolbox hidden-lg hidden-md">
+        <li>
+          <a class="collapse-filter" data-toggle="collapse" href=".details">
+            <i class="fa fa-chevron-down"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content panel_filter details collapse">
+      <form (ngSubmit)='onSearch()'>
+        <div class="form-group">
+          <label for="websiteId">Website</label>
+          <select2 class="d-block" [data]="websiteData" [cssImport]=true (valueChanged)="websiteChanged($event)">
+          </select2>
+        </div>
+        <div class="form-group">
+          <label for="filterId">Filter</label>
+          <select2 class="d-block" [data]="filterData" [cssImport]=true (valueChanged)="filterChanged($event)">
+          </select2>
+        </div>
+        <div class="form-group">
+          <label for="itemTitle">Item title</label>
+          <input [(ngModel)]="search.itemTitle" name="itemTitle" type="text" class="form-control">
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12 marginTopMedium">
+          <div class="btnFixed">
+            <button type="submit" class="btn-slide" data-hover="Search">
+              <div>Search</div>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- end search  -->
+
+<!-- start datatable -->
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel ">
+    <div class="x_title">
+      <h2>Items
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content ">
+      <table datatable [dtOptions]="dtOptions" class="table table-striped w-100">
+        <thead>
+          <tr>
+            <th>Website</th>
+            <th>Filter</th>
+            <th>Item</th>
+            <th>First parse</th>
+            <th>Created at</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- end datatable -->

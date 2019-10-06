@@ -201,9 +201,12 @@ public class AgentController {
 	}
 
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
-	public ResponseEntity<List<User>> readForSelect2() throws Exception {
+	public ResponseEntity<List<User>> readForSelect2(@RequestParam("companyId") Long companyId) throws Exception {
 
-		return ResponseEntity.ok(userRepository.findAll());
+		if(!(companyId > 0)) {
+			companyId = new Long(0);
+		}
+		return ResponseEntity.ok(userRepository.findAllAgentsByCompanyId(companyId));
 	}
 
 	@RequestMapping(value = "/reservedUsernames/{id}", method = RequestMethod.GET)

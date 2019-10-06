@@ -31,12 +31,13 @@ import { AdminDatatableComponent } from './components/admin/admin-datatable/admi
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ItemViewComponent } from './components/item/item-view/item-view.component';
+import { FilterItemDatatableComponent } from './components/filter-item/filter-item-datatable/filter-item-datatable.component';
+import { UserItemDatatableComponent } from './components/user-item/user-item-datatable/user-item-datatable.component';
 import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from 'ngx-permissions';
 import { APP_BASE_HREF } from '@angular/common';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
-  { path: 'item/:id', component: ItemViewComponent },
   {
     path: 'admin',
     canActivate: [AuthGuard, NgxPermissionsGuard],
@@ -181,6 +182,24 @@ const routes: Routes = [
       { path: 'add', component: SelectionAddComponent }
     ]
   },
+  {
+    path: 'monitoring',
+    canActivate: [AuthGuard, NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: ['ROLE_ADMIN'],
+        redirectTo: ''
+      }
+    },
+    children: [
+      { path: '', redirectTo: 'user-item/list', pathMatch: 'full' },
+      { path: 'user-item', redirectTo: 'user-item/list', pathMatch: 'full' },
+      { path: 'user-item/list', component: UserItemDatatableComponent },
+      { path: 'filter-item', redirectTo: 'filter-item/list', pathMatch: 'full' },
+      { path: 'filter-item/list', component: FilterItemDatatableComponent }
+    ]
+  },
+  { path: 'item/:id', component: ItemViewComponent },
   { path: 'extra', component: ExtraComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: ErrorComponent }

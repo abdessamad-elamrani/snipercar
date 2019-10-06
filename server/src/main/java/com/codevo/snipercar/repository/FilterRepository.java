@@ -32,7 +32,9 @@ public interface FilterRepository extends JpaRepository<Filter, Long> {
 	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("websiteId") Long websiteId); 
 
 	List<Filter> findByWebsite(Website website);
-	
+
+	List<Filter> findAllByWebsite(Website website);
+
 //	@Modifying
 //    @Transactional
 //    @Query("DELETE FROM selection_filters sf WHERE sf._filter_id = :filterId")

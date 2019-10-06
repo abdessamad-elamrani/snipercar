@@ -100,5 +100,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ "   AND u.active = 1"
 			+ "   AND u.company = :company")
 	List<User> findAllActiveAgentsByCompany(@Param("company") Company company);
-
+	
+	@Query(""
+			+ " SELECT u"
+			+ " FROM User u"
+			+ " LEFT JOIN u.company c"
+			+ " WHERE"
+			+ "   u.role IN ('AGENT', 'SUPER_AGENT')"
+			+ "   AND (c.id = :companyId OR :companyId = '0')")
+	List<User> findAllAgentsByCompanyId(@Param("companyId") Long companyId);
+	
 }

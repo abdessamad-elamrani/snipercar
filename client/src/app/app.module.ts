@@ -45,6 +45,8 @@ import { AgentEditComponent } from './components/agent/agent-edit/agent-edit.com
 import { AgentAddComponent } from './components/agent/agent-add/agent-add.component';
 import { AgentViewComponent } from './components/agent/agent-view/agent-view.component';
 import { AgentDashboardComponent } from './components/agent/agent-dashboard/agent-dashboard.component';
+import { FilterItemDatatableComponent } from './components/filter-item/filter-item-datatable/filter-item-datatable.component';
+import { UserItemDatatableComponent } from './components/user-item/user-item-datatable/user-item-datatable.component';
 import { ExtraComponent } from './components/extra/extra.component';
 
 import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from 'ngx-permissions';
@@ -111,6 +113,8 @@ export class DefaultIntl extends OwlDateTimeIntl {
     SelectionAddComponent,
     SelectionEditComponent,
     SelectionViewComponent,
+    FilterItemDatatableComponent,
+    UserItemDatatableComponent,
   ],
   imports: [
     BrowserModule,

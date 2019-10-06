@@ -95,10 +95,10 @@ public class Notifier {
 				for (Item item : items) {
 					UserItem userItem = new UserItem(agent, item);
 					if (agent.getSmsNotif()) {
-						userItem.setSmsSent(this.sendSms(agent, item));
+						this.sendSms(userItem);
 					}
 					if (agent.getEmailNotif()) {
-						userItem.setEmailSent(this.sendEmail(agent, item));
+						this.sendEmail(userItem);
 					}
 					em.persist(userItem);
 				}
@@ -111,73 +111,93 @@ public class Notifier {
 		return CompletableFuture.completedFuture(counter);
 	}
 
-	private boolean sendSms(User agent, Item item) throws IOException {
-		boolean sent = false;
+	private void sendSms(UserItem userItem) throws IOException {
 		
-
-		try {
+		User agent = userItem.getUser();
+		Item item = userItem.getItem();
+		
+		boolean smsSent = false;
+		String smsLog = "";
+		
+		label: try {
+			// Validate phone number format
 			String phone = agent.getPhone().replaceAll("[^\\d]|^0+", "");
-			//check valid phone format
 			if(!phone.isEmpty()) {
-				return sent;
+				smsSent = false;
+				smsLog = "Invalid Phone number";
+				break label;
 			}
 			
-			Map<String, String> request = new HashMap<>();
-			request.put("api_key", "aa5a42af");
-			request.put("api_secret", "aIjLiSmN3ReN7r9y");
-			request.put("from", "SNIPERCAR");
-			request.put("to", phone);
-			String text = "";
-			text += "Hello,\n";
-			text += "\n";
-			text += "New advert identified.\n";
-			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
-			text += "\n";
-			text += "SniperCar Team";
-			request.put("text", text);
-			String data = Jsoup.connect("https://rest.nexmo.com/sms/json").ignoreContentType(true)
-					.userAgent("Mozilla/5.0").data(request).method(Method.POST).execute().body();
-			JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
-
-			sent = !jsonObject.isJsonNull() && jsonObject.has("messages")
-					&& jsonObject.getAsJsonArray("messages").size() > 0
-					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().has("status")
-					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().get("status").getAsInt() == 0;
+//			// Send SMS
+//			Map<String, String> request = new HashMap<>();
+//			request.put("api_key", "aa5a42af");
+//			request.put("api_secret", "aIjLiSmN3ReN7r9y");
+//			request.put("from", "SNIPERCAR");
+//			request.put("to", phone);
+//			String text = "";
+//			text += "Hello,\n";
+//			text += "\n";
+//			text += "New advert identified.\n";
+//			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
+//			text += "\n";
+//			text += "SniperCar Team";
+//			request.put("text", text);
+//			String data = Jsoup.connect("https://rest.nexmo.com/sms/json").ignoreContentType(true)
+//					.userAgent("Mozilla/5.0").data(request).method(Method.POST).execute().body();
+//			JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
+//
+//			smsSent = !jsonObject.isJsonNull() && jsonObject.has("messages")
+//					&& jsonObject.getAsJsonArray("messages").size() > 0
+//					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().has("status")
+//					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().get("status").getAsInt() == 0;
+//			smsLog = data;
 		} catch (Exception e) {
 			logger.error("Notifier::sendSms company=" + agent.getCompany().getName() + ", agent=" + agent.getName(), ", phone=" + agent.getPhone(), e);
+			smsLog = e.getMessage();
 		}
 
-		return sent;
+		userItem.setSmsSent(smsSent);
+		userItem.setSmsLog(smsLog);
 	}
 
-	private boolean sendEmail(User agent, Item item) {
-		boolean sent = false;
+	private void sendEmail(UserItem userItem) {
 		
-		try {
-	        SimpleMailMessage message = new SimpleMailMessage();
+		User agent = userItem.getUser();
+		Item item = userItem.getItem();
+		
+		boolean emailSent = false;
+		String emailLog = "";
+		
+		label: try {
+			// Validate Email Address
 	        String email = agent.getEmail().replaceAll(" ", "");
-			//check valid phone format
 			if(!email.isEmpty()) {
-				return sent;
+				emailSent = false;
+				emailLog = "Invalid Email Address";
+				break label;
 			}
 			
-	        message.setTo(email); 
-	        message.setSubject("[SNIPERCAR] New advert identified");
-			String text = "";
-			text += "Hello,\n";
-			text += "\n";
-			text += "New advert identified.\n";
-			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
-			text += "\n";
-			text += "SniperCar Team"; 
-	        message.setText(text);
-	        mailSender.send(message);
-	        sent = true;
+//			// Send Email
+//			SimpleMailMessage message = new SimpleMailMessage();
+//	        message.setTo(email); 
+//	        message.setSubject("[SNIPERCAR] New advert identified");
+//			String text = "";
+//			text += "Hello,\n";
+//			text += "\n";
+//			text += "New advert identified.\n";
+//			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
+//			text += "\n";
+//			text += "SniperCar Team"; 
+//	        message.setText(text);
+//	        mailSender.send(message);
+//	        emailSent = true;
 		} catch (Exception e) {
 			logger.error("Notifier::sendEmail company=" + agent.getCompany().getName() + ", agent=" + agent.getName(), ", email=" + agent.getEmail(), e);
+			emailLog = e.getMessage();
 		}
-
-		return sent;
+		
+		userItem.setEmailSent(emailSent);
+		userItem.setEmailLog(emailLog);
 	}
 
 }

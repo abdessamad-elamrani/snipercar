@@ -68,23 +68,13 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-//import com.codevo.snipercar.exception.ResourceNotFoundException;
-//import com.codevo.snipercar.model.Employee;
-//import com.codevo.snipercar.repository.EmployeeRepository;
-
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/filter")
-public class FilterController {
+@RequestMapping("/api/filter-item")
+public class FilterItemController {
 
 	@Autowired
-	private WebsiteRepository websiteRepository;
-	
-	@Autowired
-	private FilterRepository filterRepository;
-
-	@Autowired
-	private SelectionRepository selectionRepository;
+	private FilterItemRepository filterItemRepository;
 
 	@PersistenceContext
 	EntityManager em;
@@ -95,9 +85,10 @@ public class FilterController {
 
 		Pageable pageable = PageRequest.of(datatablesRequest.getStart() / datatablesRequest.getLength(),
 				datatablesRequest.getLength());
-		Page<Map<String, String>> data = filterRepository.findAllForDatatables(pageable,
-				datatablesRequest.getFilter().getOrDefault("name", ""),
-				new Long(datatablesRequest.getFilter().getOrDefault("websiteId", "0")));
+		Page<Map<String, String>> data = filterItemRepository.findAllForDatatables(pageable,
+				new Long(datatablesRequest.getFilter().getOrDefault("websiteId", "0")),
+				new Long(datatablesRequest.getFilter().getOrDefault("filterId", "0")),
+				datatablesRequest.getFilter().getOrDefault("itemTitle", ""));
 
 		DatatablesResponse datatablesResponse = new DatatablesResponse();
 		datatablesResponse.setData(data.getContent());
@@ -107,76 +98,6 @@ public class FilterController {
 		datatablesResponse.setRecordsFiltered(data.getTotalElements());
 
 		return ResponseEntity.ok(datatablesResponse);
-	}
-
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ResponseEntity<List<Filter>> readAll() throws Exception {
-
-		return ResponseEntity.ok(filterRepository.findAll());
-	}
-
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<Filter> create(@Valid @RequestBody Filter filter) throws Exception {
-
-		return ResponseEntity.ok(filterRepository.save(filter));
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Filter> read(@PathVariable(value = "id") Long id) throws Exception {
-
-		Optional<Filter> filter = filterRepository.findById(id);
-		if (!filter.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filter not found for this id :: " + id);
-		}
-
-		return ResponseEntity.ok(filter.get());
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Filter> update(@PathVariable(value = "id") Long id, @Valid @RequestBody Filter filter)
-			throws Exception {
-
-		Optional<Filter> filterOrig = filterRepository.findById(id);
-		if (!filter.getId().equals(id) || !filterOrig.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filter not found for this id :: " + id);
-		}
-
-		return ResponseEntity.ok(filterRepository.save(filter));
-	}
-
-	@Transactional
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity delete(@PathVariable(value = "id") Long id) throws Exception {
-
-		Optional<Filter> optionalFilter = filterRepository.findById(id);
-		if (!optionalFilter.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filter not found for this id :: " + id);
-		}
-
-		Filter filter = optionalFilter.get();
-		
-//		filter.getSelections().clear();
-//		for(Selection selection : filter.getSelections()) {
-////			selection.getFilters().remove(filter);
-//		}
-//		filter.getSelections().remove(selection);
-//		em.remove(filter);
-	    filterRepository.deleteById(id);
-
-		return ResponseEntity.ok().build();
-	}
-	
-	@RequestMapping(value = "/select2", method = RequestMethod.GET)
-	public ResponseEntity<List<Filter>> readForSelect2(@RequestParam("websiteId") Long websiteId) throws Exception {
-
-		if(websiteId > 0) {
-			Optional<Website> website = websiteRepository.findById(websiteId);
-			if (!website.isPresent()) {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Website not found for this id :: " + websiteId);
-			}
-			return ResponseEntity.ok(filterRepository.findAllByWebsite(website.get()));
-		}
-		return ResponseEntity.ok(filterRepository.findAll());
 	}
 
 }
