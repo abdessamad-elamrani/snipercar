@@ -25,6 +25,7 @@ public interface UserItemRepository extends JpaRepository<UserItem, Long> {
 			+ "   a.name        AS agentName,"
 			+ "   i.ref         AS itemRef,"
 			+ "   i.title       AS itemTitle,"
+			+ "   i.url         AS itemUrl,"
 			+ "   ui.phone      AS phone,"
 			+ "   ui.smsNotif   AS smsNotif,"
 			+ "   ui.smsSent    AS smsSent,"
@@ -33,16 +34,16 @@ public interface UserItemRepository extends JpaRepository<UserItem, Long> {
 			+ "   ui.emailNotif AS emailNotif,"
 			+ "   ui.emailSent  AS emailSent,"
 			+ "   ui.emailLog   AS emailLog,"
-			+ "   ui.sentAt     AS sentAt"
+			+ "   ui.createdAt  AS createdAt"
 			+ " FROM UserItem ui"
 			+ " LEFT JOIN ui.item i"
 			+ " LEFT JOIN ui.user a"
 			+ " LEFT JOIN a.company c"
 			+ " WHERE"
-			+ "   (c.id = :companyId OR :companyId = '0')"
-			+ "   AND (a.id = :agentId OR :agentId = '0')"
+			+ "   (c.id = :companyId OR :companyId = 0)"
+			+ "   AND (a.id = :agentId OR :agentId = 0)"
 			+ "   AND i.title LIKE CONCAT('%', :itemTitle, '%')"
-			+ " ORDER BY ui.sentAt DESC")
+			+ " ORDER BY ui.createdAt DESC")
 	Page<Map<String, String>> findAllForDatatables(
 			Pageable pageable, 
 			@Param("companyId") Long companyId,

@@ -73,10 +73,10 @@ public class UserItem {
 	@Column(name = "email_log", nullable = true)
 	private String emailLog;
 
-	@Column(name = "sent_at")
+	@Column(name = "created_at")
 	@Temporal(TemporalType.TIMESTAMP)
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date sentAt = new Date();
+	private Date createdAt = new Date();
 
 	public UserItem(User user, Item item) {
 		this.user = user;

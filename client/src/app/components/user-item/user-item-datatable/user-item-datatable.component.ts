@@ -3,7 +3,7 @@ import { AuthService } from './../../../services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { DataTablesResponse } from './../../../models/DataTablesResponse';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Agent } from './../../../models/user';
+import { User } from './../../../models/user';
 import { Component, OnInit, OnDestroy, ViewChild, NgZone } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
@@ -92,7 +92,7 @@ export class UserItemDatatableComponent implements OnInit, OnDestroy {
               emailData: data.email + ' (' +
                 (data.emailNotif ? (data.emailSent ? 'Success' : 'Failure') : 'Not Sent') + ')',
               emailLog: data.emailLog,
-              sentAt: data.sentAt,
+              createdAt: data.createdAt,
             });
           });
           callback({
@@ -113,7 +113,7 @@ export class UserItemDatatableComponent implements OnInit, OnDestroy {
         { data: 'smsLog' },
         { data: 'emailData' },
         { data: 'emailLog' },
-        { data: 'sentAt' },
+        { data: 'createdAt' },
       ],
       dom: '<t> <"row" <"col-md-4"l><"col-md-8"p>>',
       language: {
@@ -141,9 +141,6 @@ export class UserItemDatatableComponent implements OnInit, OnDestroy {
       // Use this attribute to enable the responsive extension
       responsive: true
     };
-    $('table').on('click', '.btnDelete', (event) => {
-      this.onDelete($(event.currentTarget).data('userItemId'));
-    });
     $('table').on('click', '.btnNavigate', (event) => {
       this.onNavigate($(event.currentTarget).data('url'));
     });
@@ -156,42 +153,6 @@ export class UserItemDatatableComponent implements OnInit, OnDestroy {
 
   onNavigate(url) {
     this.zone.run(() => this.router.navigateByUrl(url));
-  }
-
-  onDelete(id) {
-    this.pnotify.notice({
-      title: 'Confirmation',
-      text: 'Are you sure to delete this element ?',
-      stack: {
-        firstpos1: 70, firstpos2: 10,
-        modal: true,
-        overlay_close: true
-      },
-      hide: false,
-      modules: {
-        Confirm: {
-          confirm: true,
-          buttons: [
-            {
-              text: 'Ok',
-              addClass: 'btn btn-chico',
-              click: notice => {
-                this.delete(id);
-                notice.close();
-              }
-            },
-            {
-              text: 'Cancel',
-              addClass: 'btn btn-default',
-              click: (notice) => {
-                notice.close();
-                notice.fire('pnotify.cancel', { notice });
-              }
-            }
-          ]
-        }
-      }
-    });
   }
 
   initCompany() {

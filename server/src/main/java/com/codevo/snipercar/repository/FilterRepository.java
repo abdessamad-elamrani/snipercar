@@ -28,7 +28,7 @@ public interface FilterRepository extends JpaRepository<Filter, Long> {
 			+ " LEFT JOIN f.website w"
 			+ " WHERE"
 			+ " 	 f.name LIKE CONCAT('%',:name,'%')"
-			+ " 	 AND (w.id = :websiteId OR :websiteId = '0')")
+			+ " 	 AND (w.id = :websiteId OR :websiteId = 0)")
 	Page<Map<String, String>> findAllForDatatables(Pageable pageable, @Param("name") String name, @Param("websiteId") Long websiteId); 
 
 	List<Filter> findByWebsite(Website website);

@@ -25,6 +25,7 @@ public interface FilterItemRepository extends JpaRepository<FilterItem, Long> {
 			+ "   f.name        AS filterName,"
 			+ "   i.ref         AS itemRef,"
 			+ "   i.title       AS itemTitle,"
+			+ "   i.url         AS itemUrl,"
 			+ "   fi.firstParse AS firstParse,"
 			+ "   fi.createdAt  AS createdAt,"
 			+ "   fi.updatedAt  AS updatedAt"
@@ -33,9 +34,9 @@ public interface FilterItemRepository extends JpaRepository<FilterItem, Long> {
 			+ " LEFT JOIN fi.filter f"
 			+ " LEFT JOIN f.website w"
 			+ " WHERE"
-			+ " 	 (w.id = :websiteId OR :websiteId = '0')"
-			+ " 	 AND (f.id = :filterId OR :filterId = '0')"
-			+ " 	 AND i.title LIKE CONCAT('%', :itemTitle, '%')"
+			+ "   (w.id = :websiteId OR :websiteId = 0)"
+			+ "   AND (f.id = :filterId OR :filterId = 0)"
+			+ "   AND i.title LIKE CONCAT('%', :itemTitle, '%')"
 			+ " ORDER BY fi.createdAt DESC")
 	Page<Map<String, String>> findAllForDatatables(
 			Pageable pageable, 

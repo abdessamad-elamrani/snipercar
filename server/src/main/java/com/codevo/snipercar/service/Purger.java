@@ -109,13 +109,8 @@ public class Purger {
 				if(filterItems2.isEmpty()) {
 					continue;
 				}
-				List<Long> ids = new ArrayList<Long>();
-				for(FilterItem filterItem : filterItems2) {
-					ids.add(filterItem.getId());
-				}
-				filterItemsCounter += ids.size();
-				Query deleteQuery = em.createQuery("DELETE FROM FilterItem fi WHERE fi.id IN :ids");
-				deleteQuery.setParameter("ids", ids).executeUpdate();
+				Query deleteQuery = em.createQuery("DELETE FROM FilterItem fi WHERE fi IN filterItems");
+				deleteQuery.setParameter("filterItems", filterItems2).executeUpdate();
 //				Query query = em.createQuery(""
 //						+ " DELETE FROM FilterItem fi_"
 //						+ " WHERE fi_ IN ("
@@ -145,13 +140,11 @@ public class Purger {
 				+ "");
 		List<Item> items = selectQuery.getResultList();
 		if(!items.isEmpty()) {
-			List<Long> ids = new ArrayList<Long>();
-			for(Item item : items) {
-				ids.add(item.getId());
-			}
-			itemsCounter += ids.size();
-			Query deleteQuery = em.createQuery("DELETE FROM Item i WHERE i.id IN :ids");
-			deleteQuery.setParameter("ids", ids).executeUpdate();
+			itemsCounter += items.size();
+			Query deleteUserItemsQuery = em.createQuery("DELETE FROM UserItem ui WHERE ui.item IN :items");
+			deleteUserItemsQuery.setParameter("items", items).executeUpdate();
+			Query deleteItemsQuery = em.createQuery("DELETE FROM Item i WHERE i IN :items");
+			deleteItemsQuery.setParameter("items", items).executeUpdate();
 		}
 
 		logger.info("Purger::purgeDatabase [END]   filterItemsCounter=" + filterItemsCounter + ", itemsCounter=" + itemsCounter);

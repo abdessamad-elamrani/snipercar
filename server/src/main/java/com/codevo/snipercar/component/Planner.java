@@ -42,7 +42,7 @@ public class Planner {
 	@Autowired
 	private CompanyRepository companyRepository;
 
-//	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 10000)
 	public void callParser() throws NotFoundException, IOException {
 		logger.info("Planner::callParser [START]");
 
@@ -57,7 +57,7 @@ public class Planner {
 		logger.info("Planner::callParser [END]");
 	}
 
-//	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 10000)
 	public void callNotifier() throws NotFoundException, IOException {
 		logger.info("Planner::callNotifier [START]");
 
@@ -72,7 +72,7 @@ public class Planner {
 		logger.info("Planner::callNotifier [END]");
 	}
 
-//	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 0 0 * * ?")
 //	@Scheduled(fixedRate = 60000)
 	public void callPurger() {
 		logger.info("Planner::callPurger [START]");
