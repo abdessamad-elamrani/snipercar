@@ -3,6 +3,7 @@ package com.codevo.snipercar.service;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,8 @@ public class Purger {
 		for (Website website : websites) {
 			List<Filter> filters = filterRepository.findByWebsite(website);
 			for (Filter filter : filters) {
+				
+				// Get creation date of filter 100th item
 				Query selectQuery1 = em.createQuery(""
 						+ " SELECT fi"
 						+ " FROM FilterItem fi"
@@ -95,16 +98,26 @@ public class Purger {
 				if(filterItems1.isEmpty()) {
 					continue;
 				}
+				Date hundredthItemDate = filterItems1.get(0).getCreatedAt();
+				
+				// Get 30 days past date
+				Calendar thirtiethDayCalendar = Calendar.getInstance();
+				thirtiethDayCalendar.add(Calendar.DATE, -30);
+				Date thirtiethDayDate = thirtiethDayCalendar.getTime();
+				
+				// Delete filterItems
 				Query selectQuery2 = em.createQuery(""
 						+ " SELECT fi"
 						+ " FROM FilterItem fi"
 						+ " WHERE"
 						+ "   fi.filter = :filter"
-						+ "   AND fi.createdAt < :createdAt"
+						+ "   AND fi.createdAt < :hundredthItemDate"
+						+ "   AND fi.createdAt < :thirtiethDayDate"
 						+ "");
 				List<FilterItem> filterItems2 = selectQuery2
 						.setParameter("filter", filter)
-						.setParameter("createdAt", filterItems1.get(0).getCreatedAt())
+						.setParameter("hundredthItemDate", hundredthItemDate)
+						.setParameter("thirtiethDayDate", thirtiethDayDate)
 						.getResultList();
 				if(filterItems2.isEmpty()) {
 					continue;
@@ -131,7 +144,8 @@ public class Purger {
 //						.executeUpdate();
 			}
 		}
-		//purge orphan items
+		
+		// Delete userItems & items
 		Query selectQuery = em.createQuery(""
 				+ " SELECT i"
 				+ " FROM Item i"

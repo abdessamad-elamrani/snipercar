@@ -72,8 +72,8 @@ public class Planner {
 		logger.info("Planner::callNotifier [END]");
 	}
 
-	@Scheduled(cron = "0 0 0 * * ?")
-//	@Scheduled(fixedRate = 60000)
+//	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(fixedRate = 60000)
 	public void callPurger() {
 		logger.info("Planner::callPurger [START]");
 

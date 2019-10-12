@@ -88,10 +88,10 @@ public class Notifier {
 		logger.info("Notifier::notifyCompanyAgents company=" + company.getName() + ", agents=" + agents.size());
 		for (User agent : agents) {
 			try {
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.MINUTE, -agent.getCompany().getSla().getLatency());
-				Date createdAt = cal.getTime();
-				List<Item> items = itemRepository.findAgentPendingItems(agent, createdAt);
+				Calendar latencyCalendar = Calendar.getInstance();
+				latencyCalendar.add(Calendar.MINUTE, -agent.getCompany().getSla().getLatency());
+				Date latencyDate = latencyCalendar.getTime();
+				List<Item> items = itemRepository.findAgentPendingItems(agent, latencyDate);
 				for (Item item : items) {
 					UserItem userItem = new UserItem(agent, item);
 					if (agent.getSmsNotif()) {
@@ -122,7 +122,7 @@ public class Notifier {
 		label: try {
 			// Validate phone number format
 			String phone = agent.getPhone().replaceAll("[^\\d]|^0+", "");
-			if(!phone.isEmpty()) {
+			if(phone.isEmpty()) {
 				smsSent = false;
 				smsLog = "Invalid Phone number";
 				break label;
@@ -171,7 +171,7 @@ public class Notifier {
 		label: try {
 			// Validate Email Address
 	        String email = agent.getEmail().replaceAll(" ", "");
-			if(!email.isEmpty()) {
+			if(email.isEmpty()) {
 				emailSent = false;
 				emailLog = "Invalid Email Address";
 				break label;
