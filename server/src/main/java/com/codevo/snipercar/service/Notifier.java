@@ -128,29 +128,29 @@ public class Notifier {
 				break label;
 			}
 			
-//			// Send SMS
-//			Map<String, String> request = new HashMap<>();
-//			request.put("api_key", "aa5a42af");
-//			request.put("api_secret", "aIjLiSmN3ReN7r9y");
-//			request.put("from", "SNIPERCAR");
-//			request.put("to", phone);
-//			String text = "";
-//			text += "Hello,\n";
-//			text += "\n";
-//			text += "New advert identified.\n";
-//			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
-//			text += "\n";
-//			text += "SniperCar Team";
-//			request.put("text", text);
-//			String data = Jsoup.connect("https://rest.nexmo.com/sms/json").ignoreContentType(true)
-//					.userAgent("Mozilla/5.0").data(request).method(Method.POST).execute().body();
-//			JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
-//
-//			smsSent = !jsonObject.isJsonNull() && jsonObject.has("messages")
-//					&& jsonObject.getAsJsonArray("messages").size() > 0
-//					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().has("status")
-//					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().get("status").getAsInt() == 0;
-//			smsLog = data;
+			// Send SMS
+			Map<String, String> request = new HashMap<>();
+			request.put("api_key", "aa5a42af");
+			request.put("api_secret", "aIjLiSmN3ReN7r9y");
+			request.put("from", "SNIPERCAR");
+			request.put("to", phone);
+			String text = "";
+			text += "Hello,\n";
+			text += "\n";
+			text += "New advert identified.\n";
+			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
+			text += "\n";
+			text += "SniperCar Team";
+			request.put("text", text);
+			String data = Jsoup.connect("https://rest.nexmo.com/sms/json").ignoreContentType(true)
+					.userAgent("Mozilla/5.0").data(request).method(Method.POST).execute().body();
+			JsonObject jsonObject = new Gson().fromJson(data, JsonObject.class);
+
+			smsSent = !jsonObject.isJsonNull() && jsonObject.has("messages")
+					&& jsonObject.getAsJsonArray("messages").size() > 0
+					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().has("status")
+					&& jsonObject.getAsJsonArray("messages").get(0).getAsJsonObject().get("status").getAsInt() == 0;
+			smsLog = data;
 		} catch (Exception e) {
 			logger.error("Notifier::sendSms company=" + agent.getCompany().getName() + ", agent=" + agent.getName(), ", phone=" + agent.getPhone(), e);
 			smsLog = e.getMessage();
@@ -177,20 +177,20 @@ public class Notifier {
 				break label;
 			}
 			
-//			// Send Email
-//			SimpleMailMessage message = new SimpleMailMessage();
-//	        message.setTo(email); 
-//	        message.setSubject("[SNIPERCAR] New advert identified");
-//			String text = "";
-//			text += "Hello,\n";
-//			text += "\n";
-//			text += "New advert identified.\n";
-//			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
-//			text += "\n";
-//			text += "SniperCar Team"; 
-//	        message.setText(text);
-//	        mailSender.send(message);
-//	        emailSent = true;
+			// Send Email
+			SimpleMailMessage message = new SimpleMailMessage();
+	        message.setTo(email); 
+	        message.setSubject("[SNIPERCAR] New advert identified");
+			String text = "";
+			text += "Hello,\n";
+			text += "\n";
+			text += "New advert identified.\n";
+			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
+			text += "\n";
+			text += "SniperCar Team"; 
+	        message.setText(text);
+	        mailSender.send(message);
+	        emailSent = true;
 		} catch (Exception e) {
 			logger.error("Notifier::sendEmail company=" + agent.getCompany().getName() + ", agent=" + agent.getName(), ", email=" + agent.getEmail(), e);
 			emailLog = e.getMessage();
