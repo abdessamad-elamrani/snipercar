@@ -48,6 +48,7 @@ public class Item {
 	@Column(name = "title", nullable = false)
 	private String title;
 
+	@Lob
 	@Column(name = "url", nullable = false)
 	private String url;
 

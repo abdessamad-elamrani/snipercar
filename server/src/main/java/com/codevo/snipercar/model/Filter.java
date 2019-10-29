@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
@@ -49,9 +50,11 @@ public class Filter {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
+	@Lob
 	@Column(name = "description", nullable = false)
 	private String description;
 
+	@Lob
 	@Column(name = "url", nullable = false)
 	private String url;
 	

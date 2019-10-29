@@ -1,34 +1,35 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-      <div class="x_title">
-        <h2>Add Company
-        </h2>
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content">
-        <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input [(ngModel)]="company.name" name="name" type="text" class="form-control" maxlength="50" required>
-          </div>
-          <div class="form-group">
-            <label for="address">Address</label>
-            <textarea [(ngModel)]='company.address' name="address" class="form-control" rows="5" maxlength="300"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input [(ngModel)]="company.email" name="email" type="text" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone</label>
-            <input [(ngModel)]="company.phone" name="phone" type="text" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label for="name">Sla</label>
-            <select2 class="d-block" [data]="slasData" [cssImport]=true (valueChanged)="slaChanged($event)">
-            </select2>
-          </div>
-          <!-- <div class="form-group">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Add Company
+      </h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <form #form="ngForm" class="w-100" (ngSubmit)='onSubmit()'>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input [(ngModel)]="company.name" name="name" type="text" class="form-control" maxlength="50" required>
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea [(ngModel)]='company.address' name="address" class="form-control" rows="5"
+            maxlength="1000"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input [(ngModel)]="company.email" name="email" type="text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input [(ngModel)]="company.phone" name="phone" type="text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Sla</label>
+          <select2 class="d-block" [data]="slasData" [cssImport]=true (valueChanged)="slaChanged($event)">
+          </select2>
+        </div>
+        <!-- <div class="form-group">
             <label for="active">Active</label>
             <select [(ngModel)]="company.active" name="active" class="form-control" required>
               <option value="1" [selected]="company.active">Yes</option>
@@ -36,36 +37,34 @@
             </select>
             <input [(ngModel)]="company.phone" name="phone" type="text" class="form-control" required>
           </div> -->
-          <div class="form-check">
-            <label class="el-switch" style="font-size:80%">
-              <input type="checkbox" class="form-check-input" [(ngModel)]="company.active" name="company.active">
-              <span class="el-switch-style"></span>
-            </label>
-            <label class="margin-r">Active</label>
-          </div>
-          <div *ngIf="company.active" class="form-group">
-            <label for="name">Expiration</label>
-            <div class="input-group">
-              <input [(ngModel)]="company.expiration" name="expiration" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1"
-                [owlDateTimeFilter]="dateTimeFilter" class="form-control" placeholder="MM/JJ/AAAA" type="text" required
-                autocomplete="off" readonly>
-              <span class="input-group-btn">
-                <span class="btn btn-default" [owlDateTimeTrigger]="dt1">
-                  <i class="fa fa-calendar"></i>
-                </span>
+        <div class="form-check">
+          <label class="el-switch" style="font-size:80%">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="company.active" name="company.active">
+            <span class="el-switch-style"></span>
+          </label>
+          <label class="margin-r">Active</label>
+        </div>
+        <div *ngIf="company.active" class="form-group">
+          <label for="name">Expiration</label>
+          <div class="input-group">
+            <input [(ngModel)]="company.expiration" name="expiration" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1"
+              [owlDateTimeFilter]="dateTimeFilter" class="form-control" placeholder="MM/JJ/AAAA" type="text" required
+              autocomplete="off" readonly>
+            <span class="input-group-btn">
+              <span class="btn btn-default" [owlDateTimeTrigger]="dt1">
+                <i class="fa fa-calendar"></i>
               </span>
-              <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
-            </div>
+            </span>
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
           </div>
+        </div>
 
-          <button type="submit" class="btn-slide" data-hover="Save"
-            [disabled]="form.invalid">
-            <div>Save</div>
-          </button>
-          <button type="button" [routerLink]="['/company/list']"
-            class="btn-slide btn-slide-default" data-hover="Cancel">
-            <div>Cancel</div>
-          </button>
-        </form>
-      </div>
+        <button type="submit" class="btn-slide" data-hover="Save" [disabled]="form.invalid">
+          <div>Save</div>
+        </button>
+        <button type="button" [routerLink]="['/company/list']" class="btn-slide btn-slide-default" data-hover="Cancel">
+          <div>Cancel</div>
+        </button>
+      </form>
     </div>
+  </div>

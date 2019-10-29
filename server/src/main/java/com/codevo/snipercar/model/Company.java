@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -40,6 +41,7 @@ public class Company {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@Lob
 	@Column(name = "address", nullable = false)
 	private String address;
 

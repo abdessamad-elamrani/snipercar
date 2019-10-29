@@ -1,67 +1,63 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-      <div class="x_title">
-        <h2>Company : {{ company.name }}
-        </h2>
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content">
-        <form class="w-100">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input [(ngModel)]="company.name" name="name" type="text" class="form-control" maxlength="50" required
-              disabled>
-          </div>
-          <div class="form-group">
-            <label for="address">Address</label>
-            <textarea [(ngModel)]='company.address' name="address" class="form-control" rows="5" maxlength="300"
-              disabled></textarea>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input [(ngModel)]="company.email" name="email" type="test" class="form-control"
-              disabled>
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone</label>
-            <input [(ngModel)]="company.phone" name="phone" type="text" class="form-control"
-              disabled>
-          </div>
-          <div class="form-group">
-            <label for="sla.name">Sla</label>
-            <input [(ngModel)]="company.sla.name" name="sla" type="text" class="form-control"
-              disabled>
-          </div>
-          <div class="form-check">
-            <label class="el-switch" style="font-size:80%">
-              <input type="checkbox" class="form-check-input" [(ngModel)]="company.active" name="company.active" disabled>
-              <span class="el-switch-style"></span>
-            </label>
-            <label class="margin-r">Active</label>
-          </div>
-          <div *ngIf="company.active" class="form-group">
-            <label for="name">Expiration</label>
-            <div class="input-group">
-              <input [(ngModel)]="company.expiration" name="expiration" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1"
-                [owlDateTimeFilter]="dateTimeFilter" class="form-control" placeholder="JJ/MM/AAAA" type="text" required
-                autocomplete="off" readonly disabled>
-              <span class="input-group-btn">
-                <span class="btn btn-default" [owlDateTimeTrigger]="dt1">
-                  <i class="fa fa-calendar"></i>
-                </span>
-              </span>
-              <owl-date-time [pickerType]="'calendar'" #dt1 disabled></owl-date-time>
-            </div>
-          </div>
-
-          <button type="button" class="btn-slide" 
-            [routerLink]="['/company/edit', company.id]" data-hover="Edit">
-            <div>Edit</div>
-          </button>
-          <button type="button" class="btn-slide btn-slide-default" 
-            [routerLink]="['/company/list']" data-hover="Back to list">
-            <div>Back to list</div>
-          </button>
-        </form>
-      </div>
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Company : {{ company.name }}
+      </h2>
+      <div class="clearfix"></div>
     </div>
+    <div class="x_content">
+      <form class="w-100">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input [(ngModel)]="company.name" name="name" type="text" class="form-control" maxlength="50" required
+            disabled>
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea [(ngModel)]='company.address' name="address" class="form-control" rows="5" maxlength="1000"
+            disabled></textarea>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input [(ngModel)]="company.email" name="email" type="test" class="form-control" disabled>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input [(ngModel)]="company.phone" name="phone" type="text" class="form-control" disabled>
+        </div>
+        <div class="form-group">
+          <label for="sla.name">Sla</label>
+          <input [(ngModel)]="company.sla.name" name="sla" type="text" class="form-control" disabled>
+        </div>
+        <div class="form-check">
+          <label class="el-switch" style="font-size:80%">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="company.active" name="company.active" disabled>
+            <span class="el-switch-style"></span>
+          </label>
+          <label class="margin-r">Active</label>
+        </div>
+        <div *ngIf="company.active" class="form-group">
+          <label for="name">Expiration</label>
+          <div class="input-group">
+            <input [(ngModel)]="company.expiration" name="expiration" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1"
+              [owlDateTimeFilter]="dateTimeFilter" class="form-control" placeholder="JJ/MM/AAAA" type="text" required
+              autocomplete="off" readonly disabled>
+            <span class="input-group-btn">
+              <span class="btn btn-default" [owlDateTimeTrigger]="dt1">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </span>
+            <owl-date-time [pickerType]="'calendar'" #dt1 disabled></owl-date-time>
+          </div>
+        </div>
+
+        <button type="button" class="btn-slide" [routerLink]="['/company/edit', company.id]" data-hover="Edit">
+          <div>Edit</div>
+        </button>
+        <button type="button" class="btn-slide btn-slide-default" [routerLink]="['/company/list']"
+          data-hover="Back to list">
+          <div>Back to list</div>
+        </button>
+      </form>
+    </div>
+  </div>
