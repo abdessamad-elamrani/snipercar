@@ -78,6 +78,13 @@ public class WebsiteController {
 	@Autowired
 	private WebsiteRepository websiteRepository;
 
+	/**
+	 * Read all websites for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
@@ -95,6 +102,13 @@ public class WebsiteController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 	
+	/**
+	 * Create website
+	 * 
+	 * @param website
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Website> create(@Valid @RequestBody Website website)
 			throws Exception {
@@ -102,6 +116,13 @@ public class WebsiteController {
 		return ResponseEntity.ok(websiteRepository.save(website));
 	}
 
+	/**
+	 * Read website
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Website> read(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -113,6 +134,14 @@ public class WebsiteController {
 		return ResponseEntity.ok(website.get());
 	}
 
+	/**
+	 * Update website
+	 * 
+	 * @param id
+	 * @param website
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Website> update(@PathVariable(value = "id") Long id, @Valid @RequestBody Website website)
 			throws Exception {
@@ -125,6 +154,13 @@ public class WebsiteController {
 		return ResponseEntity.ok(websiteRepository.save(website));
 	}
 	
+	/**
+	 * Delete website
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity delete(@PathVariable(value = "id") Long id)
 			throws Exception {
@@ -139,6 +175,12 @@ public class WebsiteController {
         return ResponseEntity.ok().build();
 	}
 	
+	/**
+	 * Read all websites for select2
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
 	public ResponseEntity<List<Website>> readForSelect2() throws Exception {
 

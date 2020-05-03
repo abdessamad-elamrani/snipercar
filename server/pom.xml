@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.codevo</groupId>
 	<artifactId>snipercar</artifactId>
-	<version>0.1.4</version>
+	<version>1.0.0</version>
 	<name>snipercar</name>
 	<description>SniperCar Web Application</description>
 

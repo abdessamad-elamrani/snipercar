@@ -79,6 +79,14 @@ public class Notifier {
 	@PersistenceContext
 	EntityManager em;
 
+	/**
+	 * Serial notifications of all companies' agents
+	 * 
+	 * @param company
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	@Async
 	public CompletableFuture<Integer> notifyCompanyAgents(Company company) throws NotFoundException, IOException {
 		logger.info("Notifier::notifyCompanyAgents [START] company=" + company.getName());
@@ -111,6 +119,12 @@ public class Notifier {
 		return CompletableFuture.completedFuture(counter);
 	}
 
+	/**
+	 * Send SMS notification to an agent for a specific new item
+	 * 
+	 * @param userItem
+	 * @throws IOException
+	 */
 	private void sendSms(UserItem userItem) throws IOException {
 		
 		User agent = userItem.getUser();
@@ -164,6 +178,11 @@ public class Notifier {
 		userItem.setSmsLog(smsLog);
 	}
 
+	/**
+	 * Send Email notification to an agent for a specific new item
+	 * 
+	 * @param userItem
+	 */
 	private void sendEmail(UserItem userItem) {
 		
 		User agent = userItem.getUser();

@@ -72,6 +72,11 @@ public class Purger {
 	@PersistenceContext
 	EntityManager em;
 
+	/**
+	 * Purge stored data
+	 * Keep last 100 items per each filter
+	 * Keep items no older than 30 days
+	 */
 	public void purgeDatabase() {
 		logger.info("Purger::purgeDatabase [START]");
 

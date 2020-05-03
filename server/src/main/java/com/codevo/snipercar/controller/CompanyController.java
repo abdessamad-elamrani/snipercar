@@ -78,6 +78,13 @@ public class CompanyController {
 	@Autowired
 	private CompanyRepository companyRepository;  
 
+	/**
+	 * Read all companies for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
@@ -95,12 +102,25 @@ public class CompanyController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 	
+	/**
+	 * Read all companies
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<List<Company>> readAll() throws Exception {
 		
 		return ResponseEntity.ok(companyRepository.findAll());
 	}
 	
+	/**
+	 * Create company
+	 * 
+	 * @param company
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Company> create(@Valid @RequestBody Company company)
 			throws Exception {
@@ -108,6 +128,13 @@ public class CompanyController {
 		return ResponseEntity.ok(companyRepository.save(company));
 	}
 
+	/**
+	 * Read company
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Company> read(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -119,6 +146,14 @@ public class CompanyController {
 		return ResponseEntity.ok(company.get());
 	}
 
+	/**
+	 * Update company
+	 * 
+	 * @param id
+	 * @param company
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Company> update(@PathVariable(value = "id") Long id, @Valid @RequestBody Company company)
 			throws Exception {
@@ -131,6 +166,13 @@ public class CompanyController {
 		return ResponseEntity.ok(companyRepository.save(company));
 	}
 	
+	/**
+	 * Delete company
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity delete(@PathVariable(value = "id") Long id)
 			throws Exception {
@@ -145,6 +187,12 @@ public class CompanyController {
         return ResponseEntity.ok().build();
 	}
 	
+	/**
+	 * Read all companies for select2
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
 	public ResponseEntity<List<Company>> readForSelect2() throws Exception {
 

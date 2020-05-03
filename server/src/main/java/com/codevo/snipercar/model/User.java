@@ -112,6 +112,9 @@ public class User {
 	@Column(name = "active", nullable = false)
 	private Boolean active = true;
 
+	/**
+	 * 
+	 */
 	@PreUpdate
 	public void preUpdate() {
 		if (previousSelection != this.currentSelection) {

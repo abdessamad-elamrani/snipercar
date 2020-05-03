@@ -57,6 +57,11 @@ public class FilterItem {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt = new Date();
 
+	/**
+	 * 
+	 * @param filter
+	 * @param item
+	 */
 	public FilterItem(Filter filter, Item item) {
 		this.filter = filter;
 		this.item = item;

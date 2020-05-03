@@ -90,6 +90,13 @@ public class AgentController {
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
+	/**
+	 * Read all agents for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest)
 			throws Exception {
@@ -121,6 +128,13 @@ public class AgentController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 
+	/**
+	 * Create agent
+	 * 
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<User> create(@Valid @RequestBody User user) throws Exception {
 
@@ -136,6 +150,13 @@ public class AgentController {
 		return ResponseEntity.ok(userRepository.save(user));
 	}
 
+	/**
+	 * Read agent
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> read(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -151,6 +172,14 @@ public class AgentController {
 		return ResponseEntity.ok(user.get());
 	}
 
+	/**
+	 * Update agent
+	 * 
+	 * @param id
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<User> update(@PathVariable(value = "id") Long id, @Valid @RequestBody User user)
 			throws Exception {
@@ -187,6 +216,13 @@ public class AgentController {
 		return ResponseEntity.ok(userRepository.save(userOrig));
 	}
 
+	/**
+	 * Delete agent
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity delete(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -200,6 +236,13 @@ public class AgentController {
 		return ResponseEntity.ok().build();
 	}
 
+	/**
+	 * Read all agents for select2
+	 * 
+	 * @param companyId
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
 	public ResponseEntity<List<User>> readForSelect2(@RequestParam("companyId") Long companyId) throws Exception {
 
@@ -209,12 +252,26 @@ public class AgentController {
 		return ResponseEntity.ok(userRepository.findAllAgentsByCompanyId(companyId));
 	}
 
+	/**
+	 * Read all agents' usernames 
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/reservedUsernames/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<String>> readReservedUsernames(@PathVariable(value = "id") Long id) throws Exception {
 
 		return ResponseEntity.ok(userRepository.findAllReservedUsernames(id));
 	}
 
+	/**
+	 * Read dashboard
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/dashboard/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> readDashboard(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -234,6 +291,16 @@ public class AgentController {
 		return ResponseEntity.ok(map);
 	}
 
+	/**
+	 * Update dashboard
+	 * 
+	 * @param id
+	 * @param smsNotif
+	 * @param emailNotif
+	 * @param currentSelectionId
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/dashboard/{id}/{smsNotif}/{emailNotif}/{currentSelectionId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateDashboard(@PathVariable(value = "id") Long id,
 			@PathVariable(value = "smsNotif") Boolean smsNotif, @PathVariable(value = "emailNotif") Boolean emailNotif,

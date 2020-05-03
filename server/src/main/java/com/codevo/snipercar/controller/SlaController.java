@@ -78,6 +78,13 @@ public class SlaController {
 	@Autowired
 	private SlaRepository slaRepository;
 
+	/**
+	 * Read all slas for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
@@ -96,6 +103,13 @@ public class SlaController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 	
+	/**
+	 * Create sla
+	 * 
+	 * @param sla
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Sla> create(@Valid @RequestBody Sla sla)
 			throws Exception {
@@ -103,6 +117,13 @@ public class SlaController {
 		return ResponseEntity.ok(slaRepository.save(sla));
 	}
 
+	/**
+	 * Read sla
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Sla> read(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -114,6 +135,14 @@ public class SlaController {
 		return ResponseEntity.ok(sla.get());
 	}
 
+	/**
+	 * Update sla
+	 * 
+	 * @param id
+	 * @param sla
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Sla> update(@PathVariable(value = "id") Long id, @Valid @RequestBody Sla sla)
 			throws Exception {
@@ -126,6 +155,13 @@ public class SlaController {
 		return ResponseEntity.ok(slaRepository.save(sla));
 	}
 	
+	/**
+	 * Delete sla
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity delete(@PathVariable(value = "id") Long id)
 			throws Exception {
@@ -140,6 +176,12 @@ public class SlaController {
         return ResponseEntity.ok().build();
 	}
 	
+	/**
+	 * Read all slas for select2
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
 	public ResponseEntity<List<Sla>> readForSelect2() throws Exception {
 

@@ -52,23 +52,50 @@ public class Website {
 ////		this.filters = new ArrayList<>();
 //	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Long getId() {
 		return id;
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * 
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getUrl() {
 		return url;
 	}
+	
+	/**
+	 * 
+	 * @param url
+	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}

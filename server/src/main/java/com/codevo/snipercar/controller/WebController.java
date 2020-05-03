@@ -12,11 +12,20 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class WebController {
 	
+	/**
+	 * Default redirection to /web
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/")
 	public String redirect() {
 	    return "redirect:/web";
 	}
 	
+	/**
+	 * Load index.html (front entry point)
+	 * for all routes starting with /web
+	 */
 	@RequestMapping("/web/**")
 	public String index() {
 		return "index.html";

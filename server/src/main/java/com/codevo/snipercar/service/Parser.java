@@ -74,6 +74,14 @@ public class Parser {
 	@PersistenceContext
 	EntityManager em;
 
+	/**
+	 * Serial parsing of all website filters
+	 * 
+	 * @param website
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	@Async
 	public CompletableFuture<Integer> parseWebsiteFilters(Website website) throws NotFoundException, IOException {
 		logger.info("Parser::parseWebsiteFilters [START] website=" + website.getName());
@@ -89,6 +97,14 @@ public class Parser {
 		return CompletableFuture.completedFuture(counter);
 	}
 
+	/**
+	 * Parse a website filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	public int parseFilter(Filter filter) throws NotFoundException, IOException {
 		logger.info("Parser::parseFilter [START] website=" + filter.getWebsite().getName() + ", filter=" + filter.getName());
 		int counter = 0;
@@ -124,6 +140,14 @@ public class Parser {
 		return counter;
 	}
 
+	/**
+	 * Parse a Marktplaats filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	public int parseMarktplaats(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
@@ -169,6 +193,14 @@ public class Parser {
 
 	}
 
+	/**
+	 * Parse an AutoScout24 filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	public int parseAutoScout24(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
@@ -209,6 +241,14 @@ public class Parser {
 		return counter;
 	}
 
+	/**
+	 * Parse a Facebook filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	public int parseFacebook(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
@@ -218,6 +258,14 @@ public class Parser {
 		return counter;
 	}
 
+	/**
+	 * Parse an Anwb filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	private int parseAnwb(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
@@ -268,6 +316,14 @@ public class Parser {
 		return counter;
 	}
 
+	/**
+	 * Parse a Gaspedaal filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	private int parseGaspedaal(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
@@ -307,6 +363,14 @@ public class Parser {
 		return counter;
 	}
 
+	/**
+	 * Parse an Autoweek filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	private int parseAutoweek(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
@@ -359,6 +423,12 @@ public class Parser {
 		return counter;
 	}
 
+	/**
+	 * Slugify string
+	 * 
+	 * @param input
+	 * @return
+	 */
 	public String slugify(String input) {
 		Pattern NONLATIN = Pattern.compile("[^\\w-]");
 		Pattern WHITESPACE = Pattern.compile("[\\s]");
@@ -369,6 +439,14 @@ public class Parser {
 		return slug.toLowerCase(Locale.ENGLISH);
 	}
 
+	/**
+	 * Parse an Autotrader filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	private int parseAutotrader(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;
@@ -415,6 +493,14 @@ public class Parser {
 		return counter;
 	}
 
+	/**
+	 * Parse a Viabovag filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	private int parseViabovag(Filter filter) throws NotFoundException, IOException {
 		String ref, url, title, body;
 		int counter = 0;

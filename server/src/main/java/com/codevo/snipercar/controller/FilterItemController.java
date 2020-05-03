@@ -79,6 +79,13 @@ public class FilterItemController {
 	@PersistenceContext
 	EntityManager em;
 
+	/**
+	 * Read all filter items for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest)
 			throws Exception {

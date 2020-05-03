@@ -83,6 +83,13 @@ public class AdminController {
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
+	/**
+	 * Read all admins for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest)
 			throws Exception {
@@ -101,6 +108,13 @@ public class AdminController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 
+	/**
+	 * Create admin
+	 * 
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<User> create(@Valid @RequestBody User user) throws Exception {
 
@@ -115,6 +129,13 @@ public class AdminController {
 		return ResponseEntity.ok(userRepository.save(user));
 	}
 
+	/**
+	 * Read admin
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> read(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -127,6 +148,14 @@ public class AdminController {
 		return ResponseEntity.ok(user.get());
 	}
 
+	/**
+	 * Update admin
+	 * 
+	 * @param id
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<User> update(@PathVariable(value = "id") Long id, @Valid @RequestBody User user)
 			throws Exception {
@@ -159,6 +188,13 @@ public class AdminController {
 		return ResponseEntity.ok(userRepository.save(userOrig));
 	}
 
+	/**
+	 * Delete admin
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity delete(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -172,12 +208,25 @@ public class AdminController {
 		return ResponseEntity.ok().build();
 	}
 
+	/**
+	 * Read all admins for select2
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
 	public ResponseEntity<List<User>> readForSelect2() throws Exception {
 
 		return ResponseEntity.ok(userRepository.findAll());
 	}
 
+	/**
+	 * Read all admins' usernames
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/reservedUsernames/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<String>> readReservedUsernames(@PathVariable(value = "id") Long id) throws Exception {
 

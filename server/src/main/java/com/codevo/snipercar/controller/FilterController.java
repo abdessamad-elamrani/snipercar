@@ -89,6 +89,13 @@ public class FilterController {
 	@PersistenceContext
 	EntityManager em;
 
+	/**
+	 * Read all filters for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest)
 			throws Exception {
@@ -109,18 +116,38 @@ public class FilterController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 
+	/**
+	 * Read all filters 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<List<Filter>> readAll() throws Exception {
 
 		return ResponseEntity.ok(filterRepository.findAll());
 	}
 
+	/**
+	 * Create filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Filter> create(@Valid @RequestBody Filter filter) throws Exception {
 
 		return ResponseEntity.ok(filterRepository.save(filter));
 	}
 
+	/**
+	 * Read filter
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Filter> read(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -132,6 +159,14 @@ public class FilterController {
 		return ResponseEntity.ok(filter.get());
 	}
 
+	/**
+	 * Update filter
+	 * 
+	 * @param id
+	 * @param filter
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Filter> update(@PathVariable(value = "id") Long id, @Valid @RequestBody Filter filter)
 			throws Exception {
@@ -144,6 +179,13 @@ public class FilterController {
 		return ResponseEntity.ok(filterRepository.save(filter));
 	}
 
+	/**
+	 * Delete filter
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@Transactional
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity delete(@PathVariable(value = "id") Long id) throws Exception {
@@ -166,6 +208,13 @@ public class FilterController {
 		return ResponseEntity.ok().build();
 	}
 	
+	/**
+	 * Read all filters for select2
+	 * 
+	 * @param websiteId
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
 	public ResponseEntity<List<Filter>> readForSelect2(@RequestParam("websiteId") Long websiteId) throws Exception {
 

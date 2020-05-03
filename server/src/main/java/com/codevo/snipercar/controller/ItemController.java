@@ -100,7 +100,14 @@ public class ItemController {
 //	@Autowired
 //	public Gmail gmailService;
 
-
+	/**
+	 * Read all items 
+	 * 
+	 * @param filterId
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	@GetMapping("/items/{id}")
 	@Transactional
 	public List<Item> getAllItems(@PathVariable(value = "id") Long filterId) throws NotFoundException, IOException {
@@ -114,6 +121,13 @@ public class ItemController {
 		return itemRepository.findByFilter(filter);
 	}
 
+	/**
+	 * Refresh jwt token
+	 * 
+	 * @param authentication
+	 * @return
+	 * @throws Exception
+	 */
 	@PreAuthorize("hasRole('USER')")
 	// @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@RequestMapping(value = "/authorities", method = RequestMethod.GET)
@@ -125,6 +139,12 @@ public class ItemController {
 		return ResponseEntity.ok(content);
 	}
 
+	/**
+	 * Send Item by SMS
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/send/sms", method = RequestMethod.POST)
 	public ResponseEntity<?> sendSms() throws Exception {
 //
@@ -169,6 +189,13 @@ public class ItemController {
 		
 	}
 
+	/**
+	 * Send Item by Email
+	 * 
+	 * @return
+	 * @throws Exception
+	 * @throws MailException
+	 */
 	@RequestMapping(value = "/send/email", method = RequestMethod.POST)
 	public ResponseEntity<?> sendEmail() throws Exception, MailException {
 		
@@ -231,6 +258,13 @@ public class ItemController {
 		return ResponseEntity.ok(content);
 	}
 	
+	/**
+	 * Read item
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Item> read(@PathVariable(value = "id") Long id) throws Exception {
 

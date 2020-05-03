@@ -42,6 +42,13 @@ public class Planner {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	/**
+	 * Parser job
+	 * Called each 10s
+	 * 
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	@Scheduled(fixedRate = 10000)
 	public void callParser() throws NotFoundException, IOException {
 		logger.info("Planner::callParser [START]");
@@ -52,11 +59,20 @@ public class Planner {
 		for (Website website : websites) {
 			counters.add(parser.parseWebsiteFilters(website));
 		}
+		//call all websites' parsers on parallel
+		//wait till all parsers has finished before resuming the job
 		CompletableFuture.allOf(counters.toArray(new CompletableFuture<?>[counters.size()])).join();
 
 		logger.info("Planner::callParser [END]");
 	}
 
+	/**
+	 * Notifier job
+	 * Called each 10s
+	 * 
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
 	@Scheduled(fixedRate = 10000)
 	public void callNotifier() throws NotFoundException, IOException {
 		logger.info("Planner::callNotifier [START]");
@@ -67,17 +83,23 @@ public class Planner {
 		for (Company company : companies) {
 			counters.add(notifier.notifyCompanyAgents(company));
 		}
+		//call all companies' notifiers on parallel
+		//wait till all notifiers has finished before resuming the job
 		CompletableFuture.allOf(counters.toArray(new CompletableFuture<?>[counters.size()])).join();
 
 		logger.info("Planner::callNotifier [END]");
 	}
 
-//	@Scheduled(cron = "0 0 0 * * ?")
-	@Scheduled(fixedRate = 60000)
+	/**
+	 * Purger job
+	 * Called each midnight
+	 * 
+	 */
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void callPurger() {
 		logger.info("Planner::callPurger [START]");
 
-		// TODO: implement logic
+		//call purger
 		purger.purgeDatabase();
 
 		logger.info("Planner::callPurger [END]");

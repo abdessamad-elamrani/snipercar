@@ -82,6 +82,13 @@ public class SelectionController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	/**
+	 * Read all selections for datatables
+	 * 
+	 * @param datatablesRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/datatables", method = RequestMethod.POST)
 	public ResponseEntity<DatatablesResponse> readForDatatables(@RequestBody DatatablesRequest datatablesRequest) throws Exception {
 
@@ -112,6 +119,13 @@ public class SelectionController {
 		return ResponseEntity.ok(datatablesResponse);
 	}
 	
+	/**
+	 * Create selection
+	 * 
+	 * @param selection
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Selection> create(@Valid @RequestBody Selection selection)
 			throws Exception {
@@ -119,6 +133,13 @@ public class SelectionController {
 		return ResponseEntity.ok(selectionRepository.save(selection));
 	}
 
+	/**
+	 * Read selection
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Selection> read(@PathVariable(value = "id") Long id) throws Exception {
 
@@ -130,6 +151,14 @@ public class SelectionController {
 		return ResponseEntity.ok(selection.get());
 	}
 
+	/**
+	 * Update selection
+	 * 
+	 * @param id
+	 * @param selection
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Selection> update(@PathVariable(value = "id") Long id, @Valid @RequestBody Selection selection)
 			throws Exception {
@@ -153,6 +182,13 @@ public class SelectionController {
 		return ResponseEntity.ok(selectionRepository.save(selection));
 	}
 	
+	/**
+	 * Delete selection
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity delete(@PathVariable(value = "id") Long id)
 			throws Exception {
@@ -167,12 +203,25 @@ public class SelectionController {
         return ResponseEntity.ok().build();
 	}
 	
+	/**
+	 * Read all selections for select2
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/select2", method = RequestMethod.GET)
 	public ResponseEntity<List<Selection>> readForSelect2() throws Exception {
 
 		return ResponseEntity.ok(selectionRepository.findAll());
 	}
 	
+	/**
+	 * Read all agent selections
+	 * 
+	 * @param agentId
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/agent/{agentId}", method = RequestMethod.GET)
 	public ResponseEntity<List<Selection>> readAgentSelections(@PathVariable(value = "agentId") Long agentId) throws Exception {
 

@@ -31,6 +31,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
+	/**
+	 * Load user by username on security context (session)
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -56,6 +59,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 				authorities);
 	}
 
+	/**
+	 * Save user on DB
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public User save(User user) {
 		user.setPassword(bcryptEncoder.encode(user.getPassword()));
 		em.persist(user);

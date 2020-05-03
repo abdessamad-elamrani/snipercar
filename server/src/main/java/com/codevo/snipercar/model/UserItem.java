@@ -78,6 +78,11 @@ public class UserItem {
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createdAt = new Date();
 
+	/**
+	 * 
+	 * @param user
+	 * @param item
+	 */
 	public UserItem(User user, Item item) {
 		this.user = user;
 		this.item = item;

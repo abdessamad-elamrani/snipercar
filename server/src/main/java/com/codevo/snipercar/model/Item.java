@@ -72,7 +72,15 @@ public class Item {
 //		this.createdAt = new Date();
 //		this.updatedAt = new Date();
 //	}
-//
+	
+	/**
+	 * 
+	 * @param website
+	 * @param ref
+	 * @param title
+	 * @param url
+	 * @param body
+	 */
 	public Item(Website website, String ref, String title, String url, String body) {
 		this.website = website;
 		this.ref = ref;

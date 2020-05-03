@@ -31,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/auth")
@@ -48,6 +49,13 @@ public class JwtAuthenticationController {
 	@Autowired
 	private UserRepository UserRepository;
 
+	/**
+	 * Generate jwt token
+	 * 
+	 * @param authenticationRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/token/generate", method = RequestMethod.POST)
 	public ResponseEntity<?> generateToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
@@ -68,6 +76,14 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(new JwtResponse(token, tokenRefresh, expiration, roles, user));
 	}
 
+	/**
+	 * Refresh/regenerate jwt token
+	 * 
+	 * @param request
+	 * @param authentication
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/token/refresh", method = RequestMethod.POST)
 	public ResponseEntity<?> refreshToken(HttpServletRequest request, Authentication authentication) throws Exception {
 
@@ -87,11 +103,26 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(new JwtResponse(token, tokenRefresh, expiration, roles, user));
 	}
 
+	/**
+	 * Create user
+	 * 
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 
+	/**
+	 * Authenticate user
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
 	private Authentication authenticate(String username, String password) throws Exception {
 		try {
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

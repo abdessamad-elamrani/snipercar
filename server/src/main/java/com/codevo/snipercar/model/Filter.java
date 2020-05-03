@@ -83,6 +83,9 @@ public class Filter {
 ////		this.items = new ArrayList<>();
 //	}
 	
+	/**
+	 * 
+	 */
 	@PostLoad 
 	public void setPreviousState(){
 		previousState = new Filter();
@@ -92,6 +95,9 @@ public class Filter {
 		previousState.setParsed(parsed);
 	}
 	
+	/**
+	 * 
+	 */
 	@PreUpdate
 	public void preUpdate() {
 		if (!this.previousState.getUrl().equals(this.getUrl()) ||
