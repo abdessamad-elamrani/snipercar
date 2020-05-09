@@ -125,6 +125,7 @@ public class AdminController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "new password mismatch " + user.getNewPassword() + "!=" + user.getNewPasswordConfirm());
 		}
 		user.setPassword(bcryptEncoder.encode(user.getNewPassword()));
+		user.setCompany(null);
 		
 		return ResponseEntity.ok(userRepository.save(user));
 	}
