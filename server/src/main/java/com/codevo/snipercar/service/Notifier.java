@@ -156,7 +156,7 @@ public class Notifier {
 			title = title == null ? "" : title;
 			title = title.length() > 50 ? title.substring(0, 47) + "..." : title;
 			text += title + "\n";
-			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
+			text += "www.snipercar.nl/web/item/" + item.getId() + "\n";
 			text += "\n";
 			text += "SniperCar Team";
 			request.put("text", text);
@@ -209,7 +209,7 @@ public class Notifier {
 			text += "\n";
 			text += "New advert identified:\n";
 			text += item.getTitle() + "\n";
-			text += "www.codevo-consulting.com:8081/web/item/" + item.getId() + "\n";
+			text += "www.snipercar.nl/web/item/" + item.getId() + "\n";
 			text += "\n";
 			text += "SniperCar Team"; 
 	        message.setText(text);
