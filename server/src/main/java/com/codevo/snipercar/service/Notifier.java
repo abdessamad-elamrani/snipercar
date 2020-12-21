@@ -209,7 +209,15 @@ public class Notifier {
 			text += "\n";
 			text += "New advert identified:\n";
 			text += item.getTitle() + "\n";
-			text += "www.snipercar.nl/web/item/" + item.getId() + "\n";
+			
+			// modif 1 adding url
+			text += item.getUrl() + "\n";
+			// modif 1 done
+			
+			// this is only for prod, commenting for now
+			// text += "www.snipercar.nl/web/item/" + item.getId() + "\n";
+			
+			
 			text += "\n";
 			text += "SniperCar Team"; 
 	        message.setText(text);
