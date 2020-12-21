@@ -49,7 +49,7 @@ public class Planner {
 	 * @throws NotFoundException
 	 * @throws IOException
 	 */
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 40000)
 	public void callParser() throws NotFoundException, IOException {
 		logger.info("Planner::callParser [START]");
 
@@ -73,7 +73,7 @@ public class Planner {
 	 * @throws NotFoundException
 	 * @throws IOException
 	 */
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 40000)
 	public void callNotifier() throws NotFoundException, IOException {
 		logger.info("Planner::callNotifier [START]");
 

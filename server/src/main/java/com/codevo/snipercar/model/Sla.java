@@ -41,6 +41,7 @@ public class Sla {
 	@Column(name = "description", nullable = true)
 	private String description;
 
+	/*
 	@Column(name = "latency", columnDefinition = "UNSIGNED INT(11)", nullable = false)
 	@NotNull(message = "Latency is mandatory")
 	@Min(0)
@@ -50,6 +51,15 @@ public class Sla {
 	@NotNull(message = "Latency is mandatory")
 	@Min(0)
 	private Integer price;
+	*/
+	@Column(name = "latency", nullable = false)
+	private Integer latency;
+
+	@Column(name = "price", nullable = false)
+	private Integer price;
+	
+	/// abde modification done
+
 
 //	public Sla() {
 //
