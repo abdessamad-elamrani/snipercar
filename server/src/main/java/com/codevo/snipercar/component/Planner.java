@@ -26,7 +26,7 @@ public class Planner {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Planner.class);
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	
+
 	@Autowired
 	private Parser parser;
 	
@@ -49,6 +49,7 @@ public class Planner {
 	 * @throws NotFoundException
 	 * @throws IOException
 	 */
+	//@Scheduled(fixedDelayString = "180000", initialDelayString = "${random.int(180000)}")
 	@Scheduled(fixedRate = 40000)
 	public void callParser() throws NotFoundException, IOException {
 		logger.info("Planner::callParser [START]");
@@ -73,6 +74,7 @@ public class Planner {
 	 * @throws NotFoundException
 	 * @throws IOException
 	 */
+	//@Scheduled(fixedDelayString = "180000", initialDelayString = "${random.int(180000)}")
 	@Scheduled(fixedRate = 40000)
 	public void callNotifier() throws NotFoundException, IOException {
 		logger.info("Planner::callNotifier [START]");

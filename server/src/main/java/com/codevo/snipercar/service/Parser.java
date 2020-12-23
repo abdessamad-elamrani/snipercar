@@ -510,9 +510,9 @@ public class Parser {
 		Elements elements = doc.select("div.search-result");
 		for (Element element : elements) {
 			body = element.html();
-			url = element.selectFirst("a.search-result__car-section[href]").absUrl("href");
-			title = element.selectFirst(".search-result__car-title[title]").attr("title");
-			ref = element.selectFirst("a.search-result__car-section[href]").absUrl("href");
+			url = element.selectFirst("a.search-result__vehicle-section[href]").absUrl("href");
+			title = element.selectFirst(".search-result__vehicle-title[title]").attr("title");
+			ref = element.selectFirst("a.search-result__vehicle-section[href]").absUrl("href");
 			Pattern pattern = Pattern.compile("/auto/([^/]+)");
 			Matcher matcher = pattern.matcher(ref);
 			if (matcher.find()) {
