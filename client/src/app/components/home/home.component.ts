@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    //commented by abde
+    /*  
     if (this.roleService.getRole('ROLE_ADMIN')) {
       this.router.navigate(['/agent/list']);
     } else if (this.roleService.getRole('ROLE_AGENT')) {
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit {
     // } else {
     //   this.router.navigate(['/logout']);
     }
+    */
   }
 
 }

@@ -37,7 +37,9 @@ import { NgxPermissionsModule, NgxPermissionsService, NgxPermissionsGuard } from
 import { APP_BASE_HREF } from '@angular/common';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent, },
+  // abde modification 
+  // { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   {
     path: 'admin',
     canActivate: [AuthGuard, NgxPermissionsGuard],
