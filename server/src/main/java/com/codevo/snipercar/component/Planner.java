@@ -50,7 +50,7 @@ public class Planner {
 	 * @throws IOException
 	 */
 	//@Scheduled(fixedDelayString = "180000", initialDelayString = "${random.int(180000)}")
-	@Scheduled(fixedRate = 40000)
+	@Scheduled(fixedRate = 60000)
 	public void callParser() throws NotFoundException, IOException {
 		logger.info("Planner::callParser [START]");
 
@@ -75,7 +75,7 @@ public class Planner {
 	 * @throws IOException
 	 */
 	//@Scheduled(fixedDelayString = "180000", initialDelayString = "${random.int(180000)}")
-	@Scheduled(fixedRate = 40000)
+	@Scheduled(fixedRate = 60000)
 	public void callNotifier() throws NotFoundException, IOException {
 		logger.info("Planner::callNotifier [START]");
 
