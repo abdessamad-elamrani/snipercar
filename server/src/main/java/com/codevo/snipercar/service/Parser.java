@@ -42,6 +42,8 @@ import org.springframework.scheduling.annotation.Async;
 import com.codevo.snipercar.component.Planner;
 import com.codevo.snipercar.model.*;
 import com.codevo.snipercar.repository.*;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -126,6 +128,8 @@ public class Parser {
 				counter = this.parseAutotrader(filter);
 			} else if (filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
 				counter = this.parseViabovag(filter);
+			} else if (filter.getWebsite().getName().toLowerCase().contains("funda")) {
+				counter = this.parseFunda(filter);
 			}
 			
 			if(!filter.getParsed()) {
@@ -139,7 +143,88 @@ public class Parser {
 		logger.info("Parser::parseFilter [END] website=" + filter.getWebsite().getName() + ", filter=" + filter.getName());
 		return counter;
 	}
+	/**
+	 * Parse a Funda filter
+	 * 
+	 * @param filter
+	 * @return
+	 * @throws NotFoundException
+	 * @throws IOException
+	 */
+	public int parseFunda(Filter filter) throws NotFoundException, IOException {
+		String ref, url, title, body;
+		int counter = 0;
+		// https://www.funda.nl/koop/almere/+10km/
+		
+		WebClient client = new WebClient();
+        client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setUseInsecureSSL(true);
+        try {
 
+            HtmlPage page = client.getPage(filter.getUrl());
+            //List<HtmlAnchor> items = page.getByXPath("//a[@data-object-url-tracking='resultlist']");
+            List<HtmlElement> items = page.getByXPath("//div[@class='search-result-content']");
+
+            if(items.isEmpty()){
+                System.out.print("No items found!");
+            }
+            else{
+                for( HtmlElement htmlElement : items){
+                    url="https://www.funda.nl";
+                    
+                    /* getting the URL remaining part here  */
+                    HtmlAnchor htmlAnchor = htmlElement.getFirstByXPath(".//a[@data-object-url-tracking='resultlist']");
+                    url+=htmlAnchor.getHrefAttribute().toString();
+                    
+                    /* grabbing the price here, but I'm not using it .. */
+                    // HtmlSpan htmlSpan = htmlElement.getFirstByXPath(".//span[@class='search-result-price']");
+ 
+                    /* grabbing the ID here */
+                    HtmlDivision htmlDivision = htmlElement.getFirstByXPath(".//div[@class='user-save-object ']");
+                    ref=htmlDivision.getAttribute("data-save-object-tinyId");
+                    
+                    /* temporary title is url, but you should fix it. */
+                    title = ""+url;  // temporary title is url, but you should fix it.
+                    
+                    /* adding the whole body : only relevant part html of this element */
+                    body = htmlElement.asText();   //
+                    
+        			if (ref.length()!=0 && title.length()!=0 && url.length()>20 && body.length()!=0) {
+        				Item item = itemRepository.findByRefAndWebsite(ref, filter.getWebsite());
+        				FilterItem filterItem;
+        				if (item != null) {
+        					item.setBody(body);
+        					item.setTitle(title);
+        					item.setUrl(url);
+        					item.setUpdatedAt(new Date());
+        					filterItem = filterItemRepository.findByFilterAndItem(filter, item);
+        					if(filterItem == null) {
+        						filterItem = new FilterItem(filter, item);
+        						item.getFilterItems().add(filterItem);
+        						counter++;
+        					}
+        				} else {
+        					item = new Item(filter.getWebsite(), ref, title, url, body);
+        					filterItem = new FilterItem(filter, item);
+        					item.getFilterItems().add(filterItem);
+        					counter++;
+        				}
+        				em.persist(item);
+        			}
+                    
+                    
+
+                }
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        } 
+		return counter;
+		
+	}
+	
 	/**
 	 * Parse a Marktplaats filter
 	 * 

@@ -52,6 +52,7 @@ public class Planner {
 	//@Scheduled(fixedDelayString = "180000", initialDelayString = "${random.int(180000)}")
 	@Scheduled(fixedRate = 60000)
 	public void callParser() throws NotFoundException, IOException {
+		System.out.println("Imhere");
 		logger.info("Planner::callParser [START]");
 
 		List<CompletableFuture<Integer>> counters = new ArrayList<>();
