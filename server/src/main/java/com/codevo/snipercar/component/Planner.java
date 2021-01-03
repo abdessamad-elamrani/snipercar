@@ -31,6 +31,9 @@ public class Planner {
 	private Parser parser;
 	
 	@Autowired
+	private ParserFunda parserfunda;
+		
+	@Autowired
 	private Notifier notifier;
 	
 	@Autowired
@@ -67,6 +70,17 @@ public class Planner {
 
 		logger.info("Planner::callParser [END]");
 	}
+	
+	@Scheduled(fixedRate = 10000)
+	public void callParserFunda() throws NotFoundException, IOException {
+		System.out.println("Imhere");
+		logger.info("***********Planner::callParserFunda [START]");
+				
+		parserfunda.parseFundaFilters();
+		
+		logger.info("Planner::callParser [END]");		
+	}
+	
 
 	/**
 	 * Notifier job

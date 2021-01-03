@@ -56,9 +56,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class Parser {
+public class ParserFunda {
 	
-	private static final Logger logger = LoggerFactory.getLogger(Parser.class);
+	private static final Logger logger = LoggerFactory.getLogger(ParserFunda.class);
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	@Autowired
@@ -85,17 +85,17 @@ public class Parser {
 	 * @throws IOException
 	 */
 	@Async
-	public CompletableFuture<Integer> parseWebsiteFilters(Website website) throws NotFoundException, IOException {
-		logger.info("Parser::parseWebsiteFilters [START] website=" + website.getName());
+	public CompletableFuture<Integer> parseFundaFilters() throws NotFoundException, IOException {
+		logger.info("ParserFunda::SpecialFundaParserFilters [START] ");
 		int counter = 0;
-
-		List<Filter> filters = filterRepository.findByWebsite(website);
-		logger.info("Parser::parseWebsiteFilters website=" + website.getName() + ", filters=" + filters.size());
+		Website funda = websiteRepository.getOne((long) 9);
+		List<Filter> filters = filterRepository.findByWebsite(funda);
+		logger.info("ParserFunda::SpecialFundaParserFilters  , Number of filters=" + filters.size());
 		for (Filter filter : filters) {
 			counter += this.parseFilter(filter);
 		}
 
-		logger.info("Parser::parseWebsiteFilters [END] website=" + website.getName() + ", counter=" + counter);
+		logger.info("ParserFunda::SpecialFundaParserFilters [END]  , counter=" + counter);
 		return CompletableFuture.completedFuture(counter);
 	}
 
@@ -112,25 +112,8 @@ public class Parser {
 		int counter = 0;
 
 		try {
-			if (filter.getWebsite().getName().toLowerCase().contains("marktplaats")) {
-				counter = this.parseMarktplaats(filter);
-			} else if (filter.getWebsite().getName().toLowerCase().contains("autoscout24")) {
-				counter = this.parseAutoScout24(filter);
-			} else if (filter.getWebsite().getName().toLowerCase().contains("facebook")) {
-				counter = this.parseFacebook(filter);
-			} else if (filter.getWebsite().getName().toLowerCase().contains("anwb")) {
-				counter = this.parseAnwb(filter);
-			} else if (filter.getWebsite().getName().toLowerCase().contains("gaspedaal")) {
-				counter = this.parseGaspedaal(filter);
-			} else if (filter.getWebsite().getName().toLowerCase().contains("autoweek")) {
-				counter = this.parseAutoweek(filter);
-			} else if (filter.getWebsite().getName().toLowerCase().contains("autotrader")) {
-				counter = this.parseAutotrader(filter);
-			} else if (filter.getWebsite().getName().toLowerCase().contains("viabovag")) {
-				counter = this.parseViabovag(filter);
-			} /*else if (filter.getWebsite().getName().toLowerCase().contains("funda")) {
-				counter = this.parseFunda(filter);
-			}*/
+				this.parseFunda(filter);
+			
 			
 			if(!filter.getParsed()) {
 				filter.setParsed(true);
